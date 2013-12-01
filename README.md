@@ -21,13 +21,13 @@ B2C商城给大家使用，方便每一个人可以很容易的搭建属于自�
 
 ***
 
-### 商城在线样式
+### 商城在线演示
 
 棒主妇开源：http://www.bzfshop.net
 
 在线商城演示：http://www.bzfshop.net/article/253.html
 
-### 安装方法
+### 商城安装方法
 
  1. 下载代码，解压，把 src 目录下的文件上传到你的网站根目录
 
@@ -51,4 +51,19 @@ B2C商城给大家使用，方便每一个人可以很容易的搭建属于自�
 
     完成安装之后，请一定记得要删除 install 目录，不然别人可能会访问你的 install 目录，再次安装程序导致你丢失所有数据
 
+### 商城代码 clone 使用
 
+	商城代码依赖 bootstrap-custom 子工程，所以你需要用 git submodule 来取得对应的子模块代码
+
+	git clone https://github.com/bzfshop-net/bzfshop.git 
+	
+	cd bzfshop
+	
+	git submodule init 
+	
+	git submodule update 
+	
+	经过 submodule update 之后你就取得了 bootstrap-custom 工程的代码，这样整个工程代码就完整了
+	
+	
+	
