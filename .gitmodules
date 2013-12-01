@@ -1,0 +1,12 @@
+[submodule "src/protected/Theme/Manage/Asset/bootstrap-custom"]
+	path = src/protected/Theme/Manage/Asset/bootstrap-custom
+	url = https://github.com/bzfshop-net/bootstrap-custom.git
+[submodule "src/protected/Theme/Supplier/supplier/Asset/bootstrap-custom"]
+	path = src/protected/Theme/Supplier/supplier/Asset/bootstrap-custom
+	url = https://github.com/bzfshop-net/bootstrap-custom.git
+[submodule "src/protected/Theme/Shop/shop/Asset/bootstrap-custom"]
+	path = src/protected/Theme/Shop/shop/Asset/bootstrap-custom
+	url = https://github.com/bzfshop-net/bootstrap-custom.git
+[submodule "src/install/Asset/bootstrap-custom"]
+	path = src/install/Asset/bootstrap-custom
+	url = https://github.com/bzfshop-net/bootstrap-custom.git

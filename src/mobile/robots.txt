@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /Cart
+Disallow: /My
+Disallow: /Thirdpart
+Disallow: /Goods/Search
+SITEMAP: http://mobile.bangzhufu.com/Mobile/SiteMap/sitemap.xml

@@ -1,0 +1,1427 @@
+/**
+*     棒主妇商城 CSS 文件
+*
+*     @author QiangYu
+*/
+
+/*************************  CSS ************************************/
+html, body {
+    font-family: "Microsoft YaHei", "微软雅黑", "Microsoft JhengHei", "宋体", SimSun, Tahoma, Arial;
+    background-color: #f2f2f2;
+    font-size: 12px;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+
+img.lazyload {
+    background: url('../img/loading.gif') no-repeat center center;
+}
+
+/****  common block definition *****/
+table.table thead tr th {
+    text-align: center;
+    padding: 5px 2px 5px 2px;
+    vertical-align: middle;
+}
+
+table.table tbody tr td {
+    text-align: center;
+    padding: 5px 2px 5px 2px;
+    vertical-align: middle;
+}
+
+label.control-label {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+table.table tbody tr td.price {
+    color: red;
+    font-weight: bold;
+}
+
+table.table tbody tr td.discount {
+    color: blue;
+    font-weight: bold;
+}
+
+table.table tbody tr td.labelkey {
+    text-align: right;
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+table.table tbody tr td.labelvalue {
+    text-align: left;
+    padding-left: 10px;
+}
+
+table.table tbody tr td.labelvalue input {
+    margin: 0px 0px 0px 0px;
+}
+
+/*********** 分页前面的 span 用于显示一些信息 ************/
+.pagination {
+    font-size: 14px;
+}
+
+.pagination ul {
+    vertical-align: middle;
+}
+
+.pagination span {
+    display: inline-block;
+    padding: 4px 12px;
+    color: #0088CC;
+}
+
+.form-horizontal .control-group {
+    margin-bottom: 0px;
+}
+
+.bzf_box_shadow {
+    box-shadow: 5px 5px 5px #cccccc;
+    -webkit-box-shadow: 5px 5px 5px #cccccc;
+    -moz-box-shadow: 5px 5px 5px #cccccc;
+}
+
+.bzf_basic_content_block {
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #d3d3d3;
+    border-radius: 3px 3px 3px 3px;
+}
+
+.bzf_button_big,
+:hover.bzf_button_big {
+    display: inline-block;
+    height: 38px;
+    line-height: 38px;
+    vertical-align: middle;
+    filter: none;
+    background-image: none;
+    box-shadow: none;
+    text-shadow: none;
+    border: none;
+    background-color: #E4006E;
+    font-size: 16px;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-decoration: none;
+}
+
+.bzf_button_big * {
+    line-height: 38px;
+    vertical-align: middle;
+    margin: 0px 0px;
+}
+
+.bzf_button_big.disabled,
+:hover.bzf_button_big.disabled {
+    filter: none;
+    background-image: none;
+    box-shadow: none;
+    text-shadow: none;
+    background-color: gray;
+    color: white;
+}
+
+/******************** form-inline 的分隔符，看起来比较美观 ***********************/
+div.inline-divider {
+    position: relative;
+    margin: 10px 0px 10px 0px;
+}
+
+div.inline-divider div.divider {
+    width: 100%;
+    height: 2px;
+    margin: 7px 1px;
+    overflow: hidden;
+    border-bottom: 2px solid #3a87ad;
+    display: block;
+}
+
+div.inline-divider label {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+/*** 底部一堆关于我们的链接 ***/
+.bzf_footer_introduction_panel {
+    filter: none;
+    background-image: none;
+    background-color: #3E3A39;
+    height: 170px;
+    padding-top: 30px;
+    color: white;
+}
+
+.bzf_footer_introduction_panel .list_panel {
+    width: 124px;
+    height: 140px;
+    padding: 0px 0px 0px 30px;
+    border-right: solid 1px #221814;
+    border-left: solid 1px #656464;
+}
+
+.bzf_footer_introduction_panel .list_panel div {
+    font-size: 15px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.bzf_footer_introduction_panel .list_panel p {
+    margin: 0px 0px 3px 0px;
+}
+
+.bzf_footer_introduction_panel .list_panel p a,
+.bzf_footer_introduction_panel .list_panel p a:hover {
+    font-size: 12px;
+    color: white;
+    text-decoration: none;
+}
+
+.bzf_footer_introduction_panel .tel_panel {
+    padding: 30px 0px 0px 30px;
+    height: 110px;
+    border-left: solid 1px #656464;
+}
+
+.bzf_footer_introduction_panel .tel_panel .tel_icon {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    margin-right: 10px;
+    background: url('../img/icon_telephone.png') no-repeat;
+}
+
+.bzf_footer_introduction_panel .tel_panel p {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 30px;
+    vertical-align: middle;
+}
+
+/******************** 尾部，各种承诺，闪电发货，7天退换 ... **********************/
+.bzf_footer_credit_panel {
+    background-color: white;
+    height: 50px;
+    padding: 25px 50px;
+    text-align: center;
+}
+
+.bzf_footer_credit_panel span,
+.bzf_footer_credit_panel span i {
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.bzf_footer_credit_panel span {
+    padding: 0px 20px;
+}
+
+.bzf_footer_credit_panel span i {
+    height: 40px;
+    width: 40px;
+    padding: 0px 5px;
+}
+
+.bzf_icon_zhengping {
+    background: url('../img/icon_zhengping.png') no-repeat;
+}
+
+.bzf_icon_qitian {
+    background: url('../img/icon_qitian.png') no-repeat;
+}
+
+.bzf_icon_fahuo {
+    background: url('../img/icon_fahuo.png') no-repeat;
+}
+
+.bzf_icon_money {
+    background: url('../img/icon_money.png') no-repeat;
+}
+
+/************ 网页最后的尾部 **************/
+.bzf_footer_tail {
+    background-color: white;
+    padding: 10px 10px 10px 10px;
+    margin-bottom: 60px;
+    border-top: solid 1px silver;
+    text-align: center;
+}
+
+.bzf_footer_tail a,
+.bzf_footer_tail a:hover {
+    text-decoration: none;
+}
+
+.bzf_footer_tail .bzf_footer_tail_credit * {
+    line-height: 40px;
+    vertical-align: middle;
+}
+
+.bzf_footer_tail .bzf_footer_tail_credit .icon_credit {
+    display: inline-block;
+    width: 216px;
+    height: 40px;
+    background: url('../img/icon_credit.png') no-repeat;
+}
+
+.bzf_footer_tail .bzf_footer_tail_credit .icon_credit1 {
+    display: inline-block;
+    width: 112px;
+    height: 40px;
+    padding: 0px 5px;
+    background: url('../img/icon_credit1.png') no-repeat;
+}
+
+/*** ie6 css 让元素固定在顶部 ***/
+.bzf_sticky {
+    z-index: 1000;
+}
+
+.bzf_sticky_top_ie6 {
+    position: absolute;
+    top: expression(eval(document.documentElement.scrollTop))
+}
+
+/*********** 页面右侧浮动栏 **************/
+.bzf_right_float_panel {
+    overflow: visible;
+}
+
+.bzf_right_float_panel .bzf_right_float_panel_block {
+    width: 40px;
+    height: 40px;
+    margin: 0px 0px;
+    position: relative;
+}
+
+.bzf_right_float_panel_block  span {
+    display: block;
+    width: 40px;
+    height: 40px;
+}
+
+.bzf_right_float_panel_block .bzf_hide {
+    display: none;
+    border: solid 1px silver;
+    position: absolute;
+    top: 0px;
+    right: 45px;
+    color: white;
+    vertical-align: middle;
+    background-color: #E4006E;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.bzf_right_float_panel_block.hover .bzf_hide {
+    display: block;
+}
+
+/************** 客服按钮 ****************/
+.bzf_right_float_panel_block .icon_kefu {
+    background: url('../img/icon_kefu_40x40_white.png') no-repeat;
+}
+
+.bzf_right_float_panel_block.hover .icon_kefu {
+    background: url('../img/icon_kefu_40x40_red.png') no-repeat;
+}
+
+/************** 购物车按钮 ****************/
+.bzf_right_float_panel_block .icon_cart {
+    background: url('../img/icon_cart_40x40_white.png') no-repeat;
+}
+
+.bzf_right_float_panel_block.hover .icon_cart {
+    background: url('../img/icon_cart_40x40_red.png') no-repeat;
+}
+
+/************** 返回页面头部按钮 ****************/
+.bzf_right_float_panel_block .icon_back_to_top {
+    background: url('../img/icon_backtotop_40x40_white.png') no-repeat;
+}
+
+.bzf_right_float_panel_block.hover .icon_back_to_top {
+    background: url('../img/icon_backtotop_40x40_red.png') no-repeat;
+}
+
+/****** 顶部彩贝用户登陆信息栏 ******/
+#qqcaibei_header_panel {
+    display: none;
+}
+
+#qqcaibei_header_panel div.row {
+    padding-top: 5px;
+    text-align: center;
+}
+
+#qqcaibei_header_panel div.row span {
+    padding: 0px 2px;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+/****************** 头部用户登陆栏 ********************/
+.bzf_header_login_register {
+    height: 34px;
+    filter: none;
+    background: url('../img/header_bg.png') repeat-x;
+    border: none;
+    box-shadow: none;
+    text-align: right;
+    line-height: 34px;
+    vertical-align: middle;
+}
+
+/****************** 头部商城 Logo 和 搜索框 ********************/
+.bzf_header_logo_search {
+    height: 90px;
+    filter: none;
+    background-color: white;
+    border: none;
+    box-shadow: none;
+    line-height: 90px;
+    vertical-align: middle;
+}
+
+.bzf_header_logo_search .row  span {
+    display: inline-block;
+}
+
+/******************** 头部搜索框 ***********************/
+.bzf_header_search_block {
+    width: 410px;
+    height: 30px;
+    display: block;
+    line-height: 30px;
+    vertical-align: middle;
+    border: solid 2px #E4006E;
+    box-shadow: none;
+    padding: 0px 0px;
+    margin-left: 20px;
+}
+
+.bzf_header_search_block img {
+    display: block;
+    float: left;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 7px;
+}
+
+.bzf_header_search_block input {
+    display: inline-block;
+    float: left;
+    overflow: hidden;
+    filter: none;
+    background-color: white;
+    border: none;
+    box-shadow: none;
+    width: 295px;
+    height: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0px 0px;
+    margin: 4px 0px 0px 0px;
+}
+
+.bzf_header_search_block input:focus {
+    border: none;
+    border-color: #E4006E;
+    box-shadow: none;
+}
+
+.bzf_header_search_block button {
+    display: inline-block;
+    float: right;
+    filter: none;
+    background-color: #E4006E;
+    color: white;
+    border: none;
+    height: 100%;
+    width: 85px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0px 0px;
+}
+
+/*************** 头部购物车显示 *******************/
+.bzf_header_cart_block {
+    border: solid 1px #595757;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: bold;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 20px;
+}
+
+.bzf_icon_cart_red {
+    display: inline-block;
+    width: 19px;
+    height: 15px;
+    background: url('../img/icon_cart_red.png') no-repeat;
+}
+
+.bzf_icon_cart_white {
+    display: inline-block;
+    width: 29px;
+    height: 23px;
+    background: url('../img/icon_cart_white.png') no-repeat;
+}
+
+.bzf_header_cart_block span {
+    color: red;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.bzf_header_cart_block a:link,
+.bzf_header_cart_block a:hover,
+.bzf_header_cart_block a:visited,
+.bzf_header_cart_block a:active {
+    text-decoration: none;
+}
+
+/************** 头部菜单导航栏 ****************/
+.bzf_header_nav_menu_dropdown {
+    filter: none;
+    background-image: none;
+    background-color: #221814;
+    color: white;
+    height: 38px;
+    line-height: 38px;
+    vertical-align: middle;
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.bzf_header_nav_menu_dropdown .bzf_header_dropdown_menu_icon {
+    display: inline-block;
+    width: 18px;
+    height: 38px;
+    line-height: 38px;
+    vertical-align: middle;
+    background: url('../img/header_dropdown_menu_icon.png') no-repeat;
+    margin-left: 3px;
+}
+
+.bzf_header_nav_menu_dropdown .nav li a {
+    color: white;
+    height: 38px;
+    padding: 0px 15px 0px 15px;
+    line-height: 38px;
+    vertical-align: middle;
+    text-shadow: none;
+}
+
+.bzf_header_nav_menu_dropdown .nav li a:hover {
+    color: #E4006E;
+    background-color: white;
+}
+
+.bzf_header_nav_menu_dropdown .nav li.active a {
+    filter: none;
+    color: white;
+    background-image: none;
+    background-color: #E4006E;
+}
+
+.bzf_header_nav_menu_dropdown .nav li.active a:hover {
+    filter: none;
+    background-color: white;
+}
+
+#main_body {
+    padding-top: 10px;
+}
+
+/*******************  商品分类页面，上面分类选择面板  *********************/
+.bzf_goods_category_panel {
+    padding: 2px 0px;
+    margin: 7px 0px;
+    text-align: left;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+}
+
+.bzf_goods_category_panel a {
+    display: inline-block;
+    margin: 3px 2px;
+    padding: 0px 3px;
+    border-radius: 2px;
+    text-decoration: none;
+}
+
+.bzf_goods_category_panel a:hover,
+.bzf_goods_category_panel a.active {
+    color: white;
+    background-color: #E4006E;
+    text-decoration: none;
+}
+
+/*********** goods_view.tpl 商品标题 *************/
+
+.bzf_goods_title_caption h2 {
+    padding: 0px 5px 5px 0px;
+    color: #222;
+    font-size: 15px;
+    text-shadow: 1px 1px 1px #A3A3A3;
+    line-height: 20px;
+}
+
+.bzf_goods_title_caption h2 .bzf_prefix {
+    color: red;
+    display: none;
+}
+
+/************* goods_view.tpl 商品多属性选择 *******************/
+.bzf_goods_view_select {
+    margin-top: 10px;
+}
+
+.bzf_goods_view_select span {
+    display: inline-block;
+    border: solid 1px #595757;
+    height: 25px;
+    padding-left: 14px;
+    margin: 2px 2px 2px 2px;
+}
+
+.bzf_goods_view_select span.inactive {
+    border: solid 1px #c0c0c0;
+    color: #c0c0c0;
+}
+
+.bzf_goods_view_select span input {
+    display: none;
+}
+
+.bzf_goods_view_select span label {
+    display: inline-block;
+    float: left;
+    width: auto;
+}
+
+.bzf_goods_view_select span .bzf_goods_view_spec_select_icon {
+    display: inline-block;
+    width: 14px;
+    height: 25px;
+    float: left;
+}
+
+.bzf_goods_view_select span.active {
+    border: solid 2px red;
+    background-color: white;
+}
+
+.bzf_goods_view_select span.active .bzf_goods_view_spec_select_icon {
+    background: url('../img/goods_view_spec_select_icon.png') no-repeat;
+}
+
+/************* goods_view.tpl 商品相册显示，实现任意图片大小的水平、垂直居中 *******************/
+
+.bzf_goods_view_big_image {
+    width: 460px;
+    height: 460px;
+    border: solid 1px #595757;
+    margin: 10px 0px 10px 10px;
+    padding: 0px 0px;
+    text-align: center;
+    display: table;
+    position: relative;
+}
+
+.bzf_goods_view_big_image a {
+    display: table-cell;
+    vertical-align: middle;
+    width: 460px;
+    height: 460px;
+    overflow: hidden;
+}
+
+.bzf_goods_view_big_image a img {
+    margin: 0 auto;
+    width: 460px;
+    height: auto;
+    max-width: 460px;
+    max-height: 460px;
+}
+
+/************* goods_view.tpl  缩略图列表滚动栏 *************/
+#bzf_goods_view_thumb_image_slider {
+    margin: 10px 0px 10px 10px;
+}
+
+/***************** goods_view.tpl 关联商品推荐， tab 栏自定义 *********************/
+.bzf_goods_view_relate_goods_recommand {
+    padding: 0px 10px;
+}
+
+.bzf_goods_view_relate_goods_recommand ul.nav li a {
+    font-size: 14px;
+    color: #000000;
+}
+
+.bzf_goods_view_relate_goods_recommand ul.nav li.active a {
+    color: #221814;
+}
+
+.bzf_goods_view_relate_goods_recommand ul.nav {
+    border-bottom: solid 1px #E4006E;
+    background-color: #EEEEEF;
+    margin-bottom: 0px;
+}
+
+.bzf_goods_view_relate_goods_recommand ul.nav li.active a {
+    border-top: solid 2px #E4006E;
+    border-left: solid 1px #E4006E;
+    border-right: solid 1px #E4006E;
+}
+
+.bzf_goods_view_relate_goods_recommand div.tab-pane {
+    padding-top: 20px;
+    border-bottom: solid 1px #EEEEEF;
+    border-left: solid 1px #EEEEEF;
+    border-right: solid 1px #EEEEEF;
+}
+
+#bzf_goods_view_same_supplier_goods_pane {
+    padding-top: 10px;
+}
+
+/***************** goods_view.tpl 供货商信息面板 *********************/
+.bzf_supplier_pane .header {
+    height: 30px;
+    background-color: #E4006E;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 30px;
+    text-align: center;
+}
+
+.bzf_supplier_pane .supplier_pane_content {
+    background-color: white;
+    border-left: solid 1px silver;
+    border-right: solid 1px silver;
+    border-bottom: solid 1px silver;
+    padding: 10px 10px;
+}
+
+/** sticky 状态下把 hide 部分隐藏 **/
+.bzf_supplier_pane.bzf_sticky .bzf_hide {
+    display: none;
+}
+
+.bzf_supplier_pane .supplier_pane_content .supplier_banner {
+    background-color: #E4006E;
+    color: white;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+}
+
+.bzf_supplier_pane .supplier_pane_content .supplier_promise {
+    width: 196px;
+    height: 90px;
+    background: url('../img/supplier_panel_promise.png') no-repeat;
+}
+
+.bzf_supplier_pane .supplier_pane_content .divider {
+    width: 196px;
+    height: 2px;
+    font-size: 0px;
+    background-color: silver;
+    margin: 5px 0px;
+}
+
+.bzf_supplier_pane .supplier_pane_content .supplier_info p {
+    margin: 0px 0px;
+}
+
+.bzf_supplier_pane .supplier_pane_content .supplier_info p span {
+    padding: 0px 2px;
+    color: red;
+    font-weight: bold;
+}
+
+/***************** goods_view.tpl 商品详情信息 Tab Bar *********************/
+#bzf_goods_view_goods_detail_tabbar ul {
+    height: 38px;
+}
+
+#bzf_goods_view_goods_detail_tabbar ul,
+#bzf_goods_view_goods_detail_tabbar ul li,
+#bzf_goods_view_goods_detail_tabbar ul li a {
+    filter: none;
+    background-image: none;
+    background-color: #E4006E;
+}
+
+#bzf_goods_view_goods_detail_tabbar ul li a {
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 0px 0px 0px 0px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+
+#bzf_goods_view_goods_detail_tabbar ul li a:hover {
+    background-color: #221814;
+    border: none;
+}
+
+#bzf_goods_view_goods_detail_tabbar ul li.active a {
+    border: none;
+    background-color: #221814;
+}
+
+/***************** goods_view.tpl 商品详情页面下方大块内容区域***********************/
+.bzf_goods_view_goods_content .tab-content .tab-pane {
+    padding-top: 10px;
+    padding-bottom: 60px; /*** 下面增加一大块 padding 因为 IE6 下有时候会显示不全内容 ***/
+}
+
+/***************** goods_view.tpl 商品详情信息html内容  *********************/
+#bzf_goods_view_goods_desc_pane {
+    width: 760px;
+    height: auto;
+    overflow: hidden;
+}
+
+#bzf_goods_view_goods_desc_pane img {
+    display: block;
+    margin: 0 auto; /** 强制让描述图片居中 **/
+}
+
+/***************** goods_view.tpl 商品详情 用户评论的显示  *********************/
+#bzf_goods_view_goods_comments_pane .media img.media-object {
+    width: 60px;
+    height: 60px;
+    margin: 2px 2px;
+}
+
+#bzf_goods_view_goods_comments_pane .media a.pull-left {
+    width: 64px;
+    height: 64px;
+}
+
+#bzf_goods_view_goods_comments_pane .media .media-body {
+    background-color: #fcfffa;
+    padding: 5px 5px;
+}
+
+#bzf_goods_view_goods_comments_pane .media .media-body.bzf_border {
+    border: 1px solid #d0e4c2;
+    border-radius: 10px;
+}
+
+#bzf_goods_view_goods_comments_pane .media .media-body table td {
+    text-align: left;
+    width: 33%;
+    border: none;
+}
+
+/***************** user_login.tpl 用户登陆、注册页面 **********************/
+
+.bzf_user_login_panel {
+    padding: 10px 10px;
+}
+
+.bzf_user_login_panel .bzf_header_panel {
+    border-bottom: solid 2px #E4006E;
+    margin-bottom: 20px;
+}
+
+.bzf_user_login_panel .bzf_header_panel span {
+    display: inline-block;
+    font-size: 16px;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    color: white;
+    background-color: #E4006E;
+    padding: 0px 10px;
+}
+
+.bzf_user_login_panel .control-label {
+    width: 100px;
+}
+
+/************************ shop_index.tpl 页面 *************************/
+
+/** 分类下面的面板 **/
+.bzf_shop_index_head_category_back_panel {
+    width: 211px;
+    height: 350px;
+    background-color: #FFF9EF;
+}
+
+/** 滚动图片面板 **/
+.bzf_shop_index_head_slide_image_panel {
+    width: 780px;
+    height: 350px;
+    margin-left: 10px;
+    background-color: #FFF9EF;
+}
+
+/************* 网站公告面板 ***************/
+.bzf_shop_index_site_notice_panel {
+    padding: 10px 10px;
+    border-left: solid 1px #c0c0c0;
+    border-bottom: solid 1px #c0c0c0;
+    border-right: solid 1px #c0c0c0;
+}
+
+/************* 搜索页面 **************/
+.bzf_goods_search_order_filter_bar {
+    vertical-align: middle;
+    line-height: 24px;
+}
+
+.bzf_goods_search_order_filter_bar .control-group {
+    margin: 0px 0px;
+}
+
+.bzf_goods_search_order_filter_bar .control-group .help-block {
+    clear: both;
+    position: relative;
+    float: left;
+}
+
+.bzf_goods_search_order_filter_bar .btn-toolbar {
+    display: inline-block;
+    position: relative;
+    float: left;
+    margin: 0px 0px;
+    line-height: 24px;
+}
+
+.bzf_goods_search_order_filter_bar button {
+    font-size: 12px;
+}
+
+.bzf_goods_search_order_filter_bar .btn-toolbar button i {
+    margin-top: 3px;
+}
+
+.bzf_goods_search_order_filter_bar .bzf_text {
+    display: inline-block;
+    position: relative;
+    float: left;
+    line-height: 24px;
+    margin: 0px 0px;
+}
+
+.bzf_goods_search_order_filter_bar .input-prepend {
+    display: inline-block;
+    position: relative;
+    float: left;
+    margin: 1px 5px;
+    padding: 0px 0px;
+    line-height: 24px;
+}
+
+.bzf_goods_search_order_filter_bar .input-prepend span.add-on {
+    height: 14px;
+    font-size: 8px;
+    line-height: 12px;
+    padding: 4px 0px;
+}
+
+.bzf_goods_search_order_filter_bar .input-prepend input {
+    height: 20px;
+    font-size: 12px;
+    padding: 1px 2px;
+    width: 40px;
+}
+
+/*********** goods_search 搜索结果展示 *************/
+.bzf_goods_search_goods_item {
+    width: 310px;
+    margin-left: 15px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_image {
+    width: 300px;
+    height: 342px;
+    overflow: hidden;
+    border: 5px solid #ffffff;
+    border-radius: 3px 3px 3px 3px;
+    font-size: 0px;
+}
+
+.bzf_goods_search_goods_item .bzf_hover {
+    border: 5px solid #E4006E;
+    color: white;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_image a {
+    display: inline-block;
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_image a img {
+    width: 300px;
+    height: auto;
+    padding: 0px;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_image .bzf_goods_name {
+    display: inline-block;
+    word-break: break-all;
+    height: 42px;
+    overflow: hidden;
+    color: #333333;
+    font-size: 14px;
+    width: 300px;
+}
+
+.bzf_goods_search_goods_item .bzf_hover .bzf_goods_name {
+    color: #ffffff;
+    background-color: #E4006E;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_price {
+    position: relative;
+    background-color: #FFEDD1;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_price .price {
+    font-size: 24px;
+    color: #E4006E;
+    margin-left: 10px;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_price .price i {
+    font-size: 28px;
+    font-style: normal;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_price .price em {
+    font-size: 35px;
+    font-style: normal;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_price .dock {
+    display: inline-block;
+    margin-left: 15px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_price .dock .discount {
+    display: inline-block;
+    background: url("../img/goods_search_discount.png") no-repeat;
+    width: 62px;
+    height: 23px;
+    color: #d51938;
+    text-align: center;
+    font-weight: bold;
+    padding-left: 5px;
+    line-height: 23px;
+    vertical-align: middle;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_price .dock .discount em {
+    font-size: 18px;
+    font-style: normal;
+    margin-right: 3px;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_price .dock .orig-price {
+    text-decoration: line-through;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_price .sold-num {
+    position: absolute;
+    right: 7px;
+    bottom: 5px;
+}
+
+.bzf_goods_search_goods_item .bzf_goods_price .sold-num em {
+    color: #390;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 5px;
+    font-style: normal;
+}
+
+/**************** layout.tpl 购物车小悬浮窗的显示 ******************/
+.cart_show_container_small {
+    width: 600px;
+    height: 250px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.cart_show_container_small img {
+    width: 60px;
+    height: auto;
+}
+
+/********************* cart_show.tpl  cart_pay.tpl 页面显示商品缩略图 ***************************/
+#cart_goods_show_table img {
+    width: 150px;
+    height: auto;
+}
+
+/*************************** cart_pay.tpl 页面，显示银行列表 ******************************/
+
+/*银行logo*/
+.bank-logo-v2 {
+    background: url("../img/bank_logo_v2.png") no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    width: 120px;
+    height: 30px;
+}
+
+.abc-v2 {
+    background-position: 0 0;
+}
+
+/*中国农业银行*/
+.abc-qiye-v2 {
+    background-position: 0 -1080px;
+}
+
+/*中国农业银行-企业*/
+.ccb-v2 {
+    background-position: 0 -30px;
+}
+
+/*中国建设银行*/
+.ccb-qiye-v2 {
+    background-position: 0 -1050px;
+}
+
+/*中国建设银行-企业*/
+.ccb-union-v2 {
+    background-position: 0 -30px;
+}
+
+/*中国建设银行-联名卡*/
+.ccb-e-v2 {
+    background-position: 0 -30px;
+}
+
+/*中国建设银行-epos*/
+.cmb-v2 {
+    background-position: 0 -60px;
+}
+
+/*招商银行*/
+.cmb-qiye-v2 {
+    background-position: 0 -900px;
+}
+
+/*招商银行-企业*/
+.cmb-e-v2 {
+    background-position: 0 -60px;
+}
+
+/*招商银行-epos*/
+.icbc-v2 {
+    background-position: 0 -90px;
+}
+
+/*中国工商银行*/
+.icbc-qiye-v2 {
+    background-position: 0 -840px;
+}
+
+/*中国工商银行-企业*/
+.icbc-e-v2 {
+    background-position: 0 -90px;
+}
+
+/*中国工商银行-epos*/
+.bofc-v2 {
+    background-position: 0 -120px;
+}
+
+/*中国银行*/
+.boc-v2 {
+    background-position: 0 -120px;
+}
+
+/*中国银行*/
+.bofc-credit-v2 {
+    background-position: 0 -120px;
+}
+
+/*中国银行-信用卡*/
+.boc-unionpay-v2 {
+    background-position: 0 -870px;
+}
+
+/*中国银行-银联*/
+.spdb-v2 {
+    background-position: 0 -150px;
+}
+
+/*浦发银行*/
+.spdb-qiye-v2 {
+    background-position: 0 -1170px;
+}
+
+/*浦发银行-企业*/
+.sdb-v2 {
+    background-position: 0 -180px;
+}
+
+/*深圳发展银行*/
+.cib-v2 {
+    background-position: 0 -210px;
+}
+
+/*兴业银行*/
+.bob-v2 {
+    background-position: 0 -240px;
+}
+
+/*北京银行*/
+.cebb-v2 {
+    background-position: 0 -270px;
+}
+
+/*中国光大银行*/
+.cebb-credit-v2 {
+    background-position: 0 -270px;
+}
+
+/*中国光大银行-信用卡*/
+.cebb1-v2 {
+    background-position: 0 -270px;
+}
+
+.cebb2-v2 {
+    background-position: 0 -270px;
+}
+
+.boco-v2 {
+    background-position: 0 -300px;
+}
+
+/*交通银行*/
+.cmbc-v2 {
+    background-position: 0 -330px;
+}
+
+/*中国民生银行*/
+.ecitic-v2 {
+    background-position: 0 -360px;
+}
+
+/*中信银行*/
+.gdb-v2 {
+    background-position: 0 -390px;
+}
+
+/*广发银行*/
+.gdb-credit-v2 {
+    background-position: 0 -390px;
+}
+
+/*广发银行-信用卡*/
+.pingan-v2 {
+    background-position: 0 -420px;
+}
+
+/*平安银行*/
+.post-v2 {
+    background-position: 0 -450px;
+}
+
+/*中国邮政储蓄银行*/
+.post-unionpay-v2 {
+    background-position: 0 -750px;
+}
+
+/*中国邮政储蓄银行-银联*/
+.jsbank-v2 {
+    background-position: 0 -480px;
+}
+
+/*江苏银行*/
+.srcb-v2 {
+    background-position: 0 -510px;
+}
+
+/*上海农商银行*/
+.srcb-credit-v2 {
+    background-position: 0 -510px;
+}
+
+/*上海农商银行-信用卡*/
+.shanghai-v2 {
+    background-position: 0 -540px;
+}
+
+/*上海银行*/
+.hxb-v2 {
+    background-position: 0 -570px;
+}
+
+/*华夏银行*/
+.hkbea-v2 {
+    background-position: 0 -600px;
+}
+
+/*BEA东亚银行*/
+.gdrcu-v2 {
+    background-position: 0 -630px;
+}
+
+/*广东农村信用社*/
+.cbhb-v2 {
+    background-position: 0 -660px;
+}
+
+/*渤海银行*/
+.glccb-v2 {
+    background-position: 0 -690px;
+}
+
+/*桂林银行*/
+.jzbank-v2 {
+    background-position: 0 -720px;
+}
+
+/*晋中市商业银行*/
+.unionpay-v2 {
+    background-position: 0 -780px;
+}
+
+/*广银联*/
+.udpay-v2 {
+    background-position: 0 -810px;
+}
+
+/*网汇通*/
+.nbcb-v2 {
+    background-position: 0 -930px;
+}
+
+/*宁波银行*/
+.hkb-v2 {
+    background-position: 0 -960px;
+}
+
+/*汉口银行*/
+.njcb-v2 {
+    background-position: 0 -990px;
+}
+
+/*南京银行*/
+.hzbank-v2 {
+    background-position: 0 -1020px;
+}
+
+/*杭州银行*/
+.chinapay-v2 {
+    background-position: 0 -1110px;
+}
+
+/*银联电子支付*/
+.chinapay-online-v2 {
+    background-position: 0 -1230px;
+}
+
+/*银联在线支付*/
+.ordos-v2 {
+    background-position: 0 -1140px;
+}
+
+/*鄂尔多斯银行*/
+.nccb-v2 {
+    background-position: 0 -1200px;
+}
+
+/*南昌银行*/
+.bsb-v2 {
+    background-position: 0 -1260px;
+}
+
+/*包商银行*/
+.ynrcc-v2 {
+    background-position: 0 -1290px;
+}
+
+/*云南省农村信用社*/
+.gzcb-v2 {
+    background-position: 0 -1320px;
+}
+
+/*广州银行*/
+.cqrcb-v2 {
+    background-position: 0 -1350px;
+}
+
+/*重庆农村商业银行*/
+.zjcb-v2 {
+    background-position: 0 -1380px;
+}
+
+/*广东南粤银行*/
+.sdrcu-v2 {
+    background-position: 0 -1440px;
+}
+
+/*山东省农村信用社*/
+.jshbank-v2 {
+    background-position: 0 -1470px;
+}
+
+/*晋商银行*/
+.cmb-creditcard {
+    background: url("../img/bank_cmb_creditcard.png") no-repeat;
+}
+
+/*招商银行信用卡*/
+.bank-logo-wrap {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 143px;
+    height: 30px;
+    line-height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.bank-logo-wrap .bank-logo-v2 {
+    line-height: 999px;
+    overflow: hidden;
+}
+
+/************* cart_pay.tpl 价格显示 **************/
+#cart_pay_final_price_desc span.price {
+    color: red;
+    font-weight: bold;
+    padding: 0px 5px 0px 5px;
+}

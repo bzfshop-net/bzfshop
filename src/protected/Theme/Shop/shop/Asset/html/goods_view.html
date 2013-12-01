@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>商品详情页面</title>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1002.css"/>
+
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1002.ie6.css"/>
+    <![endif]-->
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/ie.css"/>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1002.fix.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/cloud-zoom/cloud-zoom.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/smartspin/smartspinner.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/select2/select2.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/pretty-loader/css/prettyLoader.css">
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/pnotify/jquery.pnotify.default.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../css/dropdown_category.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/jcarousel.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/quake-slider/css/quake.slider.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/quake-slider/quake.skin.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/shop.css"/>
+
+</head>
+<body>
+
+<!-- 头部，用户登录、注册栏 -->
+<div class="navbar navbar-static-top">
+    <div class="navbar-inner bzf_header_login_register">
+        <div class="container">
+            您好，欢迎来到棒主妇商城！&nbsp;&nbsp;
+            <a href="#">登陆</a>&nbsp;|
+            <a href="#">注册</a>&nbsp;|
+            <a href="#">个人中心</a>&nbsp;|
+            客服电话&nbsp;<span>010-83487737</span>
+            &nbsp;&nbsp;
+        </div>
+    </div>
+</div>
+<!-- /头部，用户登录、注册栏 -->
+
+<!-- 头部，Logo、搜索栏-->
+<div class="navbar navbar-static-top">
+    <div class="navbar-inner bzf_header_logo_search">
+        <div class="container">
+            <!-- 搜索 form -->
+            <form method="GET" action="#">
+                <div class="row">
+
+                    <span style="width:139px; height: auto">
+                        <img src="../img/header_logo.png"/>
+                    </span>
+
+                    <span class="bzf_header_search_block">
+                        <img src="../img/header_search_icon.png"/>
+                        <input type="text" name="keywords"/>
+                        <button>搜&nbsp;索</button>
+                    </span>
+
+                    <span class="bzf_header_cart_block">
+                        <a href="#">
+                            我的棒主妇
+                        </a>
+                    </span>
+
+                    <span class="bzf_header_cart_block">
+                        <span class="bzf_icon_cart_red"></span>
+                        <a href="#">
+                            购物车<span>10</span>件
+                        </a>
+                    </span>
+
+                </div>
+            </form>
+            <!-- /搜索 form -->
+        </div>
+    </div>
+</div>
+<!-- /头部，Logo、搜索栏-->
+
+<!-- 头部，菜单导航栏-->
+<div class="navbar navbar-static-top">
+    <div class="navbar-inner bzf_header_nav_menu_dropdown">
+        <div class="container">
+            <ul id="bzf_header_nav_menu" class="nav">
+                <li>
+                    <a id="bzf_header_dropdown_menu" href="#">全部商品分类<span class="bzf_header_dropdown_menu_icon"></span></a>
+                </li>
+                <li class="active">
+                    <a href="#">首页</a>
+                </li>
+                <li><a href="#">Link</a></li>
+                <li><a href="#">Link</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /头部，菜单导航栏-->
+
+<!-- 网页主体内容 -->
+<div id="main_body" class="container">
+<!-- 主题内容 row -->
+<div class="row" style="background-color: white;padding-bottom: 10px;">
+
+<!--------------------------------------------  网页主体内容  --------------------------------------------------------->
+
+<!-- 广告图片轮播 -->
+<div class="row bzf_goods_view_head_slide_image_panel">
+
+    <div class="quake-slider">
+        <div class="quake-slider-images">
+            <a target="_blank" href="javascript:">
+                <img src="../img/placeholder_1000x250.gif" alt=""/>
+            </a>
+            <a target="_blank" href="javascript:">
+                <img src="../img/placeholder_1000x250.gif" alt=""/>
+            </a>
+        </div>
+    </div>
+
+</div>
+<!-- /广告图片轮播 -->
+
+<!-- 商品详情头部，包括头图和价格区域 -->
+<div class="row">
+
+    <!-- 商品头图 -->
+    <div class="span6">
+
+        <!-- 商品大图 -->
+        <div class="bzf_goods_view_big_image">
+            <a href="../img/placeholder_800x800.gif"
+               id="bzf_goods_view_zoom_image" class="cloud-zoom"
+               rel="position:'right', adjustX: 10, zoomWidth: 400, zoomHeight: 400">
+                <img src="../img/blank.gif"/>
+            </a>
+        </div>
+        <!-- /商品大图 -->
+
+        <!-- 商品缩略图列表 -->
+        <div id="bzf_goods_view_thumb_image_slider" class="jcarousel-skin-goods-image-thumbnail">
+            <ul>
+                <!-- 一个缩略图 -->
+                <li>
+                    <a href="../img/placeholder_800x800_black.gif"
+                       class="cloud-zoom-gallery"
+                       rel="useZoom:'bzf_goods_view_zoom_image',smallImage:'../img/placeholder_460x460_black.gif',title:'测试标题1'">
+                        <img class="lazyload" src="../img/blank.gif"
+                             data-original="../img/placeholder_460x460_black.gif">
+                    </a>
+                </li>
+                <!-- /一个缩略图 -->
+                <li>
+                    <a href="../img/placeholder_800x800_gray.gif"
+                       class="cloud-zoom-gallery"
+                       rel="useZoom:'bzf_goods_view_zoom_image',smallImage:'../img/placeholder_460x460_gray.gif',title:'测试标题2'">
+                        <img class="lazyload" src="../img/blank.gif"
+                             data-original="../img/placeholder_460x460_gray.gif">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- 商品缩略图列表 -->
+
+    </div>
+    <!-- /商品头图 -->
+
+    <!-- 商品价格和描述 -->
+    <div class="span6">
+
+        <!-- 商品大标题 -->
+        <div class="bzf_goods_title_caption">
+            <h2>【两件包邮】仅39元，原价68元的2013新款沈豆家纯棉三层拉链欧美风破洞打底裤！春夏秋三季高利用率 ！吸湿透气，四面弹性，更轻柔的呵护皮肤，穿后不起球，不变形，具有非常高的耐洗与耐用度！</h2>
+        </div>
+        <!-- /商品大标题 -->
+
+        <div style="padding:5px 0px;">
+            <span>原价：</span><span style="text-decoration: line-through;">￥198.00</span>
+        </div>
+        <div style="padding:5px 0px 5px 0px;">
+            <span>现价：</span><span style="color:red;font-size:20px;font-weight: bold;">￥120.00</span>
+        </div>
+        <div style="padding:5px 0px 5px 0px;">
+            <span>邮费：</span><span style="color:red;font-weight: bold;">￥10</span>
+        </div>
+        <div style="padding:5px 0px;">
+            <label class="label label-success">邮费优惠</label>&nbsp;本商品任选&nbsp;2&nbsp;件以上免邮费
+        </div>
+
+        <!-- 商品的选择 -->
+
+        <table class="table table-bordered bzf_goods_view_select">
+            <!-- 一个选择 -->
+            <tr>
+                <td width="15%">衣服的颜色</td>
+                <td>
+
+                        <span onclick="bZF.goods_view_choose_spec(this);">
+                          <input type="radio" name="choose_229"
+                                 choose_id="12745" addprice="0" value="粉色S"/>
+                            <label>粉色S</label>
+                            <i class="bzf_goods_view_spec_select_icon"></i>
+                        </span>
+
+                        <span onclick="bZF.goods_view_choose_spec(this);">
+                          <input type="radio" name="choose_229"
+                                 choose_id="12745" addprice="0" value="粉色S"/>
+                            <label>粉色M</label>
+                            <i class="bzf_goods_view_spec_select_icon"></i>
+                        </span>
+
+                </td>
+            </tr>
+            <!-- /一个选择 -->
+        </table>
+        <!-- /商品的选择 -->
+
+        <!-- 购买数量 -->
+        <div style="padding:5px 0px 5px 0px;">
+            <span>购买数量：</span><span><input id="goods_view_buy_count" type="text" value="1"/></span>
+        </div>
+
+        <!-- 加入购物车 -->
+        <button class="bzf_button_big">
+            <span class="bzf_icon_cart_white"></span>
+            加入购物车
+        </button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <!-- 查看购物车 -->
+        <a class="bzf_button_big" href="#">
+            查看购物车
+        </a>
+
+    </div>
+    <!-- /商品价格和描述 -->
+
+</div>
+<!-- /商品详情头部，包括头图和价格区域 -->
+
+
+<!-- 相关商品推荐区域 -->
+<div class="row bzf_goods_view_relate_goods_recommand">
+
+    <!-- 标签导航头 -->
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#bzf_goods_view_link_goods_pane" data-toggle="tab">关联推荐</a></li>
+        <li><a href="#bzf_goods_view_same_supplier_goods_pane" data-toggle="tab">搭配免邮</a></li>
+    </ul>
+    <!-- /标签导航头 -->
+
+    <div class="tab-content">
+
+        <!-- 关联商品推荐 -->
+        <div id="bzf_goods_view_link_goods_pane" class="tab-pane active">
+            <div class="jcarousel-skin-goods-recommand">
+                <ul>
+                    <!-- 一个关联商品 -->
+                    <li>
+                        <div class="bzf_image_wrap">
+                            <a href="#">
+                                <img class="lazyload" src="../img/blank.gif"
+                                     data-original="../img/placeholder_160x160.gif"/>
+                            </a>
+                        </div>
+                        <div class="bzf_goods_view_goods_recommand_price_pane">
+                            <div class="market_price">
+                                原价：168元
+                            </div>
+                            <div class="shop_price">
+                                现价：<span>118元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- /一个关联商品 -->
+
+                </ul>
+            </div>
+        </div>
+        <!-- /关联商品推荐 -->
+
+        <!-- 相同供货商商品 -->
+        <div id="bzf_goods_view_same_supplier_goods_pane" class="tab-pane">
+            <div class="jcarousel-skin-goods-recommand">
+                <ul>
+                    <!-- 一个关联商品 -->
+                    <li>
+                        <div class="bzf_image_wrap">
+                            <a href="#">
+                                <img class="lazyload" src="../img/blank.gif"
+                                     data-original="../img/placeholder_160x160.gif"/>
+                            </a>
+                        </div>
+                        <div class="bzf_goods_view_goods_recommand_price_pane">
+                            <div class="market_price">
+                                原价：268元
+                            </div>
+                            <div class="shop_price">
+                                现价：<span>218元</span>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- /一个关联商品 -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /相同供货商商品 -->
+
+</div>
+<!-- /相关商品推荐区域 -->
+
+
+<!-- 商品下方区域 -->
+<div class="row" style="margin-top: 20px;padding: 0px 0px 0px 10px;">
+
+    <!-- 左侧边栏 -->
+    <div class="span3" style="width:216px;">
+
+        <!-- 供货商信息 -->
+        <div id="bzf_supplier_pane" class="bzf_supplier_pane">
+            <div class="header">
+                商家信息
+            </div>
+
+            <div class="supplier_pane_content">
+
+                <!-- 某些时候可以隐藏的内容 -->
+                <div class="bzf_hide">
+                    <div class="supplier_banner">
+                        <span style="font-size: 14px;font-weight: bold;">SHOP</span> bangzhufu.com
+                    </div>
+                    <div class="supplier_promise"></div>
+                    <div class="divider"></div>
+                    <div class="supplier_info">
+                        <p><b>店铺动态评分</b></p>
+
+                        <p>描述相符：<span>4.9</span>分</p>
+
+                        <p>发货速度：<span>4.8</span>分</p>
+                    </div>
+                    <div class="divider"></div>
+                </div>
+                <!-- /某些时候可以隐藏的内容 -->
+
+                <!-- 必须要一直保持显示的内容 -->
+                <div class="bzf_show">
+                    <div class="supplier_info">
+                        <p>商 户 名 ：棒主妇商城</p>
+
+                        <p>所 在 地 ：北京市</p>
+
+                        <p>客服电话：010-83487737</p>
+
+                        <p>客服 QQ：800018599</p>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="supplier_info" style="text-align: center;">
+                        <p>周一至周五 10:00-19:00</p>
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=800018599&site=qq&menu=yes">
+                            <img border="0" src="http://wpa.qq.com/pa?p=2:800018599:41" alt="QQ在线客服" title="QQ在线客服"/>
+                        </a>
+                    </div>
+                </div>
+                <!-- /必须要一直保持显示的内容 -->
+
+            </div>
+
+        </div>
+        <!-- /供货商信息 -->
+
+    </div>
+    <!-- 左侧边栏 -->
+
+    <!-- 右侧商品详情区域 -->
+    <div class="span9" style="margin-left: 6px; width: 760px;">
+
+        <!-- 标签导航头 -->
+        <div id="bzf_goods_view_goods_detail_tabbar">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#bzf_goods_view_goods_desc_pane" data-toggle="tab">商品详情</a></li>
+                <li><a href="#bzf_goods_view_goods_attr_pane" data-toggle="tab">规格参数</a></li>
+                <li><a href="#bzf_goods_view_goods_comments_pane" data-toggle="tab">顾客评价(20)</a></li>
+                <li><a href="#bzf_goods_view_goods_shouhou_pane" data-toggle="tab">售后服务</a></li>
+            </ul>
+        </div>
+        <!-- /标签导航头 -->
+
+        <!-- 标签对应的内容 -->
+        <div class="tab-content">
+
+            <!-- 商品详情内容 -->
+            <div id="bzf_goods_view_goods_desc_pane" class="tab-pane active">
+
+
+                <p>
+                    <span style="font-size:14px;font-family:Microsoft YaHei;"><strong>【产品名称】韩版真丝黑花纹连衣裙</strong></span><br>
+                    <span style="font-size:14px;font-family:Microsoft YaHei;"><strong>【产品品牌】哥弟</strong></span><br>
+<span style="font-size:14px;font-family:Microsoft YaHei;"><strong><span
+        style="font-size:14px;font-family:Microsoft YaHei;"><strong>【产品材质】真丝80% 进口棉20% </strong></span><br>
+<span style="font-size:14px;font-family:Microsoft YaHei;"><strong>【商品货号】3195<br>
+    【裙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 长】 中裙(91-105厘米)<br>
+    【款&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 式】 黑白花纹连衣裙<br>
+    【袖&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 长】 短袖<br>
+    【领&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 型】 圆领<br>
+    【袖&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 型】 常规短袖<br>
+    【门&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 襟】 套头<br>
+    【夏季颜色分类】黑色<br>
+    【商品尺码】S、M、L、XL、XXL、XXXL</strong></span></strong></span><span
+                        style="font-size:14px;font-family:Microsoft YaHei;"><strong><br>
+                </strong></span>
+                </p>
+
+                <p>
+                    <span style="font-size:14px;font-family:Microsoft YaHei;"><strong>【发货说明】全国包邮！默认快递为：韵达快递，默认快递不能到达的地方请注明其他快递（<a
+                            target="_blank" href="http://tuan.bangzhufu.com/Goods/View?goods_id=20"><span
+                            style="background-color:#FF9900;">港澳及偏远地区除外，青海 甘肃 宁夏 内蒙 新疆&nbsp; 西藏等以及只有EMS才能到的地方需要补10元邮费，补邮费点此链接</span></a>），下单后48小时内发货，节假日顺延。</strong></span>
+                </p>
+
+                <p>
+                    <br>
+                </p>
+
+                <p>
+                    <img class="lazyload"
+                         src="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/23/20130523095527_4988.jpg"
+                         data-original="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/23/20130523095527_4988.jpg"
+                         alt="">&nbsp;&nbsp;&nbsp;&nbsp;
+                </p>
+
+                <p>
+                    <br>
+                </p>
+
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                        style="font-size:18px;background-color:#FF9900;"> 精致韵味，优雅是一种和谐，类似于美丽，是上天的恩赐，</span>
+                </p>
+
+                <p>
+                    <span style="font-size:18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+                        style="font-size:18px;background-color:#FF9900;">一场唾手可得的时装盛宴值得拥有！</span>
+                </p>
+
+                <p>
+	<span style="font-size:18px;background-color:#FF9900;"><br>
+</span>
+                </p>
+                <span style="font-size:18px;background-color:#FF9900;"><img class="lazyload"
+                                                                            src="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140112_2137.jpg"
+                                                                            data-original="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140112_2137.jpg"
+                                                                            alt=""></span><br>
+                <span style="font-size:18px;background-color:#FF9900;"></span>
+
+                <p>
+                    <br>
+                </p>
+
+                <p>
+	<span style="font-size:18px;background-color:#FF9900;"><img class="lazyload"
+                                                                src="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140112_9929.jpg"
+                                                                data-original="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140112_9929.jpg"
+                                                                alt=""><img class="lazyload"
+                                                                            src="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140112_7963.jpg"
+                                                                            data-original="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140112_7963.jpg"
+                                                                            alt=""><span
+            style="font-size:18px;background-color:#FF9900;"><img class="lazyload"
+                                                                  src="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140111_7751.jpg"
+                                                                  data-original="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140111_7751.jpg"
+                                                                  alt=""></span><img class="lazyload"
+                                                                                     src="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140113_6197.jpg"
+                                                                                     data-original="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140113_6197.jpg"
+                                                                                     alt=""><img class="lazyload"
+                                                                                                 src="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140114_5033.jpg"
+                                                                                                 data-original="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140114_5033.jpg"
+                                                                                                 alt=""><img
+            class="lazyload" src="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140114_9377.jpg"
+            data-original="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140114_9377.jpg" alt=""><img
+            class="lazyload" src="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140115_9328.jpg"
+            data-original="http://img.bangzhufu.com/bzfshop/upload/image/2013/05/22/20130522140115_9328.jpg" alt=""><br>
+</span>
+                </p>
+
+
+            </div>
+            <!-- /商品详情内容 -->
+
+            <!-- 商品规格参数 -->
+            <div id="bzf_goods_view_goods_attr_pane" class="tab-pane">
+                这里是商品的规格参数
+            </div>
+            <!-- /商品规格参数 -->
+
+            <!-- 顾客评价 -->
+            <div id="bzf_goods_view_goods_comments_pane" class="tab-pane">
+                这里是顾客的评价
+            </div>
+            <!-- /顾客评价 -->
+
+            <!-- 售后服务 -->
+            <div id="bzf_goods_view_goods_shouhou_pane" class="tab-pane">
+                这里是售后服务显示
+            </div>
+            <!-- /售后服务 -->
+
+        </div>
+        <!-- /标签对应的内容 -->
+
+    </div>
+    <!-- 右侧商品详情区域 -->
+
+</div>
+<!-- /商品下方区域 -->
+
+<!--------------------------------------------  /网页主体内容  -------------------------------------------------->
+
+</div>
+<!-- /主题内容 row -->
+<div class="row" style="height: 60px;background-color: white;"></div>
+</div>
+<!-- /网页主体内容 main_body -->
+
+<!-- 底部，一堆关于我们的链接-->
+<div class="navbar navbar-static-top">
+    <div class="navbar-inner bzf_footer_introduction_panel">
+        <div class="container">
+
+            <div class="span2 list_panel">
+                <div>新手指南</div>
+                <p><a href="#">账户注册</a></p>
+
+                <p><a href="#">购物流程</a></p>
+
+                <p><a href="#">付款方式</a></p>
+
+                <p><a href="#">常见问题解答</a></p>
+            </div>
+
+            <div class="span2 list_panel">
+                <div>配送方式</div>
+                <p><a href="#">配送说明</a></p>
+
+                <p><a href="#">订单拆分</a></p>
+            </div>
+
+            <div class="span2 list_panel">
+                <div>支付方式</div>
+                <p><a href="#">在线支付</a></p>
+
+                <p><a href="#">其它支付方式</a></p>
+            </div>
+
+            <div class="span2 list_panel">
+                <div>售后服务</div>
+                <p><a href="#">退换货政策</a></p>
+
+                <p><a href="#">退换货办理流程</a></p>
+
+            </div>
+
+            <div class="span2 list_panel">
+                <div>购物保障</div>
+                <p><a href="#">免责声明</a></p>
+
+                <p><a href="#">隐私保护</a></p>
+
+                <p><a href="#">注册协议</a></p>
+
+                <p><a href="#">正品保障</a></p>
+            </div>
+
+            <div class="span2 tel_panel">
+                <p><span class="tel_icon"></span>客服热线</p>
+
+                <p>010-83487737</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- /底部，一堆关于我们的链接-->
+
+<!-- 底部，各种资格认证 -->
+<div class="container">
+    <div class="row bzf_footer_credit_panel">
+        <span><i class="bzf_icon_zhengping"></i>正品保证</span>
+        <span><i class="bzf_icon_fahuo" style="width:51px;"></i>闪电发货</span>
+        <span><i class="bzf_icon_qitian"></i>七天退换</span>
+        <span><i class="bzf_icon_money" style="width:42px;height:42px;"></i>退款保障</span>
+    </div>
+    <div class="row bzf_footer_tail">
+        <p><a href="#">诚聘英才</a> | <a href="#">品牌服饰</a> | <a href="#">客服中心</a> | <a href="#">网站地图</a> | <a
+                href="#">友情链接</a></p>
+
+        <p>棒主妇 版权所有 ©Copyright 2010-2013 All Rights Reserved</p>
+
+        <p>ICP备案：<a target="_blank" href="http://www.miit.gov.cn/">京ICP备11046600号-1</a></p>
+
+        <p class="bzf_footer_tail_credit"><span class="icon_credit"></span><span class="icon_credit1"></span>
+            <img border="0" src="http://trust.360.cn/img.php?sn=4395&amp;id=3"/>
+        </p>
+
+        <p><!-- 这里是统计代码 --></p>
+    </div>
+</div>
+<!-- /底部，各种资格认证 -->
+
+<!-- 商品分类 -->
+<div class="row navsort">
+
+<div class='row allsort'>
+
+<div class='mc'>
+
+<div class='item'>
+    <span><h3><a href="#">图书</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close'
+             onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+            <dl>
+                <dt>文艺</dt>
+                <dd>
+                    <em><a href='#'>小说</a></em>
+                    <em><a href='#'>文学</a></em>
+                    <em><a href='#'>青春文学</a></em>
+                    <em><a href='#'>传记</a></em>
+                    <em><a href='#'>艺术</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>少儿</dt>
+                <dd>
+                    <em><a href='#'>少儿</a></em>
+                    <em><a href='#'>0-2岁</a></em>
+                    <em><a href='#'>3-6岁</a></em>
+                    <em><a href='#'>7-10岁</a></em>
+                    <em><a href='#'>11-14岁</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>人文社科</dt>
+                <dd>
+                    <em><a href='#'>历史</a></em>
+                    <em><a href='#'>哲学</a></em>
+                    <em><a href='#'>国学</a></em>
+                    <em><a href='#'>政治/军事</a></em>
+                    <em><a href='#'>法律</a></em>
+                    <em><a href='#'>宗教</a></em>
+                    <em><a href='#'>心理学</a></em>
+                    <em><a href='#'>文化</a></em>
+                    <em><a href='#'>社会科学</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>经管励志</dt>
+                <dd>
+                    <em><a href='#'>经济</a></em>
+                    <em><a href='#'>金融与投资</a></em>
+                    <em><a href='#'>管理</a></em>
+                    <em><a href='#'>励志与成功</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>生活</dt>
+                <dd>
+                    <em><a href='#'>生活</a></em>
+                    <em><a href='#'>健身与保健</a></em>
+                    <em><a href='#'>家庭与育儿</a></em>
+                    <em><a href='#'>旅游</a></em>
+                    <em><a href='#'>动漫/幽默</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>科技</dt>
+                <dd>
+                    <em><a href='#'>科技</a></em>
+                    <em><a href='#'>工程</a></em>
+                    <em><a href='#'>建筑</a></em>
+                    <em><a href='#'>医学</a></em>
+                    <em><a href='#'>科学与自然</a></em>
+                    <em><a href='#'>计算机与互联网</a></em>
+                    <em><a href='#'>体育/运动</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>教育</dt>
+                <dd>
+                    <em><a href='#'>教材教辅</a></em>
+                    <em><a href='#'>教育与考试</a></em>
+                    <em><a href='#'>外语学习</a></em>
+                    <em><a href='#'>新闻出版</a></em>
+                    <em><a href='#'>语言文字</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>其它</dt>
+                <dd>
+                    <em><a href='#'>工具书</a></em>
+                    <em><a href='#'>影印版</a></em>
+                    <em><a href='#'>套装书</a></em>
+                </dd>
+            </dl>
+        </div>
+        <div class='fr'>
+            <a href="#"><img src="../img/placeholder_194x70.gif" width="194" height="70" alt=""
+                             style="margin-top:30px;"/></a>
+        </div>
+    </div>
+</div>
+
+<div class='item'>
+    <span><h3><a href="#">手机数码</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close' onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+            <dl class='fore'>
+                <dt>文艺</dt>
+                <dd>
+                    <em><a href='#'>小说</a></em>
+                    <em><a href='#'>文学</a></em>
+                    <em><a href='#'>青春文学</a></em>
+                    <em><a href='#'>传记</a></em>
+                    <em><a href='#'>艺术</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>少儿</dt>
+                <dd>
+                    <em><a href='#'>少儿</a></em>
+                    <em><a href='#'>0-2岁</a></em>
+                    <em><a href='#'>3-6岁</a></em>
+                    <em><a href='#'>7-10岁</a></em>
+                    <em><a href='#'>11-14岁</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>人文社科</dt>
+                <dd>
+                    <em><a href='#'>历史</a></em>
+                    <em><a href='#'>哲学</a></em>
+                    <em><a href='#'>国学</a></em>
+                    <em><a href='#'>政治/军事</a></em>
+                    <em><a href='#'>法律</a></em>
+                    <em><a href='#'>宗教</a></em>
+                    <em><a href='#'>心理学</a></em>
+                    <em><a href='#'>文化</a></em>
+                    <em><a href='#'>社会科学</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>经管励志</dt>
+                <dd>
+                    <em><a href='#'>经济</a></em>
+                    <em><a href='#'>金融与投资</a></em>
+                    <em><a href='#'>管理</a></em>
+                    <em><a href='#'>励志与成功</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>生活</dt>
+                <dd>
+                    <em><a href='#'>生活</a></em>
+                    <em><a href='#'>健身与保健</a></em>
+                    <em><a href='#'>家庭与育儿</a></em>
+                    <em><a href='#'>旅游</a></em>
+                    <em><a href='#'>动漫/幽默</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>教育</dt>
+                <dd>
+                    <em><a href='#'>教材教辅</a></em>
+                    <em><a href='#'>教育与考试</a></em>
+                    <em><a href='#'>外语学习</a></em>
+                    <em><a href='#'>新闻出版</a></em>
+                    <em><a href='#'>语言文字</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>科技</dt>
+                <dd>
+                    <em><a href='#'>科技</a></em>
+                    <em><a href='#'>工程</a></em>
+                    <em><a href='#'>建筑</a></em>
+                    <em><a href='#'>医学</a></em>
+                    <em><a href='#'>科学与自然</a></em>
+                    <em><a href='#'>计算机与互联网</a></em>
+                    <em><a href='#'>体育/运动</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>其它</dt>
+                <dd>
+                    <em><a href='#'>工具书</a></em>
+                    <em><a href='#'>影印版</a></em>
+                    <em><a href='#'>套装书</a></em>
+                </dd>
+            </dl>
+        </div>
+        <div class='fr'>
+            <img src="../img/placeholder_194x70.gif"
+                 width="194" height="70" alt="" style="margin-top:30px;"/>
+        </div>
+    </div>
+</div>
+
+<div class='item'>
+    <span><h3><a href="#">手机数码</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close' onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+
+        </div>
+        <div class='fr'>
+            <img src="../img/placeholder_194x70.gif" width="194" height="70" alt="" style="margin-top:30px;"/>
+        </div>
+    </div>
+</div>
+<div class='item'>
+    <span><h3><a href="#">手机数码</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close' onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+
+        </div>
+        <div class='fr'>
+            <img src="../img/placeholder_194x70.gif" width="194" height="70" alt="" style="margin-top:30px;"/>
+        </div>
+    </div>
+</div>
+<div class='item'>
+    <span><h3><a href="#">手机数码</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close' onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+
+        </div>
+        <div class='fr'>
+            <img src="../img/placeholder_194x70.gif" width="194" height="70" alt="" style="margin-top:30px;"/>
+        </div>
+    </div>
+</div>
+<div class='item'>
+    <span><h3><a href="#">手机数码</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close' onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+
+        </div>
+        <div class='fr'>
+            <img src="../img/placeholder_194x70.gif" width="194" height="70" alt="" style="margin-top:30px;"/>
+        </div>
+    </div>
+</div>
+
+<div class='extra'><a href='#'>全部商品分类</a></div>
+
+</div>
+
+</div>
+
+</div>
+<!-- /商品分类 -->
+
+<!-- 页面右边悬浮框 -->
+<div id="bzf_right_float_panel" class="bzf_right_float_panel">
+    <div class="bzf_right_float_panel_block" onclick="jQuery(document).scrollTo('0px',800);">
+        <span class="icon_back_to_top"></span>
+
+        <div class="bzf_hide"
+             style="width:60px;font-weight: bold;text-align: center;line-height: 40px;">
+            返回顶部
+        </div>
+    </div>
+</div>
+<!-- /页面右边悬浮框 -->
+
+<script type="text/javascript" src="../bootstrap-custom/js/json2.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jstorage.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.ie.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/validator.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/cloud-zoom/cloud-zoom.1.0.3.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/jcarousel/jquery.jcarousel.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/smartspin/smartspinner.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/stickyPanel/jquery.stickyPanel.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/docktoright/docktoright.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/scrollTo/jquery.scrollTo.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/pnotify/jquery.pnotify.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/quake-slider/js/quake.slider.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery.lazyload.js"></script>
+
+<script type="text/javascript" src="../js/dropdown_category.js"></script>
+<!-- 定义网站的起始路径，用于 JavaScript 的 Ajax 操作调用 -->
+<script>
+    var WEB_ROOT_HOST = '{{$WEB_ROOT_HOST}}';
+    var WEB_ROOT_BASE = '/PHPStorm/bzfshop/src/shop';
+    var WEB_ROOT_BASE_RES = '/PHPStorm/shopweb';
+</script>
+<!-- script type="text/javascript" src="../bootstrap-custom/plugin/pretty-loader/js/jquery.prettyLoader.js"></script -->
+<script type="text/javascript" src="../js/shop.js"></script>
+
+</body>
+</html>

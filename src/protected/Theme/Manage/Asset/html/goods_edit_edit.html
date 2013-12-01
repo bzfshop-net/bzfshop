@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>商品编辑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1206.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/datetimepicker/datetimepicker.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/select2/select2.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/pretty-photo/css/prettyPhoto.css">
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/pretty-loader/css/prettyLoader.css">
+
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1206.ie6.css"/>
+    <![endif]-->
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/ie.css"/>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1206.fix.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/manage.css"/>
+</head>
+
+<body>
+<!-- 用 JS 设置页面的导航菜单 -->
+<script>
+    window.bz_set_nav_status = []; // 用于设置导航栏状态的数组，里面是很多设置 function()
+</script>
+<!-- /用 JS 设置页面的导航菜单 -->
+
+<!-- 顶部导航菜单 -->
+<div id="system_top_navbar" class="navbar navbar-static-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#">棒主妇</a>
+            <ul class="nav">
+                <li><a href="#">账号[admin]</a></li>
+                <li class="active"><a href="#">商品管理</a></li>
+                <li><a href="#">订单管理</a></li>
+                <li><a href="#">账号管理</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /顶部导航菜单 -->
+
+<!-- 信息提示区 -->
+<div class="container" style="margin-top:10px;margin-bottom:0px;">
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">
+            &times;
+        </button>
+        <div class="flashMessage">
+            <strong>注意：</strong> 这里是消息通知区
+        </div>
+    </div>
+</div>
+<!-- 信息提示区 -->
+
+<!-- main_body -->
+<div id="main_body" class="container">
+
+<!-- ====================================== 这里是页面的主体内容 ============================================ -->
+
+<div class="row bz_basic_content_block bz_box_shadow" style="padding:10px 10px 10px 10px;">
+
+<!-- 页面上方导航条 -->
+<div class="row">
+    <ul class="nav nav-tabs">
+        <li class="dropdown active">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">商品列表<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">在线商品</a></li>
+                <li><a href="#">下线商品</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<!-- /页面上方导航条 -->
+
+<!-- 商品编辑页面主体内容 -->
+<div class="tabbable tabs-left">
+
+    <!-- 编辑页面左侧标签导航 -->
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#">商品信息</a></li>
+        <li class=""><a href="/">团购信息</a></li>
+    </ul>
+    <!-- /编辑页面左侧标签导航 -->
+
+    <form class="form-horizontal form-horizontal-inline form-dirty-check" method="POST"
+          style="margin: 0px 0px 0px 0px;">
+
+        <!-- 左侧每个标签的具体内容 -->
+        <div class="tab-content">
+
+            <!-- 商品的基本信息 -->
+            <div id="goods_edit_basic_info" class="tab-pane well active">
+
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label" rel="tooltip" data-placement="top"
+                              data-title="前台显示给购买用户看的名称">商品名称</span>
+                        <input class="span9" name="goods[goods_name]" type="text"
+                               data-validation-required-message="商品名称不能为空"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                                <span class="input-label" rel="tooltip" data-placement="top"
+                                      data-title="用于搜索和SEO优化的关键词">商品关键词</span>
+                        <input class="span4" name="goods[keywords]" type="text"/>
+                        <span class="comments">用空格分隔每个关键词</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label">商品货号</span>
+                        <input class="span2" name="goods[goods_sn]" type="text"/>
+                        <span class="comments">如果您不输入商品货号，系统将自动生成一个唯一的货号</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls" style="padding-top:8px;">
+                        <span class="input-label">商品分类</span>
+                        <!-- 商品分类有可能层级很长 -->
+                        <select class="span9 select2-simple" name="goods[cart_id]"
+                                data-validation-required-message="商品分类不能为空"
+                                data-placeholder="选择商品分类" data-initValue="">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label">商品品牌</span>
+                        <select class="span2 select2-simple" name="goods[brand_id]" data-placeholder="选择商品品牌"
+                                data-initValue="">
+                            <option value=""></option>
+                        </select>
+                        <span class="input-label" rel="tooltip" data-placement="top"
+                              data-title="如果是自己发货的产品，请先给你自己建一个供货商账号">供货商</span>
+                        <select class="span2 select2-simple" name="goods[suppliers_id]"
+                                data-validation-required-message="供货商不能为空"
+                                data-placeholder="选择供货商" data-initValue="">
+                            <option value=""></option>
+                        </select>
+                        <span class="input-label">独立销售</span>
+                        <select class="span2 select2-simple" name="goods[is_alone_sale]" data-initValue="1">
+                            <option value="1">作为普通商品销售</option>
+                            <option value="0">只作为配件或赠品销售</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label">精品推荐</span>
+                        <select class="span2 select2-simple" name="goods[is_best]" data-initValue="">
+                            <option value="0">不推荐</option>
+                            <option value="1">推荐到精品展示</option>
+                        </select>
+                        <span class="input-label">新品推荐</span>
+                        <select class="span2 select2-simple" name="goods[is_new]" data-initValue="">
+                            <option value="0">不推荐</option>
+                            <option value="1">推荐到新品展示</option>
+                        </select>
+                        <span class="input-label">热销推荐</span>
+                        <select class="span2 select2-simple" name="goods[is_hot]" data-initValue="">
+                            <option value="0">不推荐</option>
+                            <option value="1">推荐到热销展示</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label" rel="tooltip" data-placement="top"
+                              data-title="上架商品在前台会立即出现">是否上架</span>
+                        <select class="span2 select2-simple" name="goods[is_on_sale]"
+                                data-validation-required-message="商品状态不能为空"
+                                data-initValue="0">
+                            <option value="0">未上架</option>
+                            <option value="1">已上架</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label" rel="tooltip" data-placement="top"
+                              data-title="市场上别人的售价，只是一个显示的参考价，不是实际销售价">市场价</span>
+                        <input class="span2" type="text" name="goods[market_price]" pattern="^\d+(\.\d+)?$"
+                               data-validation-required-message="市场价不能为空"
+                               data-validation-pattern-message="市场价无效"/>
+                                <span class="input-label" rel="tooltip" data-placement="top"
+                                      data-title="本店的销售价，区别于前面的市场价">本店销售价</span>
+                        <input class="span2" type="text" name="goods[shop_price]" pattern="^\d+(\.\d+)?$"
+                               data-validation-required-message="本店销售价不能为空"
+                               data-validation-pattern-message="本店销售价无效"/>
+                                <span class="input-label" rel="tooltip" data-placement="top"
+                                      data-title="商品库存如果少于0，则商品自动下线">商品库存</span>
+                        <input class="span2" type="text" name="goods[goods_number]" pattern="[0-9]+" min="1"
+                               data-validation-required-message="商品库存不能为空"
+                               data-validation-pattern-message="商品库存无效"
+                               data-validation-min-message="商品库存最小为1"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label" rel="tooltip" data-placement="top"
+                              data-title="商品成本，用于利润统计">商品供货价</span>
+                        <input class="span2" type="text" name="goods[suppliers_price]" pattern="^\d+(\.\d+)?$"
+                               data-validation-required-message="商品供货价不能为空"
+                               data-validation-pattern-message="商品供货价无效"/>
+                        <span class="input-label" rel="tooltip" data-placement="top"
+                              data-title="快递成本，用于利润统计">供货快递费</span>
+                        <input class="span2" type="text" name="goods[suppliers_shipping_fee]"
+                               pattern="^\d+(\.\d+)?$"
+                               data-validation-required-message="供货快递费不能为空"
+                               data-validation-pattern-message="供货快递费无效"/>
+                        <span class="input-label" rel="tooltip" data-placement="top"
+                              data-title="库存少于这个值的时候，系统会给出警告，0表示不警告">库存警告值</span>
+                        <input class="span2" type="text" name="goods[warn_number]" pattern="[0-9]+"
+                               data-validation-required-message="库存警告值不能为空"
+                               data-validation-pattern-message="库存警告值无效"/>
+                    </div>
+                </div>
+
+                <div class="control-group" style="margin-top: 10px;">
+                    <div class="controls">
+                        <span class="input-label" rel="tooltip" data-placement="top"
+                              data-title="用于前台商品的展示">简单描述</span>
+                        <textarea class="span5 editor-html-simple" rows="5" cols="20"
+                                  name="goods[goods_brief]"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label">商家备注</span>
+                        <textarea class="span5" rows="5" cols="20" name="goods[seller_note]"
+                                  maxlength="250"></textarea>
+                        <span class="comments">仅供商家自己看的信息，限250字</span>
+                    </div>
+                </div>
+
+
+                <div class="control-group" style="margin-top: 15px;">
+                    <div class="controls">
+                        <span class="input-label">商品详情</span>
+                        <textarea id="goods_edit_goods_desc_textarea" class="span9" style="height:600px;"
+                                  rows="5" cols="20"
+                                  name="goods[goods_desc]"></textarea>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /商品的基本信息 -->
+
+        </div>
+        <!-- /左侧每个标签的具体内容 -->
+
+
+        <!-- 提交按钮 -->
+        <div class="row" style="text-align: center;">
+            <button type="submit" class="btn btn-success">保存修改</button>
+        </div>
+        <!-- /提交按钮 -->
+
+    </form>
+
+</div>
+<!-- /商品编辑页面主体内容 -->
+
+</div>
+
+<!-- ====================================== /这里是页面的主体内容 ============================================ -->
+
+</div>
+<!-- /main_body -->
+
+<!-- 让 main_body 和下面的 footer 中间隔离出一段距离 -->
+<div id="main_body_tail" class="container">&nbsp;</div>
+<!-- /让 main_body 和下面的 footer 中间隔离出一段距离 -->
+
+<script type="text/javascript" src="../bootstrap-custom/js/json2.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.ie.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/validator.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/datetimepicker/datetimepicker.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/select2/select2.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/dirtyform/jquery.are-you-sure.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/kindeditor/kindeditor-min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/pretty-photo/js/jquery.prettyPhoto.js"></script>
+<script>
+    var WEB_ROOT_BASE = '/PHPStorm/bzfshop/src/manage/Public';
+    var WEB_ROOT_BASE_RES = '/PHPStorm/bzfshop/src/manage/Public/Theme/Manage';
+</script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/pretty-loader/js/jquery.prettyLoader.js"></script>
+<script type="text/javascript" src="../js/manage.js"></script>
+
+<!--[if lte IE 9]>
+<script type="text/javascript" src="../bootstrap-custom/js/iefix.js"></script>
+<![endif]-->
+
+<!-- 尾部 footer -->
+<div class="navbar navbar-fixed-bottom">
+    <div class="navbar-inner">
+        <div class="container">
+            <div class="row" style="text-align:center;">
+                <span>版权所有：bzfshop 2012-2013</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /尾部 footer -->
+
+</body>
+</html>

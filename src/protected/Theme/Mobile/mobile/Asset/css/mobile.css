@@ -1,0 +1,69 @@
+/**
+* @author QiangYu
+*
+* mobile css file
+*/
+
+img.lazyload {
+    display: none;
+    background: url('../img/loading.gif') no-repeat center center;
+}
+
+img.lazyloadtap {
+    display: none;
+}
+
+img.showloading {
+    background: url('../img/loading.gif') no-repeat center center;
+}
+
+img.goods_thumbnail_image {
+    max-width: 298px;
+    width: 100%;
+    height: auto;
+}
+
+img.goods_desc_image {
+    max-width: 700px;
+    width: 100%;
+    height: auto;
+}
+
+/****** 我的账户右侧滑动面板 *******/
+#my_account_panel ul li, #my_account_panel ul li a {
+    text-align: right;
+}
+
+/******** goods_index 页面，增大缩率图的尺寸 *******/
+
+ul.listview_goods li img {
+    position: static;
+    float: left;
+    max-width: 100px;
+    margin-top: 1.6em;
+}
+
+ul.listview_goods li.listview_head {
+    text-align: center;
+}
+
+ul.listview_goods li .ui-li-desc {
+    white-space: normal;
+    word-break: break-all;
+    max-height: 110px;
+    margin-right: 0em;
+}
+
+.original_price_label, .current_price_label {
+    font-weight: bold;
+}
+
+.original_price {
+    text-decoration: line-through;
+    color: blue;
+}
+
+.current_price {
+    font-weight: bold;
+    color: red;
+}

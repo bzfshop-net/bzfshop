@@ -1,0 +1,19 @@
+## do not include IDE settings
+.settings
+.idea
+nbproject
+
+## image Thumb files
+.*/Thumbs.db
+
+## ignore user upload files directory
+src/data
+
+## ignore runtime files
+src/protected/Runtime
+
+## ignore all asset directory
+src/asset
+src/manage/asset
+src/mobile/asset
+src/supplier/asset

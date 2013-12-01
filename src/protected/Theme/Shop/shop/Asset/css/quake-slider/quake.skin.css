@@ -1,0 +1,240 @@
+.quake-slider {
+    background: url('images/loading.gif') no-repeat center;
+    width: 780px;
+    height: 350px;
+    border: none;
+    box-shadow: none;
+}
+
+.quake-nav {
+    width: 780px;
+    z-index: 6;
+}
+
+.quake-nav a {
+    width: 51px;
+    height: 50px;
+    z-index: 6;
+}
+
+.quake-prev {
+    background-image: url('images/arrow-left.png');
+    margin-left: 10px;
+}
+
+.quake-next {
+    background-image: url('images/arrow-right.png');
+    margin-right: 10px;
+}
+
+.quake-prev:hover {
+    background-image: url('images/arrow-left-active.png');
+}
+
+.quake-next:hover {
+    background-image: url('images/arrow-right-active.png');
+}
+
+.quake-slider-caption-container {
+    background-color: white;
+    z-index: 5;
+}
+
+.quake-slider-caption-container.vertical {
+    width: 220px;
+    height: 310px;
+    padding-left: 25px;
+}
+
+.quake-slider-caption-container.horizontal {
+    width: 700px;
+    height: 50px;
+    padding-left: 20px;
+}
+
+.quake-slider-caption-container.vertical.left {
+    left: 0px;
+    margin-left: 10px;
+}
+
+.quake-slider-caption-container.vertical.right {
+    margin-right: 10px;
+    right: 0px;
+}
+
+.quake-slider-caption-container.horizontal.top {
+    top: 0px;
+    margin-top: 10px;
+}
+
+.quake-slider-caption-container.horizontal.bottom {
+    bottom: 0px;
+    margin-bottom: 20px;
+}
+
+.quake-slider-caption {
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+    padding: 10px;
+    line-height: 1.5em;
+    word-spacing: .2em;
+    z-index: 6;
+}
+
+.quake-slider-caption.vertical {
+    width: 210px;
+    height: 306px;
+}
+
+.quake-slider-caption.horizontal {
+    width: 700px;
+    height: 50px;
+}
+
+.quake-slider-caption.vertical.left {
+    left: 0px;
+    margin-left: 10px;
+}
+
+.quake-slider-caption.vertical.right {
+    right: 0px;
+    margin-right: 10px;
+}
+
+.quake-slider-caption.horizontal.top {
+    top: 0px;
+    margin-top: 10px;
+}
+
+.quake-slider-caption.horizontal.bottom {
+    bottom: 0px;
+    margin-bottom: 0px;
+}
+
+.quake-nav-wrapper {
+    margin: 0;
+    padding: 0;
+    width: 780px;
+    top: 0;
+    left: 0;
+    z-index: 6;
+}
+
+.quake-nav-wrapper.outside {
+    margin-top: 20px;
+}
+
+.quake-nav-wrapper.inside {
+    margin: -60px auto;
+    top: 0;
+    left: 0;
+    width: 140px;
+    padding: 7px 0px;
+    padding-top: 15px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+}
+
+.quake-nav-container {
+    padding: 0;
+    margin: auto;
+}
+
+.quake-nav-control {
+    /** bug fix for IE6 which does not support inline-block **/
+    float: left;
+    display: inline;
+    width: 16px;
+    height: 17px;
+    background-image: url('images/circle.png');
+    background-repeat: no-repeat;
+}
+
+.quake-nav-container .quake-nav-control.active {
+    background-image: url('images/circle-active.png');
+}
+
+.quake-highlight {
+    color: Yellow;
+}
+
+.quake-highlight a {
+    color: Yellow;
+}
+
+.quake-link {
+    position: absolute;
+    z-index: 5;
+}
+
+.quake-thumbnail {
+    width: 98px;
+    height: 76px;
+    background: url('images/thumb_bg.png') no-repeat center center;
+    z-index: 6;
+}
+
+.quake-thumbnail-preview {
+    width: 84px;
+    height: 48px;
+    margin: 7px 0 0 7px;
+    background-color: White;
+}
+
+.quake-thumbnail-preview img {
+    border: none;
+}
+
+/************* 针对具体的 slider 做具体的设置 *************/
+
+/**********************  shop_index.tpl 首页头部图片 slider ***********************/
+.bzf_shop_index_head_slide_image_panel .quake-slider {
+    width: 780px;
+    height: 350px;
+}
+
+.bzf_shop_index_head_slide_image_panel .quake-slider-caption-container.horizontal,
+.bzf_shop_index_head_slide_image_panel .quake-slider-caption.horizontal {
+    width: 500px;
+    height: 50px;
+}
+
+.bzf_shop_index_head_slide_image_panel .quake-slider-caption-container.vertical,
+.bzf_shop_index_head_slide_image_panel .quake-slider-caption.vertical {
+    width: 320px;
+    height: 50px;
+}
+
+.bzf_shop_index_head_slide_image_panel .quake-nav,
+.bzf_shop_index_head_slide_image_panel .quake-nav-wrapper {
+    width: 780px;
+}
+
+/**********************  goods_view.tpl, goods_search.tpl 首页头部图片 slider ***********************/
+.bzf_goods_view_head_slide_image_panel {
+    padding: 1px 1px;
+}
+
+.bzf_goods_view_head_slide_image_panel .quake-slider {
+    width: 1000px;
+    height: 250px;
+}
+
+.bzf_goods_view_head_slide_image_panel .quake-slider-caption-container.horizontal,
+.bzf_goods_view_head_slide_image_panel .quake-slider-caption.horizontal {
+    width: 500px;
+    height: 50px;
+}
+
+.bzf_goods_view_head_slide_image_panel .quake-slider-caption-container.vertical,
+.bzf_goods_view_head_slide_image_panel .quake-slider-caption.vertical {
+    width: 320px;
+    height: 50px;
+}
+
+.bzf_goods_view_head_slide_image_panel .quake-nav,
+.bzf_goods_view_head_slide_image_panel .quake-nav-wrapper {
+    width: 1000px;
+}

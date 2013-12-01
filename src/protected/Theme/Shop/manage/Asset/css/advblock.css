@@ -1,0 +1,170 @@
+/******************* shop_index.tpl 首页，广告显示块 *********************/
+.bzf_shop_index_adv_block {
+    width: 1002px;
+    padding-bottom: 20px;
+}
+
+.bzf_shop_index_adv_block .span3 {
+    width: 246px;
+}
+
+.bzf_shop_index_adv_block .span6 {
+    width: 498px;
+}
+
+.bzf_shop_index_adv_block .nav {
+    margin-bottom: 0px;
+    height: 46px;
+}
+
+.bzf_shop_index_adv_block .nav a,
+.bzf_shop_index_adv_block .nav a:hover {
+    color: #000000;
+    text-decoration: none;
+    font-size: 14px;
+    height: 46px;
+    line-height: 46px;
+    vertical-align: middle;
+    border: none;
+    padding: 0px 10px;
+}
+
+.bzf_shop_index_adv_block .nav a.bzf_caption,
+.bzf_shop_index_adv_block .nav a.bzf_caption:hover {
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 0px;
+}
+
+.bzf_shop_index_adv_block .nav .bzf_caption span {
+    display: inline-block;
+    padding: 0px 15px;
+    font-size: 30px;
+    height: 49px;
+    line-height: 49px;
+    vertical-align: middle;
+    margin-right: 10px;
+    margin-top: -3px;
+}
+
+.bzf_shop_index_adv_block .nav a:hover {
+    background-color: white;
+}
+
+.bzf_shop_index_adv_image_block {
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 20px;
+}
+
+.bzf_shop_index_adv_image_block a img {
+    border: solid 4px white;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+/******************** 中间大的广告展示图 **************************/
+.bzf_shop_index_adv_image_block .image_center img {
+    width: 490px;
+    height: 490px;
+}
+
+/************************ 左右两侧广告图 **************************/
+.bzf_shop_index_adv_image_block .image_left img {
+    width: 238px;
+    height: 490px;
+}
+
+.bzf_shop_index_adv_image_block .image_right img {
+    width: 238px;
+    height: 158px;
+}
+
+/**************** red 主题 *******************/
+.bzf_shop_index_adv_block_theme_red .nav {
+    background-color: #FBE5EF;
+    border-top: solid 3px #E50011;
+}
+
+.bzf_shop_index_adv_block_theme_red .nav li,
+.bzf_shop_index_adv_block_theme_red .nav a.bzf_caption,
+.bzf_shop_index_adv_block_theme_red .nav a.bzf_caption:hover {
+    color: #E50011;
+    background-color: #FBE5EF;
+}
+
+.bzf_shop_index_adv_block_theme_red .nav .bzf_caption span {
+    background-color: #E50011;
+    color: white;
+}
+
+.bzf_shop_index_adv_block_theme_red .bzf_shop_index_adv_image_block a:hover img {
+    border: solid 4px #E50011;
+}
+
+/********************* yellow  主题********************/
+.bzf_shop_index_adv_block_theme_yellow .nav {
+    background-color: #FFFAC6;
+    border-top: solid 3px #F6AB00;
+}
+
+.bzf_shop_index_adv_block_theme_yellow .nav li,
+.bzf_shop_index_adv_block_theme_yellow .nav a.bzf_caption,
+.bzf_shop_index_adv_block_theme_yellow .nav a.bzf_caption:hover {
+    color: #F6AB00;
+    background-color: #FFFAC6;
+}
+
+.bzf_shop_index_adv_block_theme_yellow .nav .bzf_caption span {
+    background-color: #F6AB00;
+    color: white;
+}
+
+.bzf_shop_index_adv_block_theme_yellow .bzf_shop_index_adv_image_block a:hover img {
+    border: solid 4px #F6AB00;
+}
+
+/*************** bzf_shop_index_adv_block_theme_blue 主题 ****************/
+.bzf_shop_index_adv_block_theme_blue .nav {
+    background-color: #E5F4FC;
+    border-top: solid 3px #00A0E8;
+}
+
+.bzf_shop_index_adv_block_theme_blue .nav li,
+.bzf_shop_index_adv_block_theme_blue .nav a.bzf_caption,
+.bzf_shop_index_adv_block_theme_blue .nav a.bzf_caption:hover {
+    color: #00A0E8;
+    background-color: #E5F4FC;
+}
+
+.bzf_shop_index_adv_block_theme_blue .nav .bzf_caption span {
+    background-color: #00A0E8;
+    color: white;
+}
+
+.bzf_shop_index_adv_block_theme_blue .bzf_shop_index_adv_image_block a:hover img {
+    border: solid 4px #00A0E8;
+}
+
+/**************** pink 主题 *******************/
+.bzf_shop_index_adv_block_theme_pink .nav {
+    background-color: #FBE5EF;
+    border-top: solid 3px #E4006E;
+}
+
+.bzf_shop_index_adv_block_theme_pink .nav li,
+.bzf_shop_index_adv_block_theme_pink .nav a.bzf_caption,
+.bzf_shop_index_adv_block_theme_pink .nav a.bzf_caption:hover {
+    color: #E4006E;
+    background-color: #FBE5EF;
+}
+
+.bzf_shop_index_adv_block_theme_pink .nav .bzf_caption span {
+    background-color: #E4006E;
+    color: white;
+}
+
+.bzf_shop_index_adv_block_theme_pink .bzf_shop_index_adv_image_block a:hover img {
+    border: solid 4px #E4006E;
+}

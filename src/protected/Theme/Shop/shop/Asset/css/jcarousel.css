@@ -1,0 +1,317 @@
+/****************** goods_view.tpl 商品缩略图列表 **********************/
+
+.jcarousel-skin-goods-image-thumbnail .jcarousel-container {
+    border: none;
+    padding: 5px 0px;
+}
+
+.jcarousel-skin-goods-image-thumbnail .jcarousel-container-horizontal {
+    width: 460px;
+}
+
+.jcarousel-skin-goods-image-thumbnail .jcarousel-clip {
+    overflow: hidden;
+}
+
+.jcarousel-skin-goods-image-thumbnail .jcarousel-clip-horizontal {
+    width: 370px;
+    height: 64px;
+    margin: 0px 0px 0px 50px;
+}
+
+.jcarousel-skin-goods-image-thumbnail .jcarousel-item {
+    width: 60px;
+    height: 60px;
+    padding: 1px 1px;
+    border: solid 1px #595757;
+}
+
+.jcarousel-skin-goods-image-thumbnail .jcarousel-item-horizontal {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+/**
+ *  Horizontal Buttons
+ */
+.jcarousel-skin-goods-image-thumbnail .jcarousel-next-horizontal {
+    position: absolute;
+    top: 5px;
+    right: 2px;
+    width: 26px;
+    height: 60px;
+    line-height: 60px;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    background-color: white;
+    padding: 1px 1px;
+    border: solid 1px #595757;
+}
+
+.jcarousel-skin-goods-image-thumbnail .jcarousel-prev-horizontal {
+    position: absolute;
+    top: 5px;
+    left: 2px;
+    width: 26px;
+    height: 60px;
+    line-height: 60px;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    background-color: white;
+    padding: 1px 1px;
+    border: solid 1px #595757;
+}
+
+/****** 这里定义了 item 里面的内容*******/
+.jcarousel-skin-goods-image-thumbnail .jcarousel-item img {
+    border: none;
+    width: 60px;
+    height: auto;
+    overflow: hidden;
+}
+
+.jcarousel-skin-goods-image-thumbnail li.active {
+    padding: 0px 0px;
+    border: solid 2px #E50012;
+}
+
+/****************** goods_view.tpl 关联商品推荐 **********************/
+.jcarousel-skin-goods-recommand {
+    padding: 0px 9px;
+}
+
+.jcarousel-skin-goods-recommand .jcarousel-container {
+    border: none;
+}
+
+.jcarousel-skin-goods-recommand .jcarousel-container-horizontal {
+    width: 960px;
+}
+
+.jcarousel-skin-goods-recommand .jcarousel-clip {
+    overflow: hidden;
+}
+
+.jcarousel-skin-goods-recommand .jcarousel-clip-horizontal {
+    width: 870px;
+    margin: 0px 0px 0px 50px;
+}
+
+.jcarousel-skin-goods-recommand .jcarousel-item {
+    width: 160px;
+    padding: 1px 1px;
+    border: solid 1px #595757;
+}
+
+.jcarousel-skin-goods-recommand .jcarousel-item-horizontal {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+/**
+ *  Horizontal Buttons
+ */
+.jcarousel-skin-goods-recommand .jcarousel-next-horizontal {
+    position: absolute;
+    top: 0px;
+    right: 2px;
+    width: 26px;
+    height: 160px;
+    line-height: 160px;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    background-color: white;
+    padding: 1px 1px;
+    border: solid 1px #595757;
+}
+
+.jcarousel-skin-goods-recommand .jcarousel-prev-horizontal {
+    position: absolute;
+    top: 0px;
+    left: 2px;
+    width: 26px;
+    height: 160px;
+    line-height: 160px;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    background-color: white;
+    padding: 1px 1px;
+    border: solid 1px #595757;
+}
+
+/****** 这里定义了 item 里面的内容*******/
+.jcarousel-skin-goods-recommand .jcarousel-item a,
+.jcarousel-skin-goods-recommand .jcarousel-item a:hover {
+    text-decoration: none;
+}
+
+.jcarousel-skin-goods-recommand .jcarousel-item .bzf_image_wrap {
+    width: 160px;
+    height: 160px;
+}
+
+.jcarousel-skin-goods-recommand .jcarousel-item .bzf_image_wrap img {
+    border: none;
+    width: 160px;
+    height: auto;
+    max-width: 160px;
+    max-height: 160px;
+    overflow: hidden;
+}
+
+.jcarousel-skin-goods-recommand .bzf_goods_view_goods_recommand_price_pane {
+    width: 160px;
+    color: #000000;
+    text-align: center;
+}
+
+.jcarousel-skin-goods-recommand .bzf_goods_view_goods_recommand_price_pane .market_price {
+    text-decoration: line-through;
+}
+
+.jcarousel-skin-goods-recommand .bzf_goods_view_goods_recommand_price_pane .shop_price {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.jcarousel-skin-goods-recommand .bzf_goods_view_goods_recommand_price_pane .shop_price span {
+    color: red;
+}
+
+.jcarousel-skin-goods-recommand li.active {
+    padding: 0px 0px;
+    border: solid 2px #E50012;
+}
+
+.jcarousel-skin-goods-recommand li.active .bzf_goods_view_goods_recommand_price_pane {
+    background-color: #E50012;
+    color: white;
+}
+
+.jcarousel-skin-goods-recommand li.active .bzf_goods_view_goods_recommand_price_pane  .shop_price span {
+    color: white;
+}
+
+/***************** 紧凑型的推荐，适合 span9 的宽度，只显示 4 个商品 ********************/
+
+.jcarousel-skin-goods-recommand-compact {
+    padding: 0px 0px;
+}
+
+.jcarousel-skin-goods-recommand-compact .jcarousel-container {
+    border: none;
+}
+
+.jcarousel-skin-goods-recommand-compact .jcarousel-container-horizontal {
+    width: 750px;
+}
+
+.jcarousel-skin-goods-recommand-compact .jcarousel-clip {
+    overflow: hidden;
+}
+
+.jcarousel-skin-goods-recommand-compact .jcarousel-clip-horizontal {
+    width: 690px;
+    margin: 0px 0px 0px 30px;
+}
+
+.jcarousel-skin-goods-recommand-compact .jcarousel-item {
+    width: 160px;
+    padding: 1px 1px;
+    border: solid 1px #595757;
+}
+
+.jcarousel-skin-goods-recommand-compact .jcarousel-item-horizontal {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+/**
+ *  Horizontal Buttons
+ */
+.jcarousel-skin-goods-recommand-compact .jcarousel-next-horizontal {
+    position: absolute;
+    top: 0px;
+    right: 2px;
+    width: 16px;
+    height: 160px;
+    line-height: 160px;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    background-color: white;
+    padding: 1px 1px;
+    border: solid 1px #595757;
+}
+
+.jcarousel-skin-goods-recommand-compact .jcarousel-prev-horizontal {
+    position: absolute;
+    top: 0px;
+    left: 2px;
+    width: 16px;
+    height: 160px;
+    line-height: 160px;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    background-color: white;
+    padding: 1px 1px;
+    border: solid 1px #595757;
+}
+
+/****** 这里定义了 item 里面的内容*******/
+.jcarousel-skin-goods-recommand-compact .jcarousel-item a,
+.jcarousel-skin-goods-recommand-compact .jcarousel-item a:hover {
+    text-decoration: none;
+}
+
+.jcarousel-skin-goods-recommand-compact .jcarousel-item .bzf_image_wrap {
+    width: 160px;
+    height: 160px;
+}
+
+.jcarousel-skin-goods-recommand-compact .jcarousel-item .bzf_image_wrap img {
+    border: none;
+    width: 160px;
+    height: auto;
+    max-width: 160px;
+    max-height: 160px;
+    overflow: hidden;
+}
+
+.jcarousel-skin-goods-recommand-compact .bzf_goods_view_goods_recommand_price_pane {
+    width: 160px;
+    color: #000000;
+    text-align: center;
+}
+
+.jcarousel-skin-goods-recommand-compact .bzf_goods_view_goods_recommand_price_pane .market_price {
+    text-decoration: line-through;
+}
+
+.jcarousel-skin-goods-recommand-compact .bzf_goods_view_goods_recommand_price_pane .shop_price {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.jcarousel-skin-goods-recommand-compact .bzf_goods_view_goods_recommand_price_pane .shop_price span {
+    color: red;
+}
+
+.jcarousel-skin-goods-recommand-compact li.active {
+    padding: 0px 0px;
+    border: solid 2px #E50012;
+}
+
+.jcarousel-skin-goods-recommand-compact li.active .bzf_goods_view_goods_recommand_price_pane {
+    background-color: #E50012;
+    color: white;
+}
+
+.jcarousel-skin-goods-recommand-compact li.active .bzf_goods_view_goods_recommand_price_pane  .shop_price span {
+    color: white;
+}

@@ -1,0 +1,231 @@
+html, body {
+    font-family: "Microsoft YaHei", "微软雅黑", "Microsoft JhengHei", "宋体", SimSun, Tahoma, Arial;
+    font-size: 13px;
+    background-color: #E1F0F9;
+    vertical-align: middle;
+    height: 100%;
+}
+
+/****  common block definition *****/
+table.table thead tr th {
+    text-align: center;
+    padding: 5px 2px 5px 2px;
+    vertical-align: middle;
+}
+
+table.table tbody tr td {
+    text-align: center;
+    padding: 5px 2px 5px 2px;
+    vertical-align: middle;
+    word-break: break-all;
+}
+
+label.control-label {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+table.table tbody tr td.price {
+    color: red;
+    font-weight: bold;
+}
+
+table.table tbody tr td.discount {
+    color: blue;
+    font-weight: bold;
+}
+
+table.table tbody tr td.labelkey {
+    text-align: right;
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+table.table tbody tr td.labelvalue {
+    text-align: left;
+    padding-left: 10px;
+}
+
+table.table tbody tr td.labelvalue input {
+    margin: 0px 0px 0px 0px;
+}
+
+/*** 文字左对齐 **/
+table.align-left tbody tr td {
+    text-align: left;
+    padding-left: 5px;
+}
+
+/*********** 让对话框变得跟紧凑些 *************/
+.modal-header, .modal-footer {
+    padding: 0px 15px;
+}
+
+/*********** 分页前面的 span 用于显示一些信息 ************/
+.pagination ul {
+    vertical-align: middle;
+}
+
+.pagination span {
+    display: inline-block;
+    padding: 4px 12px;
+    color: #0088CC;
+}
+
+.form-horizontal-inline .control-group {
+    margin-bottom: 0px;
+}
+
+/**** 定义基本的框 ****/
+.bz_box_shadow {
+    box-shadow: 5px 5px 5px #cccccc;
+    -webkit-box-shadow: 5px 5px 5px #cccccc;
+    -moz-box-shadow: 5px 5px 5px #cccccc;
+}
+
+.bz_basic_content_block {
+    margin-left: 0px;
+    background: none repeat scroll 0 0 white;
+    border: 1px solid silver;
+}
+
+/** 登录对话框 **/
+.form-signin {
+    max-width: 400px;
+    _width: 400px;
+    padding: 19px 29px 29px;
+    margin: 0 auto 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+    margin-top: 50px;
+}
+
+.form-signin .form-signin-heading {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 15px;
+    padding: 7px 9px;
+}
+
+img.lazyload {
+    background: url('../img/loading.gif') no-repeat center center;
+}
+
+/*********** 设置 main_body_tail ***************/
+#main_body_tail {
+    height: 60px;
+    margin-bottom: 60px;
+}
+
+/****** breadcrumb 设置 *********/
+#main_body_breadcrumb {
+    display: none;
+}
+
+#main_body_breadcrumb .breadcrumb {
+    border: solid 1px silver;
+    margin: 10px 0px;
+}
+
+/******************** form-inline 的分隔符，看起来比较美观 ***********************/
+div.inline-divider {
+    position: relative;
+    margin: 10px 0px 10px 0px;
+}
+
+div.inline-divider div.divider {
+    width: 100%;
+    height: 2px;
+    margin: 7px 1px;
+    overflow: hidden;
+    border-bottom: 2px solid #3a87ad;
+    display: block;
+}
+
+div.inline-divider label {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+/**************** 商品编辑页面，相册显示 *****************/
+#goods_edit_gallery_panel {
+    padding: 10px 60px;
+}
+
+#goods_edit_gallery_panel div.gallery-item {
+    margin: 10px 10px;
+}
+
+#goods_edit_gallery_panel div.gallery-item div.image-container {
+    width: 196px;
+    height: 196px;
+    border: solid 1px silver;
+    overflow: hidden;
+}
+
+#goods_edit_gallery_panel div.gallery-item div.image-container img {
+    width: 196px;
+    height: auto;
+}
+
+#goods_edit_gallery_panel div.gallery-item div.operate-panel {
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+#goods_edit_gallery_panel div.gallery-item div.operate-panel input, #goods_edit_gallery_panel div.gallery-item div.operate-panel button {
+    margin: 0px 0px;
+}
+
+#goods_edit_gallery_panel div.gallery-item div.operate-panel input.image-sort-order {
+    width: 40px;
+}
+
+/*********** 批量上传快递单号页面，上传按钮美化 **************/
+#order_goods_excel_upload_file {
+    width: 146px;
+    height: 31px;
+    background: url("../img/order_goods_excel_upload_file.png") 0 0 no-repeat;
+}
+
+/*********** 管理员权限显示 **************/
+div.admin-privilege input {
+    display: inline-block;
+    margin-top: 0px;
+}
+
+div.admin-privilege span {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    overflow: hidden;
+    width: 120px;
+}
+
+/***************** 商品规格编辑 ********************/
+#goods_edit_spec_div span.input-label {
+    width: 55px;
+}
+
+/** 规格关联缩略图 **/
+#goods_edit_spec_div img {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #000000;
+    cursor: pointer;
+}
+

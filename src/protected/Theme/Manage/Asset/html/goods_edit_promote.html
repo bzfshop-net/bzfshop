@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>商品编辑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1206.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/datetimepicker/datetimepicker.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/select2/select2.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/pretty-photo/css/prettyPhoto.css">
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/pretty-loader/css/prettyLoader.css">
+
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1206.ie6.css"/>
+    <![endif]-->
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/ie.css"/>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1206.fix.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/manage.css"/>
+</head>
+
+<body>
+<!-- 用 JS 设置页面的导航菜单 -->
+<script>
+    window.bz_set_nav_status = []; // 用于设置导航栏状态的数组，里面是很多设置 function()
+</script>
+<!-- /用 JS 设置页面的导航菜单 -->
+
+<!-- 顶部导航菜单 -->
+<div id="system_top_navbar" class="navbar navbar-static-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#">棒主妇</a>
+            <ul class="nav">
+                <li><a href="#">账号[admin]</a></li>
+                <li class="active"><a href="#">商品管理</a></li>
+                <li><a href="#">订单管理</a></li>
+                <li><a href="#">账号管理</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /顶部导航菜单 -->
+
+<!-- 信息提示区 -->
+<div class="container" style="margin-top:10px;margin-bottom:0px;">
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">
+            &times;
+        </button>
+        <div class="flashMessage">
+            <strong>注意：</strong> 这里是消息通知区
+        </div>
+    </div>
+</div>
+<!-- 信息提示区 -->
+
+<!-- main_body -->
+<div id="main_body" class="container">
+
+<!-- ====================================== 这里是页面的主体内容 ============================================ -->
+
+<div class="row bz_basic_content_block bz_box_shadow" style="padding:10px 10px 10px 10px;">
+
+<!-- 页面上方导航条 -->
+<div class="row">
+    <ul class="nav nav-tabs">
+        <li class="dropdown active">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">商品列表<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">在线商品</a></li>
+                <li><a href="#">下线商品</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<!-- /页面上方导航条 -->
+
+<!-- 商品编辑页面主体内容 -->
+<div class="tabbable tabs-left">
+
+<!-- 编辑页面左侧标签导航 -->
+<ul class="nav nav-tabs">
+    <li class=""><a href="/">商品信息</a></li>
+    <li class=""><a href="#">团购信息</a></li>
+    <li class="active"><a href="/">推广渠道</a></li>
+</ul>
+<!-- /编辑页面左侧标签导航 -->
+
+<form class="form-horizontal form-horizontal-inline form-dirty-check" method="POST"
+      style="margin: 0px 0px 0px 0px;">
+
+<!-- 左侧每个标签的具体内容 -->
+<div class="tab-content">
+
+<!-- 商品的团购设置 -->
+<div id="goods_edit_goods_team" class="tab-pane well active">
+
+<!-- 分割条 -->
+<div class="row inline-divider">
+    <div class="divider"></div>
+    <label class="label label-info">360团购导航</label>
+</div>
+<!-- /分割条 -->
+
+<div class="control-group">
+    <div class="controls">
+            <span class="input-label" rel="tooltip" data-placement="top"
+                  data-title="360团购导航API中的一级分类">一级分类</span>
+        <select id="goods_edit_360tuan_category_1" class="span2 select2-simple"
+                name="goods_promote[360tuan_category]"
+                data-initValue="网上购物">
+        </select>
+
+            <span class="input-label" rel="tooltip" data-placement="top"
+                  data-title="360团购导航API中的子分类，尽量选择到最后一级分类">细分分类</span>
+        <select id="goods_edit_360tuan_category_2" class="span6 select2-simple"
+                name="goods_promote[360tuan_category_end]" data-initValue="西装">
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+            <span class="input-label" rel="tooltip" data-placement="top"
+                  data-title="输出商品的排序，数字越大排序越前">商品排序</span>
+        <input class="span1" name="goods_promote[360tuan_sort_order]" type="text" pattern="[0-9]+"
+               data-validation-pattern-message="商品排序无效"/>
+        <span class="comments">数字越大排序越前</span>
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+        <span class="input-label">Pin图列表</span>
+        <textarea class="span6" rows="5" name="goods_promote[360tuan_pin_images]"></textarea>
+        <span class="comments">每行一个图片URL地址，请使用绝对地址</span>
+    </div>
+</div>
+
+<!-- 分割条 -->
+<div class="row inline-divider">
+    <div class="divider"></div>
+    <label class="label label-info">360团购特权</label>
+</div>
+<!-- /分割条 -->
+
+<div class="control-group">
+    <div class="controls">
+        <span class="input-label">特权价格</span>
+        <input class="span1" name="goods_promote[360tequan_price]" type="text"
+               pattern="^\d+(\.\d+)?$" min="0"
+               data-validation-pattern-message="特权价格无效"/>
+        <span class="comments">360安全卫士特权商品价格，0表示不提供特权价格，只按正常价格出售</span>
+    </div>
+</div>
+
+<!-- 分割条 -->
+<div class="row inline-divider">
+    <div class="divider"></div>
+    <label class="label label-info">360团购特供</label>
+</div>
+<!-- /分割条 -->
+
+<div class="control-group">
+    <div class="controls">
+        <span class="input-label">开启特供</span>
+        <select class="span2 select2-simple" name="goods_promote[360tegong_enable]"
+                data-initValue="">
+            <option value="0">关闭特供</option>
+            <option value="1">开启特供</option>
+        </select>
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+        <span class="input-label">特供标题</span>
+        <input class="span5" name="goods_promote[360tegong_title]" type="text"/>
+        <span class="comments">商品的标题，50个汉字以内[必填]</span>
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+        <span class="input-label" rel="tooltip" data-placement="top"
+              data-title="特供可以有独立的价格">特供价格</span>
+        <input class="span2" name="goods_promote[360tegong_price]" type="text"
+               pattern="^\d+(\.\d+)?$" min="0"
+               data-validation-pattern-message="特供价格无效"/>
+
+        <span class="input-label" rel="tooltip" data-placement="top"
+              data-title="输出商品的排序，数字越大排序越前">特供商品排序</span>
+        <input class="span2" name="goods_promote[360tegong_sort_order]" type="text"
+               pattern="[0-9]+"
+               data-validation-pattern-message="特供商品排序无效"/>
+        <span class="comments">数字越大排序越前</span>
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+
+        <span class="input-label">是否推荐商品</span>
+        <select class="span2 select2-simple" name="goods_promote[360tegong_recommend]"
+                data-initValue="1">
+            <option value="0">非推荐商品</option>
+            <option value="1">是推荐商品</option>
+        </select>
+
+        <span class="input-label">是否广告商品</span>
+        <select class="span2 select2-simple" name="goods_promote[360tegong_advertisement]"
+                data-initValue="0">
+            <option value="0">非广告商品</option>
+            <option value="1">是广告商品</option>
+        </select>
+
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+        <span class="input-label">特供描述</span>
+        <textarea class="span5" rows="5" name="goods_promote[360tegong_desc]"></textarea>
+        <span class="comments">商品的描述，100个汉字以内[选填]</span>
+    </div>
+</div>
+
+
+<!-- 分割条 -->
+<div class="row inline-divider">
+    <div class="divider"></div>
+    <label class="label label-info">搜狗团购导航</label>
+</div>
+<!-- /分割条 -->
+
+<div class="control-group">
+    <div class="controls">
+
+        <span class="input-label">一级分类</span>
+        <select id="goods_edit_sogoutuan_category_1" class="span2 select2-simple"
+                name="goods_promote[sogoutuan_category_1]"
+                data-initValue="4">
+            <option value="1">餐饮美食</option>
+            <option value="2">休闲娱乐</option>
+            <option value="3">生活服务</option>
+            <option value="4">网上购物</option>
+            <option value="5">酒店旅游</option>
+        </select>
+
+        <span class="input-label">二级分类</span>
+        <select id="goods_edit_sogoutuan_category_2" class="span2 select2-simple"
+                name="goods_promote[sogoutuan_category_2]"
+                data-initValue="鞋靴">
+        </select>
+
+        <span class="input-label">三级分类</span>
+        <select id="goods_edit_sogoutuan_category_3" class="span2 select2-simple"
+                name="goods_promote[sogoutuan_category_3]"
+                data-initValue="运动鞋">
+        </select>
+
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+            <span class="input-label" rel="tooltip" data-placement="top"
+                  data-title="输出商品的排序，数字越大排序越前">商品排序</span>
+        <input class="span1" name="goods_promote[sogoutuan_sort_order]" type="text" pattern="[0-9]+"
+               data-validation-pattern-message="商品排序无效"/>
+        <span class="comments">数字越大排序越前</span>
+    </div>
+</div>
+
+<!-- 分割条 -->
+<div class="row inline-divider">
+    <div class="divider"></div>
+    <label class="label label-info">QQ彩贝</label>
+</div>
+<!-- /分割条 -->
+
+<div class="control-group">
+    <div class="controls">
+
+        <span class="input-label">一级分类</span>
+        <select id="goods_edit_qqcaibei_tag" class="span2 select2-simple" name="goods_promote[qqcaibei_tag]"
+                data-initValue="5">
+            <option value="1">餐饮美食</option>
+            <option value="2">娱乐生活</option>
+            <option value="3">旅游酒店</option>
+            <option value="4">化妆品</option>
+            <option value="5">网购精品</option>
+        </select>
+
+        <span class="input-label">二级分类</span>
+        <select id="goods_edit_qqcaibei_subtag" class="span2 select2-simple" name="goods_promote[qqcaibei_subtag]"
+                data-initValue="3">
+        </select>
+
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+        <span class="input-label" rel="tooltip" data-placement="top"
+              data-title="输出商品的排序，数字越大排序越前">商品排序</span>
+        <input class="span1" name="goods_promote[qqcaibei_sort_order]" type="text" pattern="[0-9]+"
+               data-validation-pattern-message="商品排序无效"/>
+        <span class="comments">数字越大排序越前</span>
+    </div>
+</div>
+
+<!-- 分割条 -->
+<div class="row inline-divider">
+    <div class="divider"></div>
+    <label class="label label-info">人人折</label>
+</div>
+<!-- /分割条 -->
+
+<div class="control-group">
+    <div class="controls">
+        <span class="input-label" rel="tooltip" data-placement="top"
+              data-title="输出商品的排序，数字越大排序越前">商品排序</span>
+        <input class="span1" name="goods_promote[renrenzhe_sort_order]" type="text" pattern="[0-9]+"
+               data-validation-pattern-message="商品排序无效"/>
+        <span class="comments">数字越大排序越前</span>
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+        <span class="input-label">商品分类</span>
+        <input class="span2" name="goods_promote[renrenzhe_category]" type="text"/>
+    </div>
+</div>
+
+<div class="control-group">
+    <div class="controls">
+        <span class="comments">格式为"一级分类,小类"，餐饮美食, 生活娱乐, 美容保健, 酒店旅游, 其他本地服务, 食品小吃
+           化妆品, 服装饰品, 家居日用, 母婴儿童, 优惠抽奖, 其他精品网购(一级分类从中选一个)，
+套餐, 自助餐, 火锅烧烤, 蛋糕甜品, 其他美食
+           电影演出, KTV, 运动健身, 温泉会所, 休闲游乐, 摄影写真, 其他娱乐
+           美容美发, 养生按摩, 医疗体检, 其他美容保健
+           培训, 生活服务, 其他服务
+           巧克力, 水果干果, 熟食制品, 茶饮咖啡, 休闲零食, 保健品, 其他食品
+           护肤, 彩妆, 香水, 其他化妆品
+           衣裤, 鞋袜, 箱包, 眼镜, 首饰, 佩饰, 其他服饰
+           日用品, 数码家电, 家居装饰, 其他家居日用
+           母婴用品, 儿童用品, 其他用品
+           优惠券,零元团购, 其他优惠抽奖
+           汽车用品, 游戏用品, 其他用品 （小类从中选一个）</span>
+    </div>
+</div>
+
+</div>
+<!-- /商品的团购设置 -->
+
+</div>
+<!-- /左侧每个标签的具体内容 -->
+
+
+<!-- 提交按钮 -->
+<div class="row" style="text-align: center;">
+    <button type="submit" class="btn btn-success">确认提交</button>
+</div>
+<!-- /提交按钮 -->
+
+</form>
+
+</div>
+<!-- /商品编辑页面主体内容 -->
+
+</div>
+
+<!-- ====================================== /这里是页面的主体内容 ============================================ -->
+
+</div>
+<!-- /main_body -->
+
+<!-- 让 main_body 和下面的 footer 中间隔离出一段距离 -->
+<div id="main_body_tail" class="container">&nbsp;</div>
+<!-- /让 main_body 和下面的 footer 中间隔离出一段距离 -->
+
+<script type="text/javascript" src="../bootstrap-custom/js/json2.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.ie.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/validator.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/datetimepicker/datetimepicker.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/select2/select2.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/dirtyform/jquery.are-you-sure.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/kindeditor/kindeditor-min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/pretty-photo/js/jquery.prettyPhoto.js"></script>
+<script>
+    var WEB_ROOT_BASE = '/PHPStorm/bzfshop/src/manage/Public';
+    var WEB_ROOT_BASE_RES = '/PHPStorm/bzfshop/src/manage/Public/Theme/Manage';
+</script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/pretty-loader/js/jquery.prettyLoader.js"></script>
+<script type="text/javascript" src="../js/manage.js"></script>
+
+<!--[if lte IE 9]>
+<script type="text/javascript" src="../bootstrap-custom/js/iefix.js"></script>
+<![endif]-->
+
+<!-- 尾部 footer -->
+<div class="navbar navbar-fixed-bottom">
+    <div class="navbar-inner">
+        <div class="container">
+            <div class="row" style="text-align:center;">
+                <span>版权所有：bzfshop 2012-2013</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /尾部 footer -->
+
+</body>
+</html>

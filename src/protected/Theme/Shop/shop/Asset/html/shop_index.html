@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>网站首页</title>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1002.css"/>
+
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1002.ie6.css"/>
+    <![endif]-->
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/ie.css"/>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1002.fix.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/cloud-zoom/cloud-zoom.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/smartspin/smartspinner.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/select2/select2.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/pretty-loader/css/prettyLoader.css">
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/pnotify/jquery.pnotify.default.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/quake-slider/css/quake.slider.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../css/dropdown_category.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/jcarousel.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/quake-slider/quake.skin.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/shop.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/advblock.css"/>
+
+</head>
+<body>
+
+<!-- 头部，用户登录、注册栏 -->
+<div class="navbar navbar-static-top">
+    <div class="navbar-inner bzf_header_login_register">
+        <div class="container">
+            您好，欢迎来到棒主妇商城！&nbsp;&nbsp;
+            <a href="#">登陆</a>&nbsp;|
+            <a href="#">注册</a>&nbsp;|
+            <a href="#">个人中心</a>&nbsp;|
+            客服电话&nbsp;<span>010-83487737</span>
+            &nbsp;&nbsp;
+        </div>
+    </div>
+</div>
+<!-- /头部，用户登录、注册栏 -->
+
+<!-- 头部，Logo、搜索栏-->
+<div class="navbar navbar-static-top">
+    <div class="navbar-inner bzf_header_logo_search">
+        <div class="container">
+            <!-- 搜索 form -->
+            <form method="GET" action="#">
+                <div class="row">
+
+                    <span style="width:139px; height: auto">
+                        <img src="../img/header_logo.png"/>
+                    </span>
+
+                    <span class="bzf_header_search_block">
+                        <img src="../img/header_search_icon.png"/>
+                        <input type="text" name="keywords"/>
+                        <button>搜&nbsp;索</button>
+                    </span>
+
+                    <span class="bzf_header_cart_block">
+                        <a href="#">
+                            我的棒主妇
+                        </a>
+                    </span>
+
+                    <span class="bzf_header_cart_block">
+                        <span class="bzf_icon_cart_red"></span>
+                        <a href="#">
+                            购物车<span>10</span>件
+                        </a>
+                    </span>
+
+                </div>
+            </form>
+            <!-- /搜索 form -->
+        </div>
+    </div>
+</div>
+<!-- /头部，Logo、搜索栏-->
+
+<!-- 头部，菜单导航栏-->
+<div class="navbar navbar-static-top">
+    <div class="navbar-inner bzf_header_nav_menu_dropdown">
+        <div class="container">
+            <ul id="bzf_header_nav_menu" class="nav">
+                <li>
+                    <a id="bzf_header_dropdown_menu" href="#">全部商品分类<span class="bzf_header_dropdown_menu_icon"></span></a>
+                </li>
+                <li class="active">
+                    <a href="#">首页</a>
+                </li>
+                <li><a href="#">Link</a></li>
+                <li><a href="#">Link</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /头部，菜单导航栏-->
+
+<!-- 网页主体内容 -->
+<div id="main_body" class="container">
+<!-- 主题内容 row -->
+<div class="row" style="background-color: white;padding-bottom: 10px;">
+
+<!--------------------------------------------  网页主体内容  --------------------------------------------------------->
+
+<!-- 首页，总是显示商品分类 -->
+<script>
+    var bZF = {};
+    window.bZF = bZF;
+    bZF.always_show_bzf_header_dropdown_menu = true;
+</script>
+<!-- /首页，总是显示商品分类 -->
+
+<!-- 头部广告图片切换栏 -->
+<div class="row">
+
+    <!-- 左侧商品分类 -->
+    <div class="span3 bzf_shop_index_head_category_back_panel">
+
+    </div>
+    <!-- /左侧商品分类 -->
+
+    <!-- 左侧商品分类 -->
+    <div class="span9 bzf_shop_index_head_slide_image_panel">
+
+        <div class="quake-slider">
+            <div class="quake-slider-images">
+                <a target="_blank" href="javascript:">
+                    <img src="../img/placeholder_780x350_black.gif" alt=""/>
+                </a>
+                <a target="_blank" href="javascript:">
+                    <img src="../img/placeholder_780x350_gray.gif" alt=""/>
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <!-- /左侧商品分类 -->
+
+</div>
+<!-- /头部广告图片切换栏 -->
+
+
+<!-- 网站公告、店长商品推荐 -->
+<div class="row" style="padding:10px 0px;">
+
+    <!-- 网站公告 -->
+    <div class="span3">
+
+        <ul class="nav nav-tabs" style="margin-bottom: 0px;">
+            <li class="active"><a href="#bzf_shop_index_site_notice" data-toggle="tab">网站公告</a></li>
+        </ul>
+
+        <div class="tab-content bzf_shop_index_site_notice_panel">
+            <div class="tab-pane active" id="bzf_shop_index_site_notice">
+                <p>这里是网站的公告信息</p>
+
+                <p>大段大段的信息哈</p>
+            </div>
+        </div>
+
+    </div>
+    <!-- /网站公告 -->
+
+    <!-- 店长推荐商品 -->
+    <div class="span9">
+
+        <div class="row" style="font-size: 14px;font-weight: bold;padding-bottom: 10px;">
+            欢迎光临&nbsp;&nbsp;<span style="color:red;">棒主妇商城</span>&nbsp;&nbsp;
+            <span class="label label-important">店长推荐</span>
+        </div>
+
+        <div class="jcarousel-skin-goods-recommand-compact">
+            <ul>
+                <!-- 一个店长推荐商品 -->
+                <li>
+                    <div class="bzf_image_wrap">
+                        <a href="#">
+                            <img class="lazyload" src="../img/blank.gif"
+                                 data-original="../img/placeholder_160x160.gif"/>
+                        </a>
+                    </div>
+                    <div class="bzf_goods_view_goods_recommand_price_pane">
+                        <div class="market_price">
+                            原价：168元
+                        </div>
+                        <div class="shop_price">
+                            现价：<span>118元</span>
+                        </div>
+                    </div>
+                </li>
+                <!-- /一个店长推荐商品  -->
+            </ul>
+        </div>
+
+    </div>
+    <!-- 店长推荐商品 -->
+
+</div>
+<!-- /网站公告、店长商品推荐 -->
+
+
+<!-- 一个分类展示区 -->
+<div class="row bzf_shop_index_adv_block bzf_shop_index_adv_block_theme_red">
+
+    <!-- 头部标签切换 -->
+    <ul class="nav nav-tabs">
+        <li><a class="bzf_caption" href="#" onclick="return false;"><span>1F</span>女装系列</a></li>
+        <li class="active"><a href="#bzf_shop_index_adv_block_1_2" data-toggle="tab">网站公告</a></li>
+        <li><a href="#bzf_shop_index_adv_block_1_3" data-toggle="tab">网站公告</a></li>
+    </ul>
+    <!-- /头部标签切换 -->
+
+    <!-- 标签对应内容 -->
+    <div class="tab-content">
+
+        <!-- 一个广告 block 的图片区 -->
+        <div id="bzf_shop_index_adv_block_1_2" class="tab-pane active bzf_shop_index_adv_image_block">
+
+            <!-- 左侧小图片 -->
+            <div class="span3">
+                <a class="image_left" target="_blank" href="#">
+                    <img src="../img/placeholder_238x490.gif"/>
+                </a>
+            </div>
+            <!-- /左侧小图片 -->
+
+            <!-- 中间大图 -->
+            <div class="span6">
+                <a class="image_center" target="_blank" href="#">
+                    <img src="../img/placeholder_490x490.gif"/>
+                </a>
+            </div>
+            <!-- /中间大图 -->
+
+            <!-- 右侧小图片 -->
+            <div class="span3">
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+            </div>
+            <!-- /右侧小图片 -->
+
+            <!-- 下方小图片 -->
+            <div class="row">
+
+            </div>
+            <!-- 下方小图片 -->
+
+        </div>
+        <!-- /一个广告 block 的图片区 -->
+
+        <div id="bzf_shop_index_adv_block_1_3" class="tab-pane">
+            <p>测试内容</p>
+        </div>
+    </div>
+    <!-- /标签对应内容 -->
+
+</div>
+<!-- /一个分类展示区 -->
+
+<!-- 一个分类展示区 -->
+<div class="row bzf_shop_index_adv_block bzf_shop_index_adv_block_theme_yellow">
+
+    <!-- 头部标签切换 -->
+    <ul class="nav nav-tabs">
+        <li><a class="bzf_caption" href="#" onclick="return false;"><span>2F</span>女装系列</a></li>
+        <li class="active"><a href="#bzf_shop_index_adv_block_2_2" data-toggle="tab">网站公告</a></li>
+        <li><a href="#bzf_shop_index_adv_block_2_3" data-toggle="tab">网站公告</a></li>
+    </ul>
+    <!-- /头部标签切换 -->
+
+    <!-- 标签对应内容 -->
+    <div class="tab-content">
+
+        <!-- 一个广告 block 的图片区 -->
+        <div id="bzf_shop_index_adv_block_2_2" class="tab-pane active bzf_shop_index_adv_image_block">
+
+            <!-- 左侧小图片 -->
+            <div class="span3">
+                <a class="image_left" target="_blank" href="#">
+                    <img src="../img/placeholder_238x490.gif"/>
+                </a>
+            </div>
+            <!-- /左侧小图片 -->
+
+            <!-- 中间大图 -->
+            <div class="span6">
+                <a class="image_center" target="_blank" href="#">
+                    <img src="../img/placeholder_490x490.gif"/>
+                </a>
+            </div>
+            <!-- /中间大图 -->
+
+            <!-- 右侧小图片 -->
+            <div class="span3">
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+            </div>
+            <!-- /右侧小图片 -->
+
+            <!-- 下方小图片 -->
+            <div class="row">
+
+            </div>
+            <!-- 下方小图片 -->
+
+        </div>
+        <!-- /一个广告 block 的图片区 -->
+
+        <div id="bzf_shop_index_adv_block_2_3" class="tab-pane">
+            <p>测试内容</p>
+        </div>
+    </div>
+    <!-- /标签对应内容 -->
+
+</div>
+<!-- /一个分类展示区 -->
+
+<!-- 一个分类展示区 -->
+<div class="row bzf_shop_index_adv_block bzf_shop_index_adv_block_theme_blue">
+
+    <!-- 头部标签切换 -->
+    <ul class="nav nav-tabs">
+        <li><a class="bzf_caption" href="#" onclick="return false;"><span>3F</span>女装系列</a></li>
+        <li class="active"><a href="#bzf_shop_index_adv_block_3_2" data-toggle="tab">网站公告</a></li>
+        <li><a href="#bzf_shop_index_adv_block_3_3" data-toggle="tab">网站公告</a></li>
+    </ul>
+    <!-- /头部标签切换 -->
+
+    <!-- 标签对应内容 -->
+    <div class="tab-content">
+
+        <!-- 一个广告 block 的图片区 -->
+        <div id="bzf_shop_index_adv_block_3_2" class="tab-pane active bzf_shop_index_adv_image_block">
+
+            <!-- 左侧小图片 -->
+            <div class="span3">
+                <a class="image_left" target="_blank" href="#">
+                    <img src="../img/placeholder_238x490.gif"/>
+                </a>
+            </div>
+            <!-- /左侧小图片 -->
+
+            <!-- 中间大图 -->
+            <div class="span6">
+                <a class="image_center" target="_blank" href="#">
+                    <img src="../img/placeholder_490x490.gif"/>
+                </a>
+            </div>
+            <!-- /中间大图 -->
+
+            <!-- 右侧小图片 -->
+            <div class="span3">
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+            </div>
+            <!-- /右侧小图片 -->
+
+            <!-- 下方小图片 -->
+            <div class="row">
+
+            </div>
+            <!-- 下方小图片 -->
+
+        </div>
+        <!-- /一个广告 block 的图片区 -->
+
+        <div id="bzf_shop_index_adv_block_3_3" class="tab-pane">
+            <p>测试内容</p>
+        </div>
+    </div>
+    <!-- /标签对应内容 -->
+
+</div>
+<!-- /一个分类展示区 -->
+
+<!-- 一个分类展示区 -->
+<div class="row bzf_shop_index_adv_block bzf_shop_index_adv_block_theme_pink">
+
+    <!-- 头部标签切换 -->
+    <ul class="nav nav-tabs">
+        <li><a class="bzf_caption" href="#" onclick="return false;"><span>4F</span>女装系列</a></li>
+        <li class="active"><a href="#bzf_shop_index_adv_block_4_2" data-toggle="tab">网站公告</a></li>
+        <li><a href="#bzf_shop_index_adv_block_4_3" data-toggle="tab">网站公告</a></li>
+    </ul>
+    <!-- /头部标签切换 -->
+
+    <!-- 标签对应内容 -->
+    <div class="tab-content">
+
+        <!-- 一个广告 block 的图片区 -->
+        <div id="bzf_shop_index_adv_block_4_2" class="tab-pane active bzf_shop_index_adv_image_block">
+
+            <!-- 左侧小图片 -->
+            <div class="span3">
+                <a class="image_left" target="_blank" href="#">
+                    <img src="../img/placeholder_238x490.gif"/>
+                </a>
+            </div>
+            <!-- /左侧小图片 -->
+
+            <!-- 中间大图 -->
+            <div class="span6">
+                <a class="image_center" target="_blank" href="#">
+                    <img src="../img/placeholder_490x490.gif"/>
+                </a>
+            </div>
+            <!-- /中间大图 -->
+
+            <!-- 右侧小图片 -->
+            <div class="span3">
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+                <a class="image_right" target="_blank" href="#">
+                    <img src="../img/placeholder_238x158.gif"/>
+                </a>
+            </div>
+            <!-- /右侧小图片 -->
+
+            <!-- 下方小图片 -->
+            <div class="row">
+
+            </div>
+            <!-- 下方小图片 -->
+
+        </div>
+        <!-- /一个广告 block 的图片区 -->
+
+        <div id="bzf_shop_index_adv_block_4_3" class="tab-pane">
+            <p>测试内容</p>
+        </div>
+    </div>
+    <!-- /标签对应内容 -->
+
+</div>
+<!-- /一个分类展示区 -->
+
+<!--------------------------------------------  /网页主体内容  -------------------------------------------------->
+
+</div>
+<!-- /主题内容 row -->
+<div class="row" style="height: 60px;background-color: white;"></div>
+</div>
+<!-- /网页主体内容 main_body -->
+
+<!-- 底部，一堆关于我们的链接-->
+<div class="navbar navbar-static-top">
+    <div class="navbar-inner bzf_footer_introduction_panel">
+        <div class="container">
+
+            <div class="span2 list_panel">
+                <div>新手指南</div>
+                <p><a href="#">账户注册</a></p>
+
+                <p><a href="#">购物流程</a></p>
+
+                <p><a href="#">付款方式</a></p>
+
+                <p><a href="#">常见问题解答</a></p>
+            </div>
+
+            <div class="span2 list_panel">
+                <div>配送方式</div>
+                <p><a href="#">配送说明</a></p>
+
+                <p><a href="#">订单拆分</a></p>
+            </div>
+
+            <div class="span2 list_panel">
+                <div>支付方式</div>
+                <p><a href="#">在线支付</a></p>
+
+                <p><a href="#">其它支付方式</a></p>
+            </div>
+
+            <div class="span2 list_panel">
+                <div>售后服务</div>
+                <p><a href="#">退换货政策</a></p>
+
+                <p><a href="#">退换货办理流程</a></p>
+
+            </div>
+
+            <div class="span2 list_panel">
+                <div>购物保障</div>
+                <p><a href="#">免责声明</a></p>
+
+                <p><a href="#">隐私保护</a></p>
+
+                <p><a href="#">注册协议</a></p>
+
+                <p><a href="#">正品保障</a></p>
+            </div>
+
+            <div class="span2 tel_panel">
+                <p><span class="tel_icon"></span>客服热线</p>
+
+                <p>010-83487737</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- /底部，一堆关于我们的链接-->
+
+<!-- 底部，各种资格认证 -->
+<div class="container">
+    <div class="row bzf_footer_credit_panel">
+        <span><i class="bzf_icon_zhengping"></i>正品保证</span>
+        <span><i class="bzf_icon_fahuo" style="width:51px;"></i>闪电发货</span>
+        <span><i class="bzf_icon_qitian"></i>七天退换</span>
+        <span><i class="bzf_icon_money" style="width:42px;height:42px;"></i>退款保障</span>
+    </div>
+    <div class="row bzf_footer_tail">
+        <p><a href="#">诚聘英才</a> | <a href="#">品牌服饰</a> | <a href="#">客服中心</a> | <a href="#">网站地图</a> | <a
+                href="#">友情链接</a></p>
+
+        <p>棒主妇 版权所有 ©Copyright 2010-2013 All Rights Reserved</p>
+
+        <p>ICP备案：<a target="_blank" href="http://www.miit.gov.cn/">京ICP备11046600号-1</a></p>
+
+        <p class="bzf_footer_tail_credit"><span class="icon_credit"></span><span class="icon_credit1"></span>
+            <img border="0" src="http://trust.360.cn/img.php?sn=4395&amp;id=3"/>
+        </p>
+
+        <p><!-- 这里是统计代码 --></p>
+    </div>
+</div>
+<!-- /底部，各种资格认证 -->
+
+<!-- 商品分类 -->
+<div class="row navsort">
+
+<div class='row allsort'>
+
+<div class='mc'>
+
+<div class='item'>
+    <span><h3><a href="#">图书</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close'
+             onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+            <dl>
+                <dt>文艺</dt>
+                <dd>
+                    <em><a href='#'>小说</a></em>
+                    <em><a href='#'>文学</a></em>
+                    <em><a href='#'>青春文学</a></em>
+                    <em><a href='#'>传记</a></em>
+                    <em><a href='#'>艺术</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>少儿</dt>
+                <dd>
+                    <em><a href='#'>少儿</a></em>
+                    <em><a href='#'>0-2岁</a></em>
+                    <em><a href='#'>3-6岁</a></em>
+                    <em><a href='#'>7-10岁</a></em>
+                    <em><a href='#'>11-14岁</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>人文社科</dt>
+                <dd>
+                    <em><a href='#'>历史</a></em>
+                    <em><a href='#'>哲学</a></em>
+                    <em><a href='#'>国学</a></em>
+                    <em><a href='#'>政治/军事</a></em>
+                    <em><a href='#'>法律</a></em>
+                    <em><a href='#'>宗教</a></em>
+                    <em><a href='#'>心理学</a></em>
+                    <em><a href='#'>文化</a></em>
+                    <em><a href='#'>社会科学</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>经管励志</dt>
+                <dd>
+                    <em><a href='#'>经济</a></em>
+                    <em><a href='#'>金融与投资</a></em>
+                    <em><a href='#'>管理</a></em>
+                    <em><a href='#'>励志与成功</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>生活</dt>
+                <dd>
+                    <em><a href='#'>生活</a></em>
+                    <em><a href='#'>健身与保健</a></em>
+                    <em><a href='#'>家庭与育儿</a></em>
+                    <em><a href='#'>旅游</a></em>
+                    <em><a href='#'>动漫/幽默</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>科技</dt>
+                <dd>
+                    <em><a href='#'>科技</a></em>
+                    <em><a href='#'>工程</a></em>
+                    <em><a href='#'>建筑</a></em>
+                    <em><a href='#'>医学</a></em>
+                    <em><a href='#'>科学与自然</a></em>
+                    <em><a href='#'>计算机与互联网</a></em>
+                    <em><a href='#'>体育/运动</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>教育</dt>
+                <dd>
+                    <em><a href='#'>教材教辅</a></em>
+                    <em><a href='#'>教育与考试</a></em>
+                    <em><a href='#'>外语学习</a></em>
+                    <em><a href='#'>新闻出版</a></em>
+                    <em><a href='#'>语言文字</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>其它</dt>
+                <dd>
+                    <em><a href='#'>工具书</a></em>
+                    <em><a href='#'>影印版</a></em>
+                    <em><a href='#'>套装书</a></em>
+                </dd>
+            </dl>
+        </div>
+        <div class='fr'>
+            <a href="#"><img src="../img/placeholder_194x70.gif" width="194" height="70" alt=""
+                             style="margin-top:30px;"/></a>
+        </div>
+    </div>
+</div>
+
+<div class='item'>
+    <span><h3><a href="#">手机数码</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close' onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+            <dl class='fore'>
+                <dt>文艺</dt>
+                <dd>
+                    <em><a href='#'>小说</a></em>
+                    <em><a href='#'>文学</a></em>
+                    <em><a href='#'>青春文学</a></em>
+                    <em><a href='#'>传记</a></em>
+                    <em><a href='#'>艺术</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>少儿</dt>
+                <dd>
+                    <em><a href='#'>少儿</a></em>
+                    <em><a href='#'>0-2岁</a></em>
+                    <em><a href='#'>3-6岁</a></em>
+                    <em><a href='#'>7-10岁</a></em>
+                    <em><a href='#'>11-14岁</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>人文社科</dt>
+                <dd>
+                    <em><a href='#'>历史</a></em>
+                    <em><a href='#'>哲学</a></em>
+                    <em><a href='#'>国学</a></em>
+                    <em><a href='#'>政治/军事</a></em>
+                    <em><a href='#'>法律</a></em>
+                    <em><a href='#'>宗教</a></em>
+                    <em><a href='#'>心理学</a></em>
+                    <em><a href='#'>文化</a></em>
+                    <em><a href='#'>社会科学</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>经管励志</dt>
+                <dd>
+                    <em><a href='#'>经济</a></em>
+                    <em><a href='#'>金融与投资</a></em>
+                    <em><a href='#'>管理</a></em>
+                    <em><a href='#'>励志与成功</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>生活</dt>
+                <dd>
+                    <em><a href='#'>生活</a></em>
+                    <em><a href='#'>健身与保健</a></em>
+                    <em><a href='#'>家庭与育儿</a></em>
+                    <em><a href='#'>旅游</a></em>
+                    <em><a href='#'>动漫/幽默</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>教育</dt>
+                <dd>
+                    <em><a href='#'>教材教辅</a></em>
+                    <em><a href='#'>教育与考试</a></em>
+                    <em><a href='#'>外语学习</a></em>
+                    <em><a href='#'>新闻出版</a></em>
+                    <em><a href='#'>语言文字</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>科技</dt>
+                <dd>
+                    <em><a href='#'>科技</a></em>
+                    <em><a href='#'>工程</a></em>
+                    <em><a href='#'>建筑</a></em>
+                    <em><a href='#'>医学</a></em>
+                    <em><a href='#'>科学与自然</a></em>
+                    <em><a href='#'>计算机与互联网</a></em>
+                    <em><a href='#'>体育/运动</a></em>
+                </dd>
+            </dl>
+            <dl>
+                <dt>其它</dt>
+                <dd>
+                    <em><a href='#'>工具书</a></em>
+                    <em><a href='#'>影印版</a></em>
+                    <em><a href='#'>套装书</a></em>
+                </dd>
+            </dl>
+        </div>
+        <div class='fr'>
+            <img src="../img/placeholder_194x70.gif"
+                 width="194" height="70" alt="" style="margin-top:30px;"/>
+        </div>
+    </div>
+</div>
+
+<div class='item'>
+    <span><h3><a href="#">手机数码</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close' onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+
+        </div>
+        <div class='fr'>
+            <img src="../img/placeholder_194x70.gif" width="194" height="70" alt="" style="margin-top:30px;"/>
+        </div>
+    </div>
+</div>
+<div class='item'>
+    <span><h3><a href="#">手机数码</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close' onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+
+        </div>
+        <div class='fr'>
+            <img src="../img/placeholder_194x70.gif" width="194" height="70" alt="" style="margin-top:30px;"/>
+        </div>
+    </div>
+</div>
+<div class='item'>
+    <span><h3><a href="#">手机数码</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close' onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+
+        </div>
+        <div class='fr'>
+            <img src="../img/placeholder_194x70.gif" width="194" height="70" alt="" style="margin-top:30px;"/>
+        </div>
+    </div>
+</div>
+<div class='item'>
+    <span><h3><a href="#">手机数码</a></h3><s></s></span>
+
+    <div class='i-mc'>
+        <div class='close' onclick="$(this).parent().parent().removeClass('hover')"></div>
+        <div class='subitem'>
+
+        </div>
+        <div class='fr'>
+            <img src="../img/placeholder_194x70.gif" width="194" height="70" alt="" style="margin-top:30px;"/>
+        </div>
+    </div>
+</div>
+
+<div class='extra'><a href='#'>全部商品分类</a></div>
+
+</div>
+
+</div>
+
+</div>
+<!-- /商品分类 -->
+
+<!-- 页面右边悬浮框 -->
+<div id="bzf_right_float_panel" class="bzf_right_float_panel">
+    <div class="bzf_right_float_panel_block" onclick="jQuery(document).scrollTo('0px',800);">
+        <span class="icon_back_to_top"></span>
+
+        <div class="bzf_hide"
+             style="width:60px;font-weight: bold;text-align: center;line-height: 40px;">
+            返回顶部
+        </div>
+    </div>
+</div>
+<!-- /页面右边悬浮框 -->
+
+<script type="text/javascript" src="../bootstrap-custom/js/json2.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jstorage.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.ie.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/validator.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/cloud-zoom/cloud-zoom.1.0.3.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/jcarousel/jquery.jcarousel.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/smartspin/smartspinner.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/stickyPanel/jquery.stickyPanel.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/docktoright/docktoright.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/scrollTo/jquery.scrollTo.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/pnotify/jquery.pnotify.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/quake-slider/js/quake.slider.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery.lazyload.js"></script>
+
+<script type="text/javascript" src="../js/dropdown_category.js"></script>
+<!-- 定义网站的起始路径，用于 JavaScript 的 Ajax 操作调用 -->
+<script>
+    var WEB_ROOT_HOST = '{{$WEB_ROOT_HOST}}';
+    var WEB_ROOT_BASE = '{{$WEB_ROOT_BASE}}';
+    var WEB_ROOT_BASE_RES = '/PHPStorm/shopweb';
+</script>
+<!-- script type="text/javascript" src="../bootstrap-custom/plugin/pretty-loader/js/jquery.prettyLoader.js"></script -->
+<script type="text/javascript" src="../js/shop.js"></script>
+
+</body>
+</html>

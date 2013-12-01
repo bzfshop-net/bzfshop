@@ -1,0 +1,245 @@
+#!/usr/bin/env php
+<?php namespace Clip;
+
+// 加载整个工程的初始化文件
+require_once('bootstrap-console.php');
+
+/**
+ * Copyright (c) 2012 Jim Saunders <jim@jimsaunders.net>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is furnished
+ * to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+class Clip
+{
+    private static $instance;
+
+    /**
+     * @var array All loaded commands
+     */
+    private $commands = array();
+
+    /**
+     * Loads the commands into the commands array.
+     */
+    public function __construct()
+    {
+        self::$instance =& $this;
+
+        $commanddir = Config::main('directory');
+        $excludes = Config::main('exclude');
+
+        if(is_null($commanddir))
+            die('Could not find commands directory. It should be specified in the main config.');
+
+        //The directory where commands reside should be relative
+        //to the directory with the clip executable.
+        $dir = realpath(__DIR__."/{$commanddir}");
+
+        $cmdfiles = scandir($dir);
+        //Loop through each file in the commands directory
+        foreach($cmdfiles as $file)
+        {
+            //Assume that each file uses the standard '.php' file extension.
+            $command = substr($file, 0, -4);
+
+            //Ignore the unnecessary directories as commands and anything that
+            //has been marked for exclusion then attempt to include the valid ones.
+            if($file !== '.' && $file !== '..' && array_search($command, $excludes) === false && include("{$dir}/{$file}"))
+            {
+                if(class_exists($command, false))
+                {
+                    $obj = new $command;
+                    //Only load commands that use the clip command interface
+                    if($obj instanceof Command)
+                        $this->commands[$command] = $obj;
+                }
+            }
+        }
+    }
+
+    /**
+     * Outputs the help text.
+     */
+    public function help()
+    {
+        echo Config::main('help_text');
+        if(empty($this->commands))
+            render("[red] - NONE - [reset]\r\n");
+        else
+        {
+            foreach($this->commands as $key => $ignored)
+                render("[blue] - {$key}[reset]\r\n");
+        }
+        echo PHP_EOL;
+
+        return 0;
+    }
+
+    /**
+     * Executes the command specified by the name with the
+     * additional params
+     *
+     * @param string $name
+     * @param array $params
+     */
+    public function fire($name, array $params)
+    {
+        $converted = array();
+        foreach($params as $key => $param)
+        {
+            //Convert foo=bar params into key value pairs
+            $segs = explode('=', $param);
+            if(count($segs) > 1)
+                $converted[trim($segs[0])] = trim($segs[1]);
+            else
+                $converted[$key] = $param;
+        }
+        //If the command exists or is a help command run
+        //it otherwise display the general help text
+        if(array_key_exists($name, $this->commands))
+            return $this->commands[$name]->run($converted);
+        elseif($name === 'help' && array_key_exists($params[0], $this->commands))
+            $this->commands[$params[0]]->help();
+        else
+            $this->help();
+
+        return 0;
+    }
+
+    /**
+     * To get an instance of the current running Clip.
+     *
+     * @return Clip This clip instance
+     */
+    public static function &instance()
+    {
+        return self::$instance;
+    }
+}
+
+class Config
+{
+    private static $files = array();
+    public static function __callStatic($name, $params)
+    {
+        if(!array_key_exists($name, self::$files))
+            self::$files[$name] = require_once(__DIR__."/Config/{$name}.php");
+
+        if(!empty($params))
+        {
+            $values = self::$files[$name];
+            $result = array();
+            foreach($params as $param)
+                $result[] = $values[$param];
+
+            return count($result) > 1 ? $result : $result[0];
+        }
+        return array_key_exists($name, self::$files) ? self::$files[$name] : null;
+    }
+}
+
+/**
+ * Implement this interface for any command you want recognized by clip
+ */
+interface Command
+{
+    /**
+     * This method should echo out any helpful
+     * information relating to the command.
+     */
+    public function help();
+
+    /**
+     * This method will be executed when the
+     * command is called. Passing any additional
+     * parameters to the command.
+     *
+     * @param array $params additional parameters passed to the command.
+     * @return int 0 on success or an error code
+     */
+    public function run(array $params);
+}
+
+/**
+ * A special function to output styled text to the console.
+ *
+ * @param string $text The text to render styled.
+ */
+function render($text)
+{
+    $styles = Config::styles();
+    $names = implode('|', array_keys($styles));
+    preg_match_all("#(\[({$names})\])#i", $text, $matches);
+
+    $replacements = $matches[1];
+    $selections = $matches[2];
+
+    if(!empty($replacements) && !empty($selections))
+    {
+        $replacements = array_unique($replacements);
+        $selections = array_unique($selections);
+
+        foreach($replacements as $index => $replacement)
+        {
+            $color = strtolower($selections[$index]);
+            if(array_key_exists($color, $styles))
+                $text = str_ireplace($replacement, $styles[$color], $text);
+        }
+    }
+    echo $text;
+}
+
+/**
+ * A special function to gain access to the current running
+ * instance of clip.
+ *
+ * @return Clip instance
+ */
+function &instance()
+{
+    return Clip::instance();
+}
+
+//Setup an autoloader that will look in the commands directory
+//for classes to include that might not necessarily be commands
+//but are still used by commands.
+spl_autoload_register(function($class)
+{
+    $commanddir = Config::main('directory');
+
+    if(is_null($commanddir))
+        die('Could not find commands directory. It should be specified in the main config.');
+
+    //The directory where commands reside should be relative
+    //to the directory with the clip executable.
+    $dir = realpath(__DIR__."/{$commanddir}");
+
+    include("{$dir}/{$class}.php");
+});
+
+//Create a new instance of clip.
+$instance = new Clip();
+
+$offset = 2; //Accounts for script name and command name to determine parameters
+
+if(!isset($argc) || !isset($argv))
+    die('Clip must be run from the command line.');
+
+return $argc < $offset ? $instance->help() : $instance->fire($argv[$offset-1], array_slice($argv, $offset));

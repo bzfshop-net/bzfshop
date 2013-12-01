@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>网格显示显示</title>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1002.css"/>
+
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1002.ie6.css"/>
+    <![endif]-->
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/ie.css"/>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1002.fix.css"/>
+
+</head>
+<body>
+
+<!-- 信息提示区 -->
+<div class="container" style="margin-top:10px;margin-bottom:0px;">
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">
+            &times;
+        </button>
+        <strong>注意：</strong> 这里是消息通知区
+    </div>
+</div>
+<!-- 信息提示区 -->
+
+<!-- 网页主体内容 -->
+<div id="main_body" class="container">
+
+    <!--------------------------------------------  网页主体内容  --------------------------------------------------------->
+
+    <style>
+
+        .span1, .span2, .span3, .span4, .span5, .span6, .span7, .span8, .span9, .span10, .span11, .span12 {
+            margin-left: 6px;
+        }
+
+            /*** 显示网格，用于调试使用 ***/
+        .show-grid [class*="span"] {
+            background-color: #3e3e3e;
+            border: none;
+            line-height: 40px;
+            min-height: 40px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+    </style>
+
+    <div class="row">
+        <div class="span12"
+             style="margin-left: 0px; border-radius: 3px 3px 3px 3px;border: solid 1px #000000;line-height: 40px;min-height: 40px;text-align: center;">
+            12 列网格，总宽度 1002px = 12 * 78px + 11 * 6px，边框为 1px, 下面显示为 格子宽度
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="row show-grid">
+        <div class="span1" style="margin-left: 0px;">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+        <div class="span1">1</div>
+    </div>
+
+    <br/>
+
+    <div class="row show-grid">
+        <div class="span12" style="margin-left: 0px;">下面是 2 列布局</div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="span1" style="margin-left: 0px;">1</div>
+        <div class="span11">11</div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="span2" style="margin-left: 0px;">2</div>
+        <div class="span10">10</div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="span3" style="margin-left: 0px;">3</div>
+        <div class="span9">9</div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="span4" style="margin-left: 0px;">4</div>
+        <div class="span8">8</div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="span5" style="margin-left: 0px;">5</div>
+        <div class="span7">7</div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="span6" style="margin-left: 0px;">6</div>
+        <div class="span6">6</div>
+    </div>
+
+    <br/>
+
+    <div class="row show-grid">
+        <div class="span12" style="margin-left: 0px;">下面是 3 列布局</div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="span4" style="margin-left: 0px;">4</div>
+        <div class="span4">4</div>
+        <div class="span4">4</div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="span3" style="margin-left: 0px;">3</div>
+        <div class="span4">4</div>
+        <div class="span5">5</div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="span3" style="margin-left: 0px;">3</div>
+        <div class="span3">3</div>
+        <div class="span6">6</div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="span2" style="margin-left: 0px;">2</div>
+        <div class="span4">4</div>
+        <div class="span6">6</div>
+    </div>
+
+
+    <br/>
+
+    <div class="row show-grid">
+        <div class="span12" style="margin-left: 0px;">下面是 4 列布局</div>
+    </div>
+
+    <div class="row show-grid">
+        <div class="span3" style="margin-left: 0px;">3</div>
+        <div class="span3">3</div>
+        <div class="span3">3</div>
+        <div class="span3">3</div>
+    </div>
+
+    <!--------------------------------------------  /网页主体内容  -------------------------------------------------->
+
+</div>
+<!-- /网页主体内容 main_body -->
+
+<script type="text/javascript" src="../bootstrap-custom/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.ie.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/validator.js"></script>
+
+<!--[if lte IE 9]>
+<script type="text/javascript" src="../bootstrap-custom/js/iefix.js"></script>
+<![endif]-->
+
+
+<script>
+    $('div.show-grid div,div.show-grid-noborder div').each(function (index, elem) {
+        var innerWidth = $(elem).innerWidth();
+
+        $(elem).text($(elem).text() + '--' + innerWidth + 'px');
+    });
+</script>
+
+</body>
+</html>

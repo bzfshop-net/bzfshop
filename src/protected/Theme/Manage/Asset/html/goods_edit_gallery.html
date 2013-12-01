@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>商品编辑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1206.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/datetimepicker/datetimepicker.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/select2/select2.css"/>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/pretty-photo/css/prettyPhoto.css">
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/pretty-loader/css/prettyLoader.css">
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/plugin/notify/css/bootstrap-notify.css">
+    <link rel="stylesheet" type="text/css"
+          href="../bootstrap-custom/plugin/notify/css/styles/alert-notification-animations.css">
+
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1206.ie6.css"/>
+    <![endif]-->
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/ie.css"/>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="../bootstrap-custom/css/bootstrap-1206.fix.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/manage.css"/>
+</head>
+
+<body>
+<!-- 用 JS 设置页面的导航菜单 -->
+<script>
+    window.bz_set_nav_status = []; // 用于设置导航栏状态的数组，里面是很多设置 function()
+    window.bz_set_breadcrumb_status = []; // 用于设置 breadcrumb 的数组，里面是很多设置 function()
+</script>
+<!-- /用 JS 设置页面的导航菜单 -->
+
+<!-- 顶部导航菜单 -->
+<div id="system_top_navbar" class="navbar navbar-static-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#">棒主妇</a>
+            <ul class="nav">
+                <li><a href="#">账号[admin]</a></li>
+                <li class="active"><a href="#">商品管理</a></li>
+                <li><a href="#">订单管理</a></li>
+                <li><a href="#">账号管理</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /顶部导航菜单 -->
+
+<!-- 信息提示区 -->
+<div class="container" style="margin-top:10px;margin-bottom:0px;">
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">
+            &times;
+        </button>
+        <div class="flashMessage">
+            <strong>注意：</strong> 这里是消息通知区
+        </div>
+    </div>
+</div>
+<!-- 信息提示区 -->
+
+<!-- JS 程序的消息通知，比如加载网络失败之类 -->
+<div class='notifications center'></div>
+<!-- /JS 程序的消息通知，比如加载网络失败之类 -->
+
+<!-- main_body -->
+<div id="main_body" class="container">
+
+    <div id="main_body_breadcrumb" class="row">
+        <ul class="breadcrumb">
+            <li><a href="#">Home</a> <span class="divider">/</span></li>
+            <li><a href="#">Library</a> <span class="divider">/</span></li>
+            <li><a href="#">Data</a> <span class="divider">/</span></li>
+        </ul>
+    </div>
+
+    <!-- ====================================== 这里是页面的主体内容 ============================================ -->
+
+    <div class="row bz_basic_content_block bz_box_shadow" style="padding:10px 10px 10px 10px;">
+
+        <!-- 页面上方导航条 -->
+        <div class="row">
+            <ul class="nav nav-tabs">
+                <li class="dropdown active">
+                    <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="#">商品列表<b
+                            class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">在线商品</a></li>
+                        <li><a href="#">下线商品</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- /页面上方导航条 -->
+
+        <!-- 商品编辑页面主体内容 -->
+        <div class="tabbable tabs-left">
+
+            <!-- 编辑页面左侧标签导航 -->
+            <ul class="nav nav-tabs">
+                <li class=""><a href="/">商品信息</a></li>
+                <li class="active"><a href="/">商品相册</a></li>
+                <li class=""><a href="#">团购信息</a></li>
+                <li class=""><a href="/">推广渠道</a></li>
+            </ul>
+            <!-- /编辑页面左侧标签导航 -->
+
+
+            <!-- 左侧每个标签的具体内容 -->
+            <div class="tab-content">
+                <div class="tab-pane well active">
+
+                    <!-- 商品图片集展示 -->
+                    <div id="goods_edit_gallery_panel" class="row" data-toggle="modal-gallery"
+                         data-target="#modal-gallery" data-selector="div.gallery-item">
+
+                        <!-- 图片上传 -->
+                        <div class="row">
+                            <button id="goods_edit_gallery_upload_image_batch" class="btn btn-success"
+                                    style="margin-left: 10px;">批量上传图片
+                            </button>
+                            <input type="hidden" id="goods_edit_gallery_upload_image_batch_goodsid" value="100"/>
+
+                            <form class="form-inline pull-right" style="display:inline-block;" method="POST"
+                                  action="Gallery/Fetch?goodsId=100">
+                                <div class="control-group operate-panel" style="margin-top: 5px;">
+                                    <div class="controls">
+                                        <label class="label label-info">网络图片地址</label>
+                                        <input type="text" class="span5" name="image_url" rel="tooltip"
+                                               data-placement="top"
+                                               data-title="请输入以 http:// 开头的绝对地址"
+                                               data-validation-required-message="网络地址不能为空"/>
+                                        <button type="submit" class="btn btn-primary">从网络抓取</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- 图片上传 -->
+
+                        <!-- 一张图片 -->
+                        <div class="span2 thumbnail gallery-item">
+                            <!-- 图片 -->
+                            <div class="image-container">
+                                <a rel="prettyPhoto[gallery]"
+                                   href="http://img.bangzhufu.com/static/team/201212/29/13567754396512.jpg">
+                                    <img class="lazyload" width="196"
+                                         src="../img/blank.gif"
+                                         alt="这里是图片描述"
+                                         data-original="http://img.bangzhufu.com/static/team/201212/29/13567754396512.jpg"/>
+                                </a>
+                            </div>
+                            <!-- 操作区 -->
+                            <form method="POST" action="Gallery/Update">
+                                <div class="control-group operate-panel" style="margin-top: 5px;">
+                                    <div class="controls">
+                                        <input class="span2" type="text" rel="tooltip" data-placement="top"
+                                               data-title="图片的描述信息"/>
+                                        <input type="text" class="image-sort-order" rel="tooltip" data-placement="top"
+                                               pattern="[0-9]+"
+                                               data-validation-pattern-message="排序必须是数字"
+                                               data-title="图片的排序，数字越大排序越前"/>
+                                        <button type="subit" onclick="return confirm('你确定要修改吗？')"
+                                                class="btn btn-mini btn-success">提交修改
+                                        </button>
+                                        <a href="/" onclick="return confirm('你确定要删除图片吗？')"
+                                           class="btn btn-mini btn-danger">删除图片</a>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /一张图片 -->
+
+                        <!-- 一张图片 -->
+                        <div class="span2 thumbnail gallery-item">
+                            <!-- 图片 -->
+                            <div class="image-container">
+                                <a rel="prettyPhoto[gallery]"
+                                   href="http://img.bangzhufu.com/static/team/201211/16/13530500553214.jpg">
+                                    <img class="lazyload" width="196"
+                                         src="../img/blank.gif"
+                                         alt="这里是图片描述"
+                                         data-original="http://img.bangzhufu.com/static/team/201211/16/13530500553214.jpg"/>
+                                </a>
+                            </div>
+                            <!-- 操作区 -->
+                            <form method="POST" action="Gallery/Update">
+                                <div class="control-group operate-panel" style="margin-top: 5px;">
+                                    <div class="controls">
+                                        <input class="span2" type="text" rel="tooltip" data-placement="top"
+                                               data-title="图片的描述信息"/>
+                                        <input type="text" class="image-sort-order" rel="tooltip" data-placement="top"
+                                               pattern="[0-9]+"
+                                               data-validation-pattern-message="排序必须是数字"
+                                               data-title="图片的排序，数字越大排序越前"/>
+                                        <button type="subit" onclick="bZF.showMessage('你确定要修改吗？'); return false;"
+                                                class="btn btn-mini btn-success">提交修改
+                                        </button>
+                                        <a href="/" onclick="return confirm('你确定要删除图片吗？')"
+                                           class="btn btn-mini btn-danger confirm-check">删除图片</a>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /一张图片 -->
+
+                    </div>
+
+                </div>
+                <!-- /左侧每个标签的具体内容 -->
+
+            </div>
+            <!-- /商品编辑页面主体内容 -->
+
+        </div>
+
+    </div>
+
+    <!-- ====================================== /这里是页面的主体内容 ============================================ -->
+
+</div>
+<!-- /main_body -->
+
+<!-- 让 main_body 和下面的 footer 中间隔离出一段距离 -->
+<div id="main_body_tail" class="container">&nbsp;</div>
+<!-- /让 main_body 和下面的 footer 中间隔离出一段距离 -->
+
+<script type="text/javascript" src="../bootstrap-custom/js/json2.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/jstorage.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/bootstrap.ie.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/js/validator.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/datetimepicker/datetimepicker.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/select2/select2.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/dirtyform/jquery.are-you-sure.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/kindeditor/kindeditor-min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/pretty-photo/js/jquery.prettyPhoto.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/bootbox/bootbox.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/hover-dropdown/hover-dropdown.min.js"></script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/notify/js/bootstrap-notify.js"></script>
+<script>
+    var WEB_ROOT_BASE = '/PHPStorm/bzfshop/src/manage/Public';
+    var WEB_ROOT_BASE_RES = '/PHPStorm/bzfshop/src/manage/Public/Theme/Manage';
+    var WEB_COOKIE_AUTH_KEY = 'bzfshop_auth_cookie_key';
+</script>
+<script type="text/javascript" src="../bootstrap-custom/plugin/pretty-loader/js/jquery.prettyLoader.js"></script>
+<script type="text/javascript" src="../js/manage.js"></script>
+
+<!--[if lte IE 9]>
+<script type="text/javascript" src="../bootstrap-custom/js/iefix.js"></script>
+<![endif]-->
+
+<!-- 尾部 footer -->
+<div class="navbar navbar-fixed-bottom">
+    <div class="navbar-inner">
+        <div class="container">
+            <div class="row" style="text-align:center;">
+                <span>版权所有：bzfshop 2012-2013</span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /尾部 footer -->
+
+</body>
+</html>

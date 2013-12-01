@@ -1,0 +1,53 @@
+/************ 广告 slider image 设置 ************/
+.theme_shop_slider_image_container {
+    margin-top: 10px;
+}
+
+.theme_shop_slider_image_toolbar {
+    padding-top: 120px;
+}
+
+.theme_shop_slider_image_toolbar button {
+    display: block;
+    margin: 5px 5px;
+}
+
+#theme_shop_slider_image_container_clone {
+    display: none;
+}
+
+/************ 首页广告，slider image 设置 ************/
+div.theme_shop_slider_image_wrapper {
+    width: 780px;
+    height: 350px;
+    overflow: hidden;
+}
+
+.theme_shop_slider_image_wrapper img {
+    width: 780px;
+    height: 350px;
+}
+
+/************ /Goods/Search 页面，slider image 设置 ************/
+div.theme_shop_goods_search_slider_image_wrapper {
+    width: 1000px;
+    height: 250px;
+    overflow: hidden;
+}
+
+.theme_shop_goods_search_slider_image_wrapper img {
+    width: 1000px;
+    height: 250px;
+}
+
+/************ /Goods/View 页面，slider image 设置 ************/
+div.theme_shop_goods_view_slider_image_wrapper {
+    width: 1000px;
+    height: 250px;
+    overflow: hidden;
+}
+
+.theme_shop_goods_view_slider_image_wrapper img {
+    width: 1000px;
+    height: 250px;
+}
