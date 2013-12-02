@@ -66,4 +66,13 @@ B2C商城给大家使用，方便每一个人可以很容易的搭建属于自�
 	经过 submodule update 之后你就取得了 bootstrap-custom 工程的代码，这样整个工程代码就完整了
 	
 	
+### 技术支持
+
+ 1. 棒主妇开源官方网站 http://www.bzfshop.net
+ 
+ 2. Google Group 讨论组 https://groups.google.com/d/forum/bzfshop-group
+ 
+ 3. QQ群 134820563 
+ 
+
 	
