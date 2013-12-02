@@ -8,7 +8,7 @@ Here is a online demo for your interest;
 
 Shop: http://demo.bzfshop.net  
 
-Mobile: http://demo.bzfshop.net  
+Mobile: http://demo.bzfshop.net/mobile  
 
 Manage: http://demo.bzfshop.net/manage   
 username: admin   password:123456
