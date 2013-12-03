@@ -132,13 +132,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
             if (!$_template->source->uncompiled) {
                 $_smarty_tpl = $_template;
                 if ($_template->source->recompiled) {
-                    if ($this->smarty->debugging) {
-                        Smarty_Internal_Debug::start_compile($_template);
-                    }
                     $code = $_template->compiler->compileTemplate($_template);
-                    if ($this->smarty->debugging) {
-                        Smarty_Internal_Debug::end_compile($_template);
-                    }
                     if ($this->smarty->debugging) {
                         Smarty_Internal_Debug::start_render($_template);
                     }
@@ -153,6 +147,11 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
                 } else {
                     if (!$_template->compiled->exists || ($_template->smarty->force_compile && !$_template->compiled->isCompiled)) {
                         $_template->compileTemplateSource();
+                        $code = file_get_contents($_template->compiled->filepath);
+                        eval("?>" . $code);
+                        unset($code);
+                        $_template->compiled->loaded = true;
+                        $_template->compiled->isCompiled = true;
                     }
                     if ($this->smarty->debugging) {
                         Smarty_Internal_Debug::start_render($_template);
@@ -162,7 +161,10 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
                         if ($_template->mustCompile) {
                             // recompile and load again
                             $_template->compileTemplateSource();
-                            include($_template->compiled->filepath);
+                            $code = file_get_contents($_template->compiled->filepath);
+                            eval("?>" . $code);
+                            unset($code);
+                            $_template->compiled->isCompiled = true;
                         }
                         $_template->compiled->loaded = true;
                     } else {
@@ -235,7 +237,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
                 // loop over items, stitch back together
                 foreach ($cache_split as $curr_idx => $curr_split) {
                     // escape PHP tags in template content
-                    $output .= preg_replace('/(<%|%>|<\?php|<\?|\?>)/', '<?php echo \'$1\'; ?>', $curr_split);
+                    $output .= preg_replace('/(<%|%>|<\?php|<\?|\?>)/', "<?php echo '\$1'; ?>\n", $curr_split);
                     if (isset($cache_parts[0][$curr_idx])) {
                         $_template->properties['has_nocache_code'] = true;
                         // remove nocache tags from cache output
@@ -525,8 +527,8 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
         // test if allowed methodes callable
         if (!empty($allowed)) {
             foreach ((array) $allowed as $method) {
-                if (!is_callable(array($object_impl, $method))) {
-                    throw new SmartyException("Undefined method '$method' in registered object");
+                if (!is_callable(array($object_impl, $method)) && !property_exists($object_impl, $method)) {
+                    throw new SmartyException("Undefined method or property '$method' in registered object");
                 }
             }
         }
