@@ -177,9 +177,10 @@ class SQL extends \PDO {
 			}
 			if ($log){
                 // QiangYu
-				$this->sqlClause = (empty($cached)?'':'[CACHED] ') . preg_replace($keys,$vals,$cmd,1);
+				$this->sqlClause = preg_replace($keys,$vals,$cmd,1);
 				$this->log.=date('r').' ('.
 					sprintf('%.1f',1e3*(microtime(TRUE)-$now)).'ms) '.
+                    (empty($cached)?'':'[CACHED] ') .
                     $this->sqlClause.PHP_EOL;
             }
 		}
