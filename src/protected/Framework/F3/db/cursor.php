@@ -16,7 +16,7 @@
 namespace DB;
 
 //! Simple cursor implementation
-abstract class Cursor extends \Magic implements \Iterator {
+abstract class Cursor extends \Magic implements \Iterator {  // QiangYu
 
 	//@{ Error messages
 	const
@@ -27,7 +27,9 @@ abstract class Cursor extends \Magic implements \Iterator {
 		//! Query results
 		$query=array(),
 		//! Current position
-		$ptr=0;
+		$ptr=0,
+		//! Event listeners
+		$trigger=array();
 
 	/**
 	*	Return records (array of mapper objects) that match criteria
@@ -70,8 +72,8 @@ abstract class Cursor extends \Magic implements \Iterator {
 
 	/**
 	*	Return array containing subset of records matching criteria,
-	*	total number of records in superset, number of subsets available,
-	*	and actual subset position
+	*	total number of records in superset, specified limit, number of
+	*	subsets available, and actual subset position
 	*	@return array
 	*	@param $pos int
 	*	@param $size int
@@ -79,7 +81,7 @@ abstract class Cursor extends \Magic implements \Iterator {
 	*	@param $options array
 	**/
 	function paginate($pos=0,$size=10,$filter=NULL,array $options=NULL) {
-		$total=$this->count($filter,$options);
+		$total=$this->count($filter);
 		$count=ceil($total/$size);
 		$pos=max(0,min($pos,$count-1));
 		return array(
@@ -90,6 +92,7 @@ abstract class Cursor extends \Magic implements \Iterator {
 				)
 			),
 			'total'=>$total,
+			'limit'=>$size,
 			'count'=>$count,
 			'pos'=>$pos<$count?$pos:0
 		);
@@ -106,25 +109,50 @@ abstract class Cursor extends \Magic implements \Iterator {
 			$this->skip(0)?$this->query[$this->ptr=0]:FALSE;
 	}
 
+	/**
+	*	Returns cross-references to another mapper
+	*	@return array|FALSE
+	*	@param $mapper object
+	*	@param $filter string|array
+	*	@param $options array
+	*	@param $ttl int
+	**/
+	function xref($mapper,$filter=NULL,array $options=NULL,$ttl=0) {
+		return $mapper->find($filter,$options,$ttl);
+	}
+
+	/**
+	*	Return first cross-reference to another mapper
+	*	@return object|FALSE
+	*	@param $mapper object
+	*	@param $filter string|array
+	*	@param $options array
+	*	@param $ttl int
+	**/
+	function xrefone($mapper,$filter=NULL,array $options=NULL,$ttl=0) {
+		return ($data=$this->xref($mapper,$filter,$options,$ttl))?
+			$data[0]:FALSE;
+	}
+
     /** QiangYu implements Iterator Interface **/
-	function key() {
+    function key() {
         if ($this->valid()) {
             return $this->ptr;
         }
         return null;
     }
 
-	function rewind() {
+    function rewind() {
         $this->ptr = 0;
-	}
+    }
 
-	function current() {
+    function current() {
         return $this->query[$this->ptr];
     }
 
-	function valid() {
-        	return $this->ptr < count($this->query);
-	}
+    function valid() {
+        return $this->ptr < count($this->query);
+    }
     /** /QiangYu implements Iterator Interface **/
 
 	/**
@@ -192,6 +220,38 @@ abstract class Cursor extends \Magic implements \Iterator {
 		$this->query=array_slice($this->query,0,$this->ptr,TRUE)+
 			array_slice($this->query,$this->ptr,NULL,TRUE);
 		$this->ptr=0;
+	}
+
+	/**
+	*	Define onload trigger
+	*	@return closure
+	**/
+	function onload($func) {
+		return $this->trigger['load']=$func;
+	}
+
+	/**
+	*	Define oninsert trigger
+	*	@return closure
+	**/
+	function oninsert($func) {
+		return $this->trigger['insert']=$func;
+	}
+
+	/**
+	*	Define onupdate trigger
+	*	@return closure
+	**/
+	function onupdate($func) {
+		return $this->trigger['update']=$func;
+	}
+
+	/**
+	*	Define onerase trigger
+	*	@return closure
+	**/
+	function onerase($func) {
+		return $this->trigger['erase']=$func;
 	}
 
 	/**

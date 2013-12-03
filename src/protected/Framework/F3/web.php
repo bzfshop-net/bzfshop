@@ -69,7 +69,7 @@ class Web extends Prefab {
 				'wav'=>'audio/wav',
 				'xls'=>'application/vnd.ms-excel',
 				'xml'=>'application/xml',
-				'zip'=>'application/zip'
+				'zip'=>'application/x-zip-compressed'
 			);
 			foreach ($map as $key=>$val)
 				if (preg_match('/'.$key.'/',strtolower($ext[0])))
@@ -181,15 +181,15 @@ class Web extends Prefab {
 				if (empty($file['name']))
 					continue;
 				$base=basename($file['name']);
-				$dst=$dir.
+				$file['name']=$dir.
 					($slug && preg_match('/(.+?)(\.\w+)?$/',$base,$parts)?
 						($this->slug($parts[1]).
 						(isset($parts[2])?$parts[2]:'')):$base);
-				$out[$dst]=!$file['error'] &&
-					$file['type']==$this->mime($file['name']) &&
-					(!file_exists($dst) || $overwrite) &&
-					(!$func || $fw->call($func,array($file))) &&
-					move_uploaded_file($file['tmp_name'],$dst);
+				$out[$file['name']]=!$file['error'] &&
+					is_uploaded_file($file['tmp_name']) &&
+					(!file_exists($file['name']) || $overwrite) &&
+					(!$func || $fw->call($func,$file)!==FALSE) &&
+					move_uploaded_file($file['tmp_name'],$file['name']);
 			}
 		}
 		return $out;
@@ -301,11 +301,13 @@ class Web extends Prefab {
 		$headers=array();
 		$body='';
 		$parts=parse_url($url);
+		$empty=empty($parts['port']);
 		if ($parts['scheme']=='https') {
 			$parts['host']='ssl://'.$parts['host'];
-			$parts['port']=443;
+			if ($empty)
+				$parts['port']=443;
 		}
-		else
+		elseif ($empty)
 			$parts['port']=80;
 		if (empty($parts['path']))
 			$parts['path']='/';
@@ -595,7 +597,6 @@ class Web extends Prefab {
 								}
 								continue;
 							}
-                            /*  QiangYu  不规范的 CSS, JS 会导致错误，比如 JS 缺少 ;，我们干脆就不处理空格了
 							if (ctype_space($src[$ptr])) {
 								if ($ptr+1<strlen($src) &&
 									preg_match('/[\w'.($ext[0]=='css'?
@@ -605,7 +606,7 @@ class Web extends Prefab {
 									$data.=' ';
 								$ptr++;
 								continue;
-							}*/
+							}
 							$data.=$src[$ptr];
 							$ptr++;
 						}
@@ -795,7 +796,7 @@ if (!function_exists('gzdecode')) {
 			mkdir($tmp,Base::MODE,TRUE);
 		file_put_contents($file=$tmp.'/'.
 			$fw->hash($fw->get('ROOT').$fw->get('BASE')).'.'.
-			$fw->hash(uniqid()).'.gz',$str,LOCK_EX);
+			$fw->hash(uniqid(NULL,TRUE)).'.gz',$str,LOCK_EX);
 		ob_start();
 		readgzfile($file);
 		$out=ob_get_clean();

@@ -133,9 +133,9 @@ class SqlMapper extends \DB\SQL\Mapper
      *
      * @return 符合查询条件的第一条记录
      *
-     * @param array $filter    查询条件，比如 array('name=? and age >?', 'xxx',18)
-     * @param array $options   选项条件，比如 array('group'=>NULL,'order'=>NULL,'limit'=>0,    'offset'=>0)
-     * @param int   $ttl       缓存时间
+     * @param array $filter  查询条件，比如 array('name=? and age >?', 'xxx',18)
+     * @param array $options 选项条件，比如 array('group'=>NULL,'order'=>NULL,'limit'=>0,    'offset'=>0)
+     * @param int   $ttl     缓存时间
      * */
     function loadOne($filter = null, array $options = null, $ttl = 0)
     {
@@ -171,10 +171,10 @@ class SqlMapper extends \DB\SQL\Mapper
     /**
      * 支持从 数组 中复制相应字段
      *
-     * @param mixed $src  可以是字符串，比如 'POST'，那么 $f3 会自动从 $_POST[] 复制，
+     * @param mixed $src     可以是字符串，比如 'POST'，那么 $f3 会自动从 $_POST[] 复制，
      *                       也可以是 array(...)，自动从这个数组中复制
      * */
-    public function copyFrom($src)
+    public function copyFrom($src, $func = null)
     {
         global $f3;
 
@@ -184,7 +184,7 @@ class SqlMapper extends \DB\SQL\Mapper
             $f3->set($randomKeyName, $src);
         }
 
-        parent::copyfrom($randomKeyName);
+        parent::copyfrom($randomKeyName, $func);
 
         if ($src != $randomKeyName) {
             $f3->clear($randomKeyName);
@@ -196,11 +196,11 @@ class SqlMapper extends \DB\SQL\Mapper
      *
      * @return array 普通的 PHP 数组
      *
-     * @param array  $tableArray  表名列表，格式为 array('user','credit') 或者 array('user'=>'u','credit')
-     * @param string $fields      字段列表，比如 'u.name, credit.money' 这里 u 和前面的 $tableArray 中的值对应
-     * @param array  $filter      查询条件，比如 array('u.user = ?','xxx')
-     * @param array  $options     比如 array('group' => 'gender', 'order'=>'age desc','limit' => 10)
-     * @param int    $ttl         查询结果缓存多少时间
+     * @param array  $tableArray 表名列表，格式为 array('user','credit') 或者 array('user'=>'u','credit')
+     * @param string $fields     字段列表，比如 'u.name, credit.money' 这里 u 和前面的 $tableArray 中的值对应
+     * @param array  $filter     查询条件，比如 array('u.user = ?','xxx')
+     * @param array  $options    比如 array('group' => 'gender', 'order'=>'age desc','limit' => 10)
+     * @param int    $ttl        查询结果缓存多少时间
      */
     function selectComplex(array $tableArray, $fields = '*', $filter = null, array $options = null, $ttl = 0)
     {
@@ -261,10 +261,10 @@ class SqlMapper extends \DB\SQL\Mapper
      *
      * @return int 返回记录数
      *
-     * @param array $tableArray  表名列表，格式为 array('user','credit') 或者 array('user'=>'u','credit')
-     * @param array $filter      查询条件，比如 array('u.user = ?','xxx')
-     * @param array $options     目前不支持 having 查询，留待以后扩展
-     * @param int   $ttl         查询结果缓存多少时间
+     * @param array $tableArray 表名列表，格式为 array('user','credit') 或者 array('user'=>'u','credit')
+     * @param array $filter     查询条件，比如 array('u.user = ?','xxx')
+     * @param array $options    目前不支持 having 查询，留待以后扩展
+     * @param int   $ttl        查询结果缓存多少时间
      */
     public function selectCount(array $tableArray, $filter = null, $options = null, $ttl = 0)
     {
@@ -276,8 +276,8 @@ class SqlMapper extends \DB\SQL\Mapper
 
     /**
      *
-     * @param mixed $table  数据表的名字，如果是单个表，可以是 'user'，多个表可以是 array('user', 'user_info' => 'ui')
-     * @param int   $ttl    缓存多少秒
+     * @param mixed $table 数据表的名字，如果是单个表，可以是 'user'，多个表可以是 array('user', 'user_info' => 'ui')
+     * @param int   $ttl   缓存多少秒
      *
      * */
     function __construct($table, $ttl = 600)
@@ -290,7 +290,7 @@ class SqlMapper extends \DB\SQL\Mapper
         }
 
         if (null == $table) {
-            return parent::__construct($dbEngine, null, $ttl);
+            return parent::__construct($dbEngine, null, null, $ttl);
         }
 
         // 多表联合查询
@@ -303,12 +303,12 @@ class SqlMapper extends \DB\SQL\Mapper
                 }
                 $tableArray[] = static::tableName($value);
             }
-            return parent::__construct($dbEngine, $tableArray, $ttl);
+            return parent::__construct($dbEngine, $tableArray, null, $ttl);
         }
 
         // 单表查询
         if (is_string($table)) {
-            parent::__construct($dbEngine, static::tableName($table), $ttl);
+            parent::__construct($dbEngine, static::tableName($table), null, $ttl);
         }
 
     }
