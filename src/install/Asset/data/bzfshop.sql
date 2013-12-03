@@ -839,7 +839,7 @@ INSERT INTO `bzf_meta` VALUES(5001, 0, 'plugin_option', 'active_plugin_array', N
 INSERT INTO `bzf_meta` VALUES(5723, 0, 'plugin_option', '0b3b9e3cd023a861a9ae033ed8aefa35_seo_description', NULL, NULL, NULL, '棒主妇开源商城演示 - 棒主妇商城的开源项目', 0, 1);
 INSERT INTO `bzf_meta` VALUES(5004, 0, 'plugin_option', 'install_theme_array', NULL, NULL, NULL, '{"2":"Supplier","3":"Shop","4":"Manage","7":"Mobile"}', 0, 1);
 INSERT INTO `bzf_meta` VALUES(5005, 0, 'plugin_option', 'system_groupon_theme', NULL, NULL, NULL, NULL, 0, 1);
-INSERT INTO `bzf_meta` VALUES(5006, 0, 'plugin_option', 'system_manage_theme', NULL, NULL, NULL, NULL, 0, 1);
+INSERT INTO `bzf_meta` VALUES(5006, 0, 'plugin_option', 'system_manage_theme', NULL, NULL, NULL, 'Manage', 0, 1);
 INSERT INTO `bzf_meta` VALUES(5007, 0, 'plugin_option', 'system_supplier_theme', NULL, NULL, NULL, 'Supplier', 0, 1);
 INSERT INTO `bzf_meta` VALUES(5008, 0, 'plugin_option', 'system_mobile_theme', NULL, NULL, NULL, 'Mobile', 0, 1);
 INSERT INTO `bzf_meta` VALUES(5009, 67, 'privilege_item', 'manage_goods_attrgroup_listattrgroup', '查看商品类型列表', NULL, '查看商品类型列表', NULL, 0, 1);

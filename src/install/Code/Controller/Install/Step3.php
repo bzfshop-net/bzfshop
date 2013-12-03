@@ -103,6 +103,12 @@ class Step3 extends \Controller\BaseController
                     'sysConfig[db_password]="' . $dbPassword . '"',
                     $fileContent
                 );
+            $fileContent =
+                preg_replace(
+                    '/CACHE="[^"]*"/',
+                    'CACHE=""',
+                    $fileContent
+                );
             file_put_contents($filePath, $fileContent);
 
             // 更新配置文件 manage-prod.cfg
