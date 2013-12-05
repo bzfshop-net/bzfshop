@@ -70,7 +70,7 @@ $smarty->escape_html = true;
 // Smarty 严重安全漏洞，由于 smarty 不会过滤 <script language="php">phpinfo();</php> 这样的代码，我们只能自己过滤
 function smarty_helper_security_output_filter($source, Smarty_Internal_Template $smartyTemplate)
 {
-    return preg_replace('/<script[ ]+language[^>]*>(.*?)<\/script>/is', "", $source);
+    return preg_replace('/<script[^>]*language[^>]*>(.*?)<\/script>/is', "", $source);
 }
 
 $smarty->registerFilter('output', 'smarty_helper_security_output_filter');
