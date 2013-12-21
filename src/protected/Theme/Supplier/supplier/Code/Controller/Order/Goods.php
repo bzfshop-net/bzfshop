@@ -85,7 +85,7 @@ class Goods extends \Controller\AuthController
         $authSupplierUser = AuthHelper::getAuthUser();
 
         // 供货商只能查看自己商品对应的订单
-        $searchFormQuery['suppliers_id'] = intval($authSupplierUser['suppliers_id']);
+        $searchFormQuery['og.suppliers_id'] = intval($authSupplierUser['suppliers_id']);
 
         $searchParamArray = array();
         // 供货商只能查看已经付款的订单
