@@ -87,6 +87,8 @@ final class BzfDebug
 	border: 2px solid gray;
 	color:black;
 	font-size:16px;
+}
+#dfwloetw_log_table tbody tr td.breakword {
 	word-wrap:break-word;
 	word-break:break-all;
 }
@@ -97,7 +99,7 @@ final class BzfDebug
 		    <th>Id</th>
 			<th>Level</th>
 			<th>Source</th>
-			<th width="88%">Message</th>
+			<th>Message</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -116,7 +118,7 @@ EOF;
             $content .=
                 '<tr><td>' . ($index++) . '</td><td>' . htmlentities($info['level']) . '</td><td>' . htmlentities(
                     $info['source']
-                ) . '</td><td>'
+                ) . '</td><td class="breakword">'
                 . htmlentities(
                     $info['msg']
                 ) . '</td></tr>';
