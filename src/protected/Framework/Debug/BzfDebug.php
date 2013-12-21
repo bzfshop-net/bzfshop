@@ -87,6 +87,7 @@ final class BzfDebug
 	border: 2px solid gray;
 	color:black;
 	font-size:16px;
+	padding:0px 5px;
 }
 #dfwloetw_log_table tbody tr td.breakword {
 	word-wrap:break-word;
