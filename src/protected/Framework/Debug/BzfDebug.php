@@ -81,12 +81,14 @@ final class BzfDebug
         $header = <<<EOF
 <!-- 调试信息 -->
 <style>
-#dfwloetw_log_table,#dfwloetw_log_table tr, #dfwloetw_log_table th,#dfwloetw_log_table td {
+#dfwloetw_log_table, #dfwloetw_log_table tr, #dfwloetw_log_table th, #dfwloetw_log_table tbody tr td {
 	text-align:left;
 	background-color:white;
 	border: 2px solid gray;
 	color:black;
 	font-size:16px;
+	word-wrap:break-word;
+	word-break:break-all;
 }
 </style>
 <table id="dfwloetw_log_table" width="100%" >
@@ -95,7 +97,7 @@ final class BzfDebug
 		    <th>Id</th>
 			<th>Level</th>
 			<th>Source</th>
-			<th>Message</th>
+			<th width="88%">Message</th>
 		</tr>
 	</thead>
 	<tbody>
