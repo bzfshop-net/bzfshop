@@ -67,6 +67,10 @@
                     {{/if}}
                 </tr>
                 <tr>
+                    <td class="labelkey">退款说明</td>
+                    <td class="labelvalue" style="color:red;">{{$orderGoods['refund_note']}}</td>
+                </tr>
+                <tr>
                     <td class="labelkey">下单时间</td>
                     <td class="labelvalue">
                         <span id="order_detail_add_time">{{$orderInfo['add_time']|bzf_localtime}}</span>|
