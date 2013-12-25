@@ -24,7 +24,8 @@ $currentPHPVersion = phpversion();
 $isCurrentPHPOk    = version_compare($currentPHPVersion, BZF_PHP_VERSION_REQUIRE, '>=');
 
 if ($isCurrentPHPOk) {
-    goto start_install;
+    include_once('bootstrap.php');
+    die();
 }
 
 // 这里开始错误处理
@@ -54,10 +55,3 @@ echo $phpErrorMsg;
 if (function_exists('phpinfo')) {
     call_user_func('phpinfo');
 }
-
-die(); // 这里停止错误处理
-
-// 在这里启动安装程序
-start_install:
-include_once('bootstrap.php');
-
