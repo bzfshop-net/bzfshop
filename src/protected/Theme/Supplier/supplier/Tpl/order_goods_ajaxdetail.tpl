@@ -57,6 +57,10 @@
                     <td id="order_detail_goods_number" class="labelvalue">{{$orderGoods['goods_number']}}</td>
                 </tr>
                 <tr>
+                    <td class="labelkey">供货成本</td>
+                    <td class="labelvalue">{{($orderGoods['goods_number'] * $orderGoods['suppliers_price'])|bzf_money_display}}</td>
+                </tr>
+                <tr>
                     <td class="labelkey">订单状态</td>
                     {{if 1 != $orderGoods['order_goods_status']}}
                         <td id="order_detail_order_status"
