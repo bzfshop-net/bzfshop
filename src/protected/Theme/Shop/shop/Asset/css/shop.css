@@ -305,7 +305,7 @@ div.inline-divider label {
     position: relative;
 }
 
-.bzf_right_float_panel_block  span {
+.bzf_right_float_panel_block span {
     display: block;
     width: 40px;
     height: 40px;
@@ -395,7 +395,7 @@ div.inline-divider label {
     vertical-align: middle;
 }
 
-.bzf_header_logo_search .row  span {
+.bzf_header_logo_search .row span {
     display: inline-block;
 }
 
@@ -890,6 +890,11 @@ div.inline-divider label {
     border-left: solid 1px #c0c0c0;
     border-bottom: solid 1px #c0c0c0;
     border-right: solid 1px #c0c0c0;
+}
+
+/**  goods_category.tpl 页面 sticky 状态下把 hide 部分隐藏 **/
+#goods_category_filter_panel.bzf_sticky .bzf_hide {
+    display: none;
 }
 
 /************* 搜索页面 **************/
