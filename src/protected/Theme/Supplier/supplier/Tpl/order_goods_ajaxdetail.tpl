@@ -45,6 +45,10 @@
                         ){{$orderGoods['goods_name']}}</td>
                 </tr>
                 <tr>
+                    <td class="labelkey">商品货号</td>
+                    <td class="labelvalue">{{$orderGoods['goods_sn']}}</td>
+                </tr>
+                <tr>
                     <td class="labelkey">仓库货架</td>
                     <td class="labelvalue">{{$orderGoods['warehouse']}}&nbsp;|&nbsp;{{$orderGoods['shelf']}}</td>
                 </tr>
