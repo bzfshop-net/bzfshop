@@ -1526,7 +1526,7 @@ final class Base {
 			'ONERROR'=>NULL,
 			'PACKAGE'=>self::PACKAGE,
 			'PARAMS'=>array(),
-			'PATH'=>$path[1],
+			'PATH'=>@$path[1], //QiangYu bug fix, when you run php base.php it would fail
 			'PATTERN'=>NULL,
 			'PLUGINS'=>$this->fixslashes(__DIR__).'/',
 			'PORT'=>isset($_SERVER['SERVER_PORT'])?
