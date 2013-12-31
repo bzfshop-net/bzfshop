@@ -49,6 +49,15 @@ class PackageCode implements \Clip\Command
         $bzfshopParentDirPath = realpath($bzfshopDirPath . '/../');
         $bzfshopDirName       = substr($bzfshopDirPath, strlen($bzfshopParentDirPath) + 1);
 
+        // 增加目录的访问权限
+        $this->system('chmod -R a+w ' . $bzfshopDirPath . '/src/data');
+        $this->system('chmod -R a+w ' . $bzfshopDirPath . '/src/asset');
+        $this->system('chmod -R a+w ' . $bzfshopDirPath . '/src/manage/asset');
+        $this->system('chmod -R a+w ' . $bzfshopDirPath . '/src/mobile/asset');
+        $this->system('chmod -R a+w ' . $bzfshopDirPath . '/src/supplier/asset');
+        $this->system('chmod -R a+w ' . $bzfshopDirPath . '/src/protected/Runtime');
+        $this->system('chmod -R a+w ' . $bzfshopDirPath . '/src/protected/Config');
+
         // 清除打包没用的内容
         $this->system('rm -rf ' . $bzfshopDirPath . '/.git');
 
