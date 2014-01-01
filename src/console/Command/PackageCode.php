@@ -76,6 +76,7 @@ class PackageCode implements \Clip\Command
         $this->clearDir($bzfshopDirPath . '/src/protected/Runtime/Temp');
 
         // 清理 install
+        $this->system('rm -rf ' . $bzfshopDirPath . '/src/install/Asset/bootstrap-custom/.git');
         $this->system('rm -rf ' . $bzfshopDirPath . '/src/install/Asset/bootstrap-custom/kindeditor');
         $this->system('rm -rf ' . $bzfshopDirPath . '/src/install/Asset/bootstrap-custom/test*');
         $this->system(
@@ -85,13 +86,16 @@ class PackageCode implements \Clip\Command
         );
 
         // 清理 manage
+        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Manage/Asset/bootstrap-custom/.git');
         $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Manage/Asset/bootstrap-custom/test*');
 
         // 清理 shop
+        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Shop/Asset/bootstrap-custom/.git');
         $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Shop/Asset/bootstrap-custom/kindeditor*');
         $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Shop/Asset/bootstrap-custom/test*');
 
         // 清理 supplier
+        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Supplier/Asset/bootstrap-custom/.git');
         $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Supplier/Asset/bootstrap-custom/kindeditor*');
         $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Supplier/Asset/bootstrap-custom/test*');
 
