@@ -45,9 +45,9 @@ class PackageCode implements \Clip\Command
         $commandDirPath = realpath(dirname(__FILE__));
 
         // 获得当前目录
-        $bzfshopDirPath       = realpath($commandDirPath . '/../../../');
+        $bzfshopDirPath = realpath($commandDirPath . '/../../../');
         $bzfshopParentDirPath = realpath($bzfshopDirPath . '/../');
-        $bzfshopDirName       = substr($bzfshopDirPath, strlen($bzfshopParentDirPath) + 1);
+        $bzfshopDirName = substr($bzfshopDirPath, strlen($bzfshopParentDirPath) + 1);
 
         // 增加目录的访问权限
         $this->system('chmod -R a+w ' . $bzfshopDirPath . '/src/data');
@@ -90,14 +90,20 @@ class PackageCode implements \Clip\Command
         $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Manage/Asset/bootstrap-custom/test*');
 
         // 清理 shop
-        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Shop/Asset/bootstrap-custom/.git');
-        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Shop/Asset/bootstrap-custom/kindeditor*');
-        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Shop/Asset/bootstrap-custom/test*');
+        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Shop/shop/Asset/bootstrap-custom/.git');
+        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Shop/shop/Asset/bootstrap-custom/kindeditor');
+        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Shop/shop/Asset/bootstrap-custom/test*');
 
         // 清理 supplier
-        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Supplier/Asset/bootstrap-custom/.git');
-        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Supplier/Asset/bootstrap-custom/kindeditor*');
-        $this->system('rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Supplier/Asset/bootstrap-custom/test*');
+        $this->system(
+            'rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Supplier/supplier/Asset/bootstrap-custom/.git'
+        );
+        $this->system(
+            'rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Supplier/supplier/Asset/bootstrap-custom/kindeditor'
+        );
+        $this->system(
+            'rm -rf ' . $bzfshopDirPath . '/src/protected/Theme/Supplier/supplier/Asset/bootstrap-custom/test*'
+        );
 
         // 切换目录
         chdir($bzfshopParentDirPath);
