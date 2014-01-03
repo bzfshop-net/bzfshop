@@ -23,7 +23,12 @@
 define('XIAOBAI_INDEX_PATH', dirname(__FILE__));
 
 // 如果已经安装过了，这里直接启动程序
-if (file_exists(XIAOBAI_INDEX_PATH . '/data/install.lock')) {
+if (
+    // 普通本地环境
+    file_exists(XIAOBAI_INDEX_PATH . '/data/install.lock')
+    // Sae 环境
+    || (function_exists('sae_debug') && file_exists('saestor://data/install.lock'))
+) {
     include_once('bootstrap.php');
     die();
 }
