@@ -36,7 +36,7 @@
 
                 <!-- 商品分类列表 -->
                 {{if isset($categoryLevelList)}}
-                    <tr>
+                    <tr class="bzf_hide">
                         <td class="labelkey">商品分类</td>
                         <td>
                             {{foreach $categoryLevelList as $categoryLevelItem}}

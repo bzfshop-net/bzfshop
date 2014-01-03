@@ -1,134 +1,57 @@
 <?php
 
-/**
+/*
  * @author QiangYu
  *
- * 棒主妇商城
+ * 虽然我们在网站上写明了 bzfshop 必须要求 PHP > 5.3.4 才能安装，但是还是有 50% 的人根本不看要求，直接就拿着 PHP 5.2 硬装，
+ * 结果安装程序都进不去，然后到处提问为什么安装不了，一幅很委屈的样子
  *
- * */
+ * 我们对这些不看要求自己瞎折腾出来的问题已经很厌烦了，所以这里安装程序首先就检测 PHP 版本，那些拿着 PHP 5.2 来安装的人直接在
+ * 这里就会挂掉，然后给出错提示，你们不用再去提问了，看这个出错提示就知道你们错在哪里了
+ *
+ * 注意，中国的空间商都比较烂，所以大部分虚拟主机都是 PHP 5.2 的，基本上安装不了，安装前请检查你的安装环境
+ *
+ * bzfshop 也不建议你安装在虚拟主机上，好歹弄个 VPS 可以自己配置环境吧
+ *
+ */
 
-use Core\Helper\Utility\Auth as AuthHelper;
-use Core\Helper\Utility\Route as RouteHelper;
-use Core\OrderRefer\ReferHelper;
-use Core\Plugin\PluginHelper;
-use Core\Plugin\ThemeHelper;
-use Core\Service\Cart\Cart as CartBasicService;
-use Core\Service\Order\Order as OrderBasicService;
-use Theme\Manage\ManageThemePlugin;
+define('BZF_PHP_VERSION_REQUIRE', '5.3.4');
 
-define('INSTALL_PATH', dirname(__FILE__));
-define('INSTALL_DIR', basename(INSTALL_PATH));
+// 检查 PHP 版本，用 PHP 5.2 的人就不要瞎折腾了
 
-// 包含整个系统的初始化
-require_once(INSTALL_PATH . '/../protected/bootstrap.php');
+$requirePHPVersion = BZF_PHP_VERSION_REQUIRE;
+$currentPHPVersion = phpversion();
+$isCurrentPHPOk    = version_compare($currentPHPVersion, BZF_PHP_VERSION_REQUIRE, '>=');
 
-// ---------------------------------------- 1. 设置系统运行环境 --------------------------------------
-
-// 设置工作时区
-if ($f3->get('sysConfig[time_zone]')) {
-    date_default_timezone_set($f3->get('sysConfig[time_zone]'));
+if ($isCurrentPHPOk) {
+    include_once('bootstrap.php');
+    die();
 }
 
-// 当前网站的 webroot_url_prefix
-if (!$f3->get('sysConfig[webroot_url_prefix]')) {
-    $f3->set(
-        'sysConfig[webroot_url_prefix]',
-        $f3->get('SCHEME') . '://' . $f3->get('HOST')
-        . (('80' != $f3->get('PORT')) ? ':' . $f3->get('PORT') : '')
-        . $f3->get('BASE')
-    );
+// 这里开始错误处理
+
+$phpErrorMsg = <<<MSG
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="./Asset/bootstrap-custom/css/bootstrap-1206.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-static-top">
+        <div class="navbar-inner">
+            <div style="text-align:center;" class="container">
+                <h5>错误：bzfshop 要求最低 PHP 版本为 {$requirePHPVersion} ，你当前的 PHP 版本为 {$currentPHPVersion}，不符合要求无法安装</h5>
+            </div>
+        </div>
+</div>
+</body>
+</html>
+<br/><br/>
+MSG;
+
+echo $phpErrorMsg;
+
+// 显示 PHP 信息
+if (function_exists('phpinfo')) {
+    call_user_func('phpinfo');
 }
-
-// RunTime 路径
-if (!$f3->get('sysConfig[runtime_path]')) {
-    $f3->set('sysConfig[runtime_path]', realpath(PROTECTED_PATH . '/Runtime'));
-}
-
-define('RUNTIME_PATH', $f3->get('sysConfig[runtime_path]'));
-
-// RUNTIME_PATH 必须要有读写权限
-
-if(!is_writable(RUNTIME_PATH) || !is_readable(RUNTIME_PATH)){
-    die('错误：['.RUNTIME_PATH.']必须有读写权限');
-}
-
-// 设置 Tmp 路径
-$f3->set('TEMP', RUNTIME_PATH . '/Temp/');
-
-// 设置 Log 路径
-$f3->set('LOGS', RUNTIME_PATH . '/Log/Install/');
-
-// 设置网站唯一的 key，防止通用模块之间的冲突
-RouteHelper::$uniqueKey = 'BZFRouteHelper';
-
-// 初始化 smarty 模板引擎
-$smarty->debugging     = $f3->get('sysConfig[smarty_debug]');
-$smarty->force_compile = $f3->get('sysConfig[smarty_force_compile]');
-$smarty->use_sub_dirs  = $f3->get('sysConfig[smarty_use_sub_dirs]');
-
-//设置 smarty 工作目录
-$smarty->setCompileDir(RUNTIME_PATH . '/Smarty/Install/Compile');
-$smarty->setCacheDir(RUNTIME_PATH . '/Smarty/Install/Cache');
-
-// ---------------------------------------- 2. 开启系统日志 --------------------------------------
-
-// 设置一个 fileLogger 方便查看所有的日志输出
-$fileLogger = new \Core\Log\File('install.log');
-$logger->addLogger($fileLogger);
-unset($fileLogger);
-
-/* * **************** 如果是调试模式，在这里设置调试 ************************ */
-
-if ($f3->get('DEBUG')) {
-
-    // 调试模式，关闭缓存
-    $f3->set('CACHE', false);
-
-    // 把 smarty 的一些错误警告关闭，不然会影响我们的调试
-    Smarty::muteExpectedErrors();
-
-    // 使用自定义的调试框架
-    if ($f3->get('USERDEBUG')) {
-        require_once(PROTECTED_PATH . '/Framework/Debug/BzfDebug.php');
-        // 开启 debug 功能
-        BzfDebug::enableDebug();
-        // 开启 Smarty Web Log
-        BzfDebug::enableSmartyWebLog();
-    }
-}
-
-// ---------------------------------------- 3. 设置工程环境 --------------------------------------
-
-// 设置代码路径
-\Core\Plugin\SystemHelper::addAutoloadPath(INSTALL_PATH . '/Code', true);
-
-// 设置路由，这样用户就能访问到我们的程序了
-$f3->config(INSTALL_PATH . '/route.cfg');
-
-// 增加 smarty 模板搜索路径
-$smarty->addTemplateDir(INSTALL_PATH . '/Tpl/');
-
-// 加载 smarty 的扩展，里面有一些我们需要用到的函数
-require_once(INSTALL_PATH . '/Code/smarty_helper.php');
-
-// 注册 smarty 函数
-smarty_helper_register($smarty);
-
-// ---------------------------------------- 4. 为 JavaScript 设置变量 --------------------------------------
-
-// 设置网站的 Base 路径，给 JavaScript 使用
-$smarty->assign(
-    "WEB_ROOT_HOST",
-    $f3->get('SCHEME') . '://' . $f3->get('HOST') . (('80' != $f3->get('PORT')) ? ':' . $f3->get('PORT')
-        : '')
-);
-$smarty->assign("WEB_ROOT_BASE", $f3->get('BASE'));
-$smarty->assign(
-    "WEB_ROOT_BASE_RES",
-    $f3->get('BASE').'/Asset/'
-);
-
-// ---------------------------------------- 5. 启动程序 --------------------------------------
-
-// 启动控制器
-$f3->run();

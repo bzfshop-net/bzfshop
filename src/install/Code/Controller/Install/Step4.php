@@ -9,14 +9,15 @@
 
 namespace Controller\Install;
 
-use Core\Helper\Utility\Route as RouteHelper;
-
 class Step4 extends \Controller\BaseController
 {
 
     public function get($f3)
     {
         global $smarty;
+
+        // 建立 install.lock 文件，后面就不会再进入安装程序了
+        touch(INSTALL_PATH . '/../data/install.lock');
 
         $smarty->assign('envFile', realpath(INSTALL_PATH . '/../protected/Config/env.cfg'));
         $smarty->assign('configFile', realpath(INSTALL_PATH . '/../protected/Config/common-prod.cfg'));

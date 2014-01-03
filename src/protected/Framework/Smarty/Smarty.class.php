@@ -2,7 +2,7 @@
 /**
  * Project:     Smarty: the PHP compiling template engine
  * File:        Smarty.class.php
- * SVN:         $Id: Smarty.class.php 4757 2013-07-15 18:18:28Z Uwe.Tews@googlemail.com $
+ * SVN:         $Id: Smarty.class.php 4778 2013-09-17 20:44:41Z Uwe.Tews@googlemail.com $
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1510,10 +1510,11 @@ if (Smarty::$_CHARSET !== 'UTF-8') {
  */
 class SmartyException extends Exception
 {
-    public static $escape = true;
-    public function __construct($message)
+    public static $escape = false;
+
+    public function __toString()
     {
-        $this->message = self::$escape ? htmlentities($message) : $message;
+        return ' --> Smarty: ' . (self::$escape ? htmlentities($this->message) : $this->message)  . ' <-- ';
     }
 }
 
@@ -1523,6 +1524,30 @@ class SmartyException extends Exception
  */
 class SmartyCompilerException extends SmartyException
 {
+    public function __toString()
+    {
+        return ' --> Smarty Compiler: ' . $this->message . ' <-- ';
+    }
+    /**
+     * The line number of the template error
+     * @type int|null
+     */
+    public $line = null;
+    /**
+     * The template source snippet relating to the error
+     * @type string|null
+     */
+    public $source = null;
+    /**
+     * The raw text of the error message
+     * @type string|null
+     */
+    public $desc = null;
+    /**
+     * The resource identifier or template name
+     * @type string|null
+     */
+    public $template = null;
 }
 
 /**

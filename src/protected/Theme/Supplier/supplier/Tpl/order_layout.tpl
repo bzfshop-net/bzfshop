@@ -13,6 +13,7 @@
         <div id="order_tabbar" class="row">
             <ul class="nav nav-tabs">
                 <li><a href="{{bzf_make_url controller='/Order/Goods/Search'}}">售出商品</a></li>
+                <li><a href="{{bzf_make_url controller='/Order/Refund/Search'}}">商品退款</a></li>
                 <li><a href="{{bzf_make_url controller='/Order/Excel'}}">批量下载订单</a></li>
                 <li><a href="{{bzf_make_url controller='/Order/Settle/ListSettle'}}">结算历史</a></li>
             </ul>

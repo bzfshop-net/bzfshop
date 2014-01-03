@@ -11,7 +11,6 @@ namespace Controller\Order;
 
 
 use Core\Helper\Utility\Auth as AuthHelper;
-use Core\Helper\Utility\Money;
 use Core\Helper\Utility\QueryBuilder;
 use Core\Helper\Utility\Route as RouteHelper;
 use Core\Helper\Utility\Time;
@@ -33,7 +32,7 @@ class Refund extends \Controller\AuthController
         /**
          * 我们使用搜索模块做搜索操作
          */
-        $searchFieldSelector = 'og.*, oi.user_id, oi.system_id, oi.kefu_user_id, oi.kefu_user_name, oi.kefu_user_rate';
+        $searchFieldSelector = 'og.*, oi.user_id, oi.system_id';
 
         global $smarty;
         // 参数验证
@@ -155,9 +154,6 @@ class Refund extends \Controller\AuthController
 
         // 使用哪个搜索模块
         $searchModule = SearchHelper::Module_OrderGoodsOrderInfo;
-        if (!empty($utmSource) || !empty($utmMedium)) {
-            $searchModule = SearchHelper::Module_OrderGoodsOrderInfoOrderRefer;
-        }
 
         // 查询订单列表
         $totalCount = SearchHelper::count($searchModule, $searchParamArray);

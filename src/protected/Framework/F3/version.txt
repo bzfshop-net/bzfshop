@@ -1,3 +1,4 @@
+2013-12-03  代码更新到最新的 dev （修改文件 base.php, magic.php, web.php, db/cursor.php, db/sql.php, db/sql/mapper.php）
 2013-08-18  代码更新到最新的 dev （修改文件 base.php, web.php, db/cursor.php, db/sql.php, db/sql/mapper.php）
 2013-07-18  修改 base.php 代码， unload() 方法允许跳过 F3 自身的 debug
 2013-05-13  代码主题更新到 VERSION='3.0.8-Dev'  commit b5a3fc83636bd478146d7df2225cab39af53e58d

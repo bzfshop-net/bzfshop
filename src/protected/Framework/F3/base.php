@@ -19,7 +19,7 @@ final class Base {
 	//@{ Framework details
 	const
 		PACKAGE='Fat-Free Framework',
-		VERSION='3.1.0-Dev';
+		VERSION='3.2.0-Dev';
 	//@}
 
 	//@{ HTTP status codes (RFC 2616)
@@ -139,7 +139,7 @@ final class Base {
 			$this->sync('SESSION');
 		}
 		elseif (!preg_match('/^\w+$/',$parts[0]))
-			trigger_error(sprintf(self::E_Hive,$this->stringify($key)));
+			user_error(sprintf(self::E_Hive,$this->stringify($key)));
 		if ($add)
 			$var=&$this->hive;
 		else
@@ -165,7 +165,7 @@ final class Base {
 					$var=array();
 				$var=&$var[$part];
 			}
-            elseif (is_array($var) && isset($var[$part])) // elseif (isset($var[$part])) // bug fix from fat-free : qiangyu
+			elseif (is_array($var) && isset($var[$part]))
 				$var=$var[$part];
 			else
 				return $this->null;
@@ -176,12 +176,14 @@ final class Base {
 	*	Return TRUE if hive key is not empty (or timestamp and TTL if cached)
 	*	@return bool
 	*	@param $key string
+	*	@param $val mixed
 	**/
-	function exists($key) {
-		$ref=&$this->ref($key,FALSE);
-		return isset($ref)?
-			TRUE:
-			Cache::instance()->exists($this->hash($key).'.var');
+	function exists($key,&$val=NULL) {
+		$val=&$this->ref($key,FALSE);
+		if (isset($val))
+			return TRUE;
+		return Cache::instance()->exists($this->hash($key).'.var',$val)?
+			$val:FALSE;
 	}
 
 	/**
@@ -206,6 +208,8 @@ final class Base {
 				break;
 			case 'ENCODING':
 				$val=ini_set('default_charset',$val);
+				if (extension_loaded('mbstring'))
+					mb_internal_encoding($val);
 				break;
 			case 'FALLBACK':
 				$this->fallback=$val;
@@ -216,7 +220,7 @@ final class Base {
 				$lex=$this->lexicon($this->hive['LOCALES']);
 			case 'LOCALES':
 				if (isset($lex) || $lex=$this->lexicon($val))
-					$this->mset($lex,NULL,$ttl);
+					$this->mset($lex,$this->hive['PREFIX'],$ttl);
 				break;
 			case 'TZ':
 				date_default_timezone_set($val);
@@ -412,6 +416,17 @@ final class Base {
 	}
 
 	/**
+	*	Merge array with hive array variable
+	*	@return array
+	*	@param $key string
+	*	@param $src array
+	**/
+	function merge($key,$src) {
+		$ref=&$this->ref($key);
+		return array_merge($ref,$src);
+	}
+
+	/**
 	*	Convert backslashes to slashes
 	*	@return string
 	*	@param $str string
@@ -434,27 +449,31 @@ final class Base {
 	*	Convert PHP expression/value to compressed exportable string
 	*	@return string
 	*	@param $arg mixed
+	*	@param $detail bool
 	**/
-	function stringify($arg) {
+	function stringify($arg,$detail=TRUE) {
+		$fw=$this;
+		$func=function($arg,$val) use($detail,$fw) {
+			return $arg===$val && !is_scalar($val)?
+				'*RECURSION*':$fw->stringify($val,$detail);
+		};
 		switch (gettype($arg)) {
 			case 'object':
 				$str='';
-				if ($this->hive['DEBUG']>2 && get_class($arg)!='Closure')
-					foreach ((array)$arg as $key=>$val) {
+				if (!preg_match('/Base|Closure/',get_class($arg)) && $detail)
+					foreach ((array)$arg as $key=>$val)
 						$str.=($str?',':'').$this->stringify(
 							preg_replace('/[\x00].+?[\x00]/','',$key)).'=>'.
-							$this->stringify($val);
-					}
+							$func($arg,$val);
 				return addslashes(get_class($arg)).'::__set_state('.$str.')';
 			case 'array':
 				$str='';
 				$num=isset($arg[0]) &&
 					ctype_digit(implode('',array_keys($arg)));
-				foreach ($arg as $key=>$val) {
+				foreach ($arg as $key=>$val)
 					$str.=($str?',':'').
 						($num?'':($this->stringify($key).'=>')).
-						($arg==$val?'*RECURSION*':$this->stringify($val));
-				}
+						$func($arg,$val);
 				return 'array('.$str.')';
 			default:
 				return var_export($arg,TRUE);
@@ -567,51 +586,13 @@ final class Base {
 	}
 
 	/**
-	*	Encode characters to equivalent HTML entities
-	*	@return string
-	*	@param $arg mixed
-	**/
-	function esc($arg) {
-		if (is_string($arg))
-			return $this->encode($arg);
-		if (is_array($arg) || is_a($arg,'ArrayAccess'))
-			foreach ($arg as &$val) {
-				$val=$this->esc($val);
-				unset($val);
-			}
-		if (is_object($arg))
-			foreach (get_object_vars($arg) as $key=>$val)
-				$arg->$key=$this->esc($val);
-		return $arg;
-	}
-
-	/**
-	*	Decode HTML entities to equivalent characters
-	*	@return string
-	*	@param $arg mixed
-	**/
-	function raw($arg) {
-		if (is_string($arg))
-			return $this->decode($arg);
-		if (is_array($arg) || is_a($arg,'ArrayAccess'))
-			foreach ($arg as &$val) {
-				$val=$this->raw($val);
-				unset($val);
-			}
-		if (is_object($arg))
-			foreach (get_object_vars($arg) as $key=>$val)
-				$arg->$key=$this->raw($val);
-		return $arg;
-	}
-
-	/**
 	*	Return locale-aware formatted string
 	*	@return string
 	**/
 	function format() {
 		$args=func_get_args();
 		$val=array_shift($args);
-		setlocale(LC_ALL,$this->locales);
+		setlocale(LC_ALL,str_replace('-','_',$this->locales));
 		// Get formatting rules
 		$conv=localeconv();
 		return preg_replace_callback(
@@ -711,16 +692,16 @@ final class Base {
 	*	@param $code string
 	**/
 	function language($code) {
-		$code=str_replace('-','_',preg_replace('/;q=.+?(?=,|$)/','',$code));
+		$code=preg_replace('/;q=.+?(?=,|$)/','',$code);
 		$code.=($code?',':'').$this->fallback;
 		$this->languages=array();
 		foreach (array_reverse(explode(',',$code)) as $lang) {
-			if (preg_match('/^(\w{2})(?:_(\w{2}))?\b/i',$lang,$parts)) {
+			if (preg_match('/^(\w{2})(?:-(\w{2}))?\b/i',$lang,$parts)) {
 				// Generic language
 				array_unshift($this->languages,$parts[1]);
 				if (isset($parts[2])) {
 					// Specific language
-					$parts[0]=$parts[1].'_'.($parts[2]=strtoupper($parts[2]));
+					$parts[0]=$parts[1].'-'.($parts[2]=strtoupper($parts[2]));
 					array_unshift($this->languages,$parts[0]);
 				}
 			}
@@ -730,21 +711,21 @@ final class Base {
 		$windows=preg_match('/^win/i',PHP_OS);
 		foreach ($this->languages as $locale) {
 			if ($windows) {
-				$parts=explode('_',$locale);
+				$parts=explode('-',$locale);
 				$locale=@constant('ISO::LC_'.$parts[0]);
 				if (isset($parts[1]) &&
 					$country=@constant('ISO::CC_'.strtolower($parts[1])))
-					$locale.='_'.$country;
+					$locale.='-'.$country;
 			}
 			$this->locales[]=$locale;
-			$this->locales[]=$locale.'.'.$this->hive['ENCODING'];
+			$this->locales[]=$locale.'.'.ini_get('default_charset');
 		}
 		return implode(',',$this->languages);
 	}
 
 	/**
 	*	Transfer lexicon entries to hive
-	*	@return NULL
+	*	@return array
 	*	@param $path string
 	**/
 	function lexicon($path) {
@@ -761,7 +742,7 @@ final class Base {
 					'(.+?)\h*=\h*'.
 					'((?:\\\\\h*\r?\n|.+?)*)'.
 					')(?=\r?\n|$)/',
-					file_get_contents($file),$matches,PREG_SET_ORDER);
+					$this->read($file),$matches,PREG_SET_ORDER);
 				if ($matches)
 					foreach ($matches as $match)
 						if (isset($match[1]) &&
@@ -851,7 +832,7 @@ final class Base {
 	function error($code,$text='',array $trace=NULL) {
 		$prior=$this->hive['ERROR'];
 		$header=$this->status($code);
-		$req=$this->hive['VERB'].' '.$this->hive['URI'];
+		$req=$this->hive['VERB'].' '.$this->hive['PATH'];
 		if (!$text)
 			$text='HTTP '.$code.' ('.$req.')';
 		error_log($text);
@@ -880,13 +861,15 @@ final class Base {
 			if (isset($frame['function']))
 				$line.=$frame['function'].'('.(isset($frame['args'])?
 					$this->csv($frame['args']):'').')';
-			$src=$this->fixslashes($frame['file']).':'.$frame['line'].' ';
+			$src=$this->fixslashes(str_replace($_SERVER['DOCUMENT_ROOT'].
+				'/','',$frame['file'])).':'.$frame['line'].' ';
 			error_log('- '.$src.$line);
 			$out.='• '.($highlight?
 				($this->highlight($src).' '.$this->highlight($line)):
 				($src.$line)).$eol;
 		}
 		$this->hive['ERROR']=array(
+			'status'=>$header,
 			'code'=>$code,
 			'text'=>$text,
 			'trace'=>$trace
@@ -895,7 +878,8 @@ final class Base {
 			ob_end_clean();
 		$handler=$this->hive['ONERROR'];
 		$this->hive['ONERROR']=NULL;
-		if ((!$handler || $this->call($handler,$this)===FALSE) &&
+		if ((!$handler ||
+			$this->call($handler,$this,'beforeroute,afterroute')===FALSE) &&
 			!$prior && PHP_SAPI!='cli' && !$this->hive['QUIET'])
 			echo $this->hive['AJAX']?
 				json_encode($this->hive['ERROR']):
@@ -904,7 +888,7 @@ final class Base {
 				'<head>'.
 					'<title>'.$code.' '.$header.'</title>'.
 					($highlight?
-						('<style>'.file_get_contents($css).'</style>'):'').
+						('<style>'.$this->read($css).'</style>'):'').
 				'</head>'.$eol.
 				'<body>'.$eol.
 					'<h1>'.$header.'</h1>'.$eol.
@@ -912,7 +896,8 @@ final class Base {
 					($debug?('<pre>'.$out.'</pre>'.$eol):'').
 				'</body>'.$eol.
 				'</html>');
-		die;
+		if ($this->hive['HALT'])
+			die;
 	}
 
 	/**
@@ -990,7 +975,6 @@ final class Base {
 	**/
 	function reroute($uri,$permanent=FALSE) {
 		if (PHP_SAPI!='cli') {
-			@session_commit();
 			header('Location: '.(preg_match('/^https?:\/\//',$uri)?
 				$uri:($this->hive['BASE'].$uri)));
 			$this->status($permanent?301:303);
@@ -1144,7 +1128,7 @@ final class Base {
 						foreach (str_split($body,1024) as $part) {
 							// Throttle output
 							$ctr++;
-							if ($ctr/$kbps>$elapsed=microtime(TRUE)-$now &&
+							if ($ctr/$kbps>($elapsed=microtime(TRUE)-$now) &&
 								!connection_aborted())
 								usleep(1e6*($ctr/$kbps-$elapsed));
 							echo $part;
@@ -1256,7 +1240,7 @@ final class Base {
 			'(.+?)\h*=\h*'.
 			'((?:\\\\\h*\r?\n|.+?)*)'.
 			')(?=\r?\n|$)/',
-			file_get_contents($file),$matches,PREG_SET_ORDER);
+			$this->read($file),$matches,PREG_SET_ORDER);
 		if ($matches) {
 			$sec='globals';
 			foreach ($matches as $match) {
@@ -1278,7 +1262,7 @@ final class Base {
 								return $val+0;
 							if (preg_match('/^\w+$/i',$val) && defined($val))
 								return constant($val);
-							return preg_replace('/\\\\\h*\r?\n/','',$val);
+							return preg_replace('/\\\\\h*(\r?\n)/','\1',$val);
 						},
 						// Mark quoted strings with 0x00 whitespace
 						str_getcsv(preg_replace(
@@ -1310,7 +1294,7 @@ final class Base {
 			filemtime($lock)+ini_get('max_execution_time')<microtime(TRUE))
 			// Stale lock
 			@unlink($lock);
-		while (!$handle=@fopen($lock,'x') && !connection_aborted())
+		while (!($handle=@fopen($lock,'x')) && !connection_aborted())
 			usleep(mt_rand(0,100));
 		$out=$this->call($func,$args);
 		fclose($handle);
@@ -1373,7 +1357,7 @@ final class Base {
 	*	@param $expr mixed
 	**/
 	function dump($expr) {
-		echo $this->highlight($this->stringify($expr));
+		echo $this->highlight($this->stringify($expr,$this->hive['DEBUG']>2));
 	}
 
 	/**
@@ -1386,26 +1370,32 @@ final class Base {
 		foreach ($this->split($this->hive['PLUGINS'].';'.
 			$this->hive['AUTOLOAD']) as $auto)
 			if (is_file($file=$auto.$class.'.php') ||
-				is_file($file=$auto.strtolower($class).'.php'))
+				is_file($file=$auto.strtolower($class).'.php') ||
+				is_file($file=strtolower($auto.$class).'.php'))
 				return require($file);
 	}
 
 	/**
 	*	Execute framework/application shutdown sequence
 	*	@return NULL
+	*	@param $cwd string
 	**/
-	function unload() {
+	function unload($cwd) {
+		chdir($cwd);
+		@session_commit();
+
         /************ QiangYu 用户实现了自己的 debug 方式， F3 不要管了***************/
         if(!isset($this->hive['USERDEBUG'])){
-		if (($error=error_get_last()) &&
-			in_array($error['type'],
-				array(E_ERROR,E_PARSE,E_CORE_ERROR,E_COMPILE_ERROR)))
+
+		$handler=$this->hive['UNLOAD'];
+		if ((!$handler || $this->call($handler,$this)===FALSE) &&
+			($error=error_get_last()) && in_array($error['type'],
+			array(E_ERROR,E_PARSE,E_CORE_ERROR,E_COMPILE_ERROR)))
 			// Fatal error detected
 			$this->error(500,sprintf(self::E_Fatal,$error['message']),
 				array($error));
+
         }
-		if (isset($this->hive['UNLOAD']))
-			$this->hive['UNLOAD']($this);
 	}
 
 	/**
@@ -1426,6 +1416,8 @@ final class Base {
 	private function __construct() {
 		// Managed directives
 		ini_set('default_charset',$charset='UTF-8');
+		if (extension_loaded('mbstring'))
+			mb_internal_encoding($charset);
 		ini_set('display_errors',0);
 		// Deprecated directives
 		@ini_set('magic_quotes_gpc',0);
@@ -1464,10 +1456,14 @@ final class Base {
 						substr($key,5),'_',' '))),' ','-')]=&$_SERVER[$key];
 		if (isset($headers['X-HTTP-Method-Override']))
 			$_SERVER['REQUEST_METHOD']=$headers['X-HTTP-Method-Override'];
+		elseif ($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['_method']))
+			$_SERVER['REQUEST_METHOD']=$_POST['_method'];
 		$scheme=isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ||
 			isset($headers['X-Forwarded-Proto']) &&
 			$headers['X-Forwarded-Proto']=='https'?'https':'http';
 		$base=preg_replace('/\/[^\/]+$/','',$_SERVER['SCRIPT_NAME']);
+		preg_match('/'.preg_quote($base,'/').'(.*)/',
+			parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH),$path);
 		call_user_func_array('session_set_cookie_params',
 			$jar=array(
 				'expire'=>0,
@@ -1485,6 +1481,7 @@ final class Base {
 				$_SERVER['SCRIPT_FILENAME']);
 			apache_setenv("DOCUMENT_ROOT",$_SERVER['DOCUMENT_ROOT']);
 		}
+		$_SERVER['DOCUMENT_ROOT']=realpath($_SERVER['DOCUMENT_ROOT']);
 		// Default configuration
 		$this->hive=array(
 			'AGENT'=>isset($headers['X-Operamini-Phone-UA'])?
@@ -1509,6 +1506,7 @@ final class Base {
 			'EXEMPT'=>NULL,
 			'FALLBACK'=>$this->fallback,
 			'HEADERS'=>$headers,
+			'HALT'=>TRUE,
 			'HIGHLIGHT'=>TRUE,
 			'HOST'=>$_SERVER['SERVER_NAME'],
             /** QiangYu 网站如果在 CDN 后面，我们需要取得正确的原始 IP 地址 **/
@@ -1528,10 +1526,12 @@ final class Base {
 			'ONERROR'=>NULL,
 			'PACKAGE'=>self::PACKAGE,
 			'PARAMS'=>array(),
+			'PATH'=>@$path[1], //QiangYu bug fix, when you run php base.php it would fail
 			'PATTERN'=>NULL,
 			'PLUGINS'=>$this->fixslashes(__DIR__).'/',
 			'PORT'=>isset($_SERVER['SERVER_PORT'])?
 				$_SERVER['SERVER_PORT']:NULL,
+			'PREFIX'=>NULL,
 			'QUIET'=>FALSE,
 			'REALM'=>$scheme.'://'.
 				$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],
@@ -1572,7 +1572,7 @@ final class Base {
 		// Register framework autoloader
 		spl_autoload_register(array($this,'autoload'));
 		// Register shutdown handler
-		register_shutdown_function(array($this,'unload'));
+		register_shutdown_function(array($this,'unload'),getcwd());
 	}
 
 }
@@ -1738,11 +1738,15 @@ class Cache extends Prefab {
 		$parts=explode('=',$this->dsn,2);
 		switch ($parts[0]) {
 			case 'apc':
+				$key='info';
+			case 'apcu':
+				if (empty($key))
+					$key='key';
 				$info=apc_cache_info('user');
 				foreach ($info['cache_list'] as $item)
-					if (preg_match($regex,$item['info']) &&
+					if (preg_match($regex,$item[$key]) &&
 						$item['mtime']+$lifetime<time())
-						apc_delete($item['info']);
+						apc_delete($item[$key]);
 				return TRUE;
 			case 'memcache':
 				foreach (memcache_get_extended_stats(
@@ -1836,11 +1840,73 @@ class View extends Prefab {
 		$hive;
 
 	/**
+	*	Attempt to clone object
+	*	@return object
+	*	@return $arg object
+	**/
+	function dupe($arg) {
+		if (method_exists('ReflectionClass','iscloneable')) {
+			$ref=new ReflectionClass($arg);
+			if ($ref->iscloneable())
+				$arg=clone($arg);
+		}
+		return $arg;
+	}
+
+	/**
+	*	Encode characters to equivalent HTML entities
+	*	@return string
+	*	@param $arg mixed
+	**/
+	function esc($arg) {
+		if (is_array($arg)) {
+			$tmp=array();
+			foreach ($arg as $key=>$val)
+				$tmp[$key]=$this->esc($val);
+			return $tmp;
+		}
+		if (is_object($arg)) {
+			$obj=$this->dupe($arg);
+			foreach (get_object_vars($obj) as $key=>$val)
+				$obj->$key=$this->esc($val);
+			return $obj;
+		}
+		$arg=unserialize(serialize($arg));
+		if (is_string($arg))
+			$arg=\Base::instance()->encode($arg);
+		return $arg;
+	}
+
+	/**
+	*	Decode HTML entities to equivalent characters
+	*	@return string
+	*	@param $arg mixed
+	**/
+	function raw($arg) {
+		if (is_array($arg)) {
+			$tmp=array();
+			foreach ($arg as $key=>$val)
+				$tmp[$key]=$this->raw($val);
+			return $tmp;
+		}
+		if (is_object($arg)) {
+			$obj=$this->dupe($arg);
+			foreach (get_object_vars($obj) as $key=>$val)
+				$obj->$key=$this->raw($val);
+			return $obj;
+		}
+		$arg=unserialize(serialize($arg));
+		if (is_string($arg))
+			$arg=\Base::instance()->decode($arg);
+		return $arg;
+	}
+
+	/**
 	*	Create sandbox for template execution
 	*	@return string
 	**/
-	protected function sandbox() {
-		extract($this->hive);
+	protected function sandbox($hive) {
+		extract($hive);
 		ob_start();
 		require($this->view);
 		return ob_get_clean();
@@ -1852,9 +1918,14 @@ class View extends Prefab {
 	*	@param $file string
 	*	@param $mime string
 	*	@param $hive array
+	*	@param $ttl int
 	**/
-	function render($file,$mime='text/html',array $hive=NULL) {
+	function render($file,$mime='text/html',array $hive=NULL,$ttl=0) {
 		$fw=Base::instance();
+		$cache=Cache::instance();
+		$cached=$cache->exists($hash=$fw->hash($file),$data);
+		if ($cached && $cached[0]+$ttl>microtime(TRUE))
+			return $data;
 		foreach ($fw->split($fw->get('UI')) as $dir)
 			if (is_file($this->view=$fw->fixslashes($dir.$file))) {
 				if (isset($_COOKIE[session_name()]))
@@ -1862,11 +1933,15 @@ class View extends Prefab {
 				$fw->sync('SESSION');
 				if (!$hive)
 					$hive=$fw->hive();
-				$this->hive=$fw->get('ESCAPE')?$hive=$fw->esc($hive):$hive;
+				if ($fw->get('ESCAPE'))
+					$hive=$this->esc($hive);
 				if (PHP_SAPI!='cli')
 					header('Content-Type: '.$mime.'; '.
 						'charset='.$fw->get('ENCODING'));
-				return $this->sandbox();
+				$data=$this->sandbox($hive);
+				if ($ttl)
+					$cache->set($hash,$data);
+				return $data;
 			}
 		user_error(sprintf(Base::E_Open,$file));
 	}

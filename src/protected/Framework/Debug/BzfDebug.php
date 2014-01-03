@@ -81,12 +81,17 @@ final class BzfDebug
         $header = <<<EOF
 <!-- 调试信息 -->
 <style>
-#dfwloetw_log_table,#dfwloetw_log_table tr, #dfwloetw_log_table th,#dfwloetw_log_table td {
+#dfwloetw_log_table, #dfwloetw_log_table tr, #dfwloetw_log_table th, #dfwloetw_log_table tbody tr td {
 	text-align:left;
 	background-color:white;
 	border: 2px solid gray;
 	color:black;
 	font-size:16px;
+	padding:0px 5px;
+}
+#dfwloetw_log_table tbody tr td.breakword {
+	word-wrap:break-word;
+	word-break:break-all;
 }
 </style>
 <table id="dfwloetw_log_table" width="100%" >
@@ -114,7 +119,7 @@ EOF;
             $content .=
                 '<tr><td>' . ($index++) . '</td><td>' . htmlentities($info['level']) . '</td><td>' . htmlentities(
                     $info['source']
-                ) . '</td><td>'
+                ) . '</td><td class="breakword">'
                 . htmlentities(
                     $info['msg']
                 ) . '</td></tr>';

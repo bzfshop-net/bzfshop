@@ -45,6 +45,10 @@
                         ){{$orderGoods['goods_name']}}</td>
                 </tr>
                 <tr>
+                    <td class="labelkey">商品货号</td>
+                    <td class="labelvalue">{{$orderGoods['goods_sn']}}</td>
+                </tr>
+                <tr>
                     <td class="labelkey">仓库货架</td>
                     <td class="labelvalue">{{$orderGoods['warehouse']}}&nbsp;|&nbsp;{{$orderGoods['shelf']}}</td>
                 </tr>
@@ -57,6 +61,10 @@
                     <td id="order_detail_goods_number" class="labelvalue">{{$orderGoods['goods_number']}}</td>
                 </tr>
                 <tr>
+                    <td class="labelkey">供货成本</td>
+                    <td class="labelvalue">{{($orderGoods['goods_number'] * $orderGoods['suppliers_price'])|bzf_money_display}}</td>
+                </tr>
+                <tr>
                     <td class="labelkey">订单状态</td>
                     {{if 1 != $orderGoods['order_goods_status']}}
                         <td id="order_detail_order_status"
@@ -65,6 +73,10 @@
                         <td id="order_detail_order_status"
                             class="labelvalue">{{$orderGoods['order_goods_status_desc']}}</td>
                     {{/if}}
+                </tr>
+                <tr>
+                    <td class="labelkey">退款说明</td>
+                    <td class="labelvalue" style="color:red;">{{$orderGoods['refund_note']}}</td>
                 </tr>
                 <tr>
                     <td class="labelkey">下单时间</td>

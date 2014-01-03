@@ -9,8 +9,6 @@
 
 namespace Controller\Install;
 
-use Core\Helper\Utility\Route as RouteHelper;
-
 class Step2 extends \Controller\BaseController
 {
     /**
@@ -21,7 +19,7 @@ class Step2 extends \Controller\BaseController
     public function checkPhpVersion()
     {
         $value  = phpversion();
-        $isPass = version_compare($value, '5.3.4', '>=');
+        $isPass = version_compare($value, BZF_PHP_VERSION_REQUIRE, '>=');
         return array('value' => $value, 'isPass' => $isPass);
     }
 
