@@ -94,12 +94,18 @@
 
                 <div class="control-group" style="margin-top: 10px;">
                     <div class="controls">
-                        <span class="input-label">网站公告</span>
+                        <span class="input-label">首页公告</span>
                         <textarea class="span6 editor-html-simple" rows="5" cols="20"
                                   name="shop_index_notice">{{$shop_index_notice nofilter}}</textarea>
                     </div>
                 </div>
-
+                <div class="control-group" style="margin-top: 10px;">
+                    <div class="controls">
+                        <span class="input-label">商品详情公告</span>
+                        <textarea class="span6 editor-html-simple" rows="5" cols="20"
+                                  name="goods_view_detail_notice">{{$goods_view_detail_notice nofilter}}</textarea>
+                    </div>
+                </div>
                 <div class="control-group" style="margin-top: 10px;">
                     <div class="controls">
                         <span class="input-label">售后说明</span>

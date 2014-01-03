@@ -476,6 +476,7 @@
 
                 <!-- 商品详情内容 -->
                 <div id="bzf_goods_view_goods_desc_pane" class="tab-pane active">
+                    {{bzf_get_option_value optionKey="goods_view_detail_notice"}}
                     {{$goodsInfo['goods_desc']|bzf_html_image_lazyload nofilter}}
                 </div>
                 <!-- /商品详情内容 -->

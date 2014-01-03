@@ -29,6 +29,7 @@ class Basic extends Base
         'icp',
         'goods_after_service',
         'shop_index_notice',
+        'goods_view_detail_notice',
         'statistics_code',
         'smarty_cache_time_ajax_category',
         'smarty_cache_time_shop_index',
@@ -41,6 +42,7 @@ class Basic extends Base
         'statistics_code',
         'goods_after_service',
         'shop_index_notice',
+        'goods_view_detail_notice',
     );
 
     public function get($f3)
