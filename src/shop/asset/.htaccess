@@ -1,6 +1,0 @@
-<FilesMatch ".(htaccess|htpasswd|ini|cfg|php|sh)$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch>
-Options -Indexes
-order deny,allow
