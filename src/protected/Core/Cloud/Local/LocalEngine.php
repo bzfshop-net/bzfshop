@@ -56,6 +56,10 @@ class LocalEngine implements ICloudEngine
                 $sysPath = SUPPLIER_PATH;
                 $sysDir  = SUPPLIER_DIR;
                 break;
+            case PluginHelper::SYSTEM_INSTALL:
+                $sysPath = INSTALL_PATH;
+                $sysDir  = INSTALL_DIR;
+                break;
             default:
                 throw new \InvalidArgumentException('can not init for system [' . $system . ']');
         }
