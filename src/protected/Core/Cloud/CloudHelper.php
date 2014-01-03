@@ -21,10 +21,17 @@ class CloudHelper
     // 数据库系统
     const CLOUD_MODULE_DB = 'Db';
 
+    // 云引擎定义
+    const CLOUD_ENGINE_LOCAL = 'Local';
+    const CLOUD_ENGINE_SAE   = 'Sae';
+
     /**
      * 当前的云平台引擎
      */
     private static $cloudEngine = null;
+
+    // 当前使用的引擎
+    public static $currentEngineStr = null;
 
     public static function detectCloudEnv($system)
     {
@@ -32,29 +39,31 @@ class CloudHelper
 
         $cloudEngine = null;
 
-        $cloudEngineStr = $f3->get('sysConfig[cloudEngine]');
-
-        // 根据用户的配置初始化 云引擎
-        if (!empty($cloudEngineStr)) {
-            $engineClassName = '\Core\Cloud\\' . $cloudEngineStr . '\\' . $cloudEngineStr . 'Engine';
-            if (!class_exists($engineClassName)) {
-                throw new \InvalidArgumentException('cloud engine [' . $engineClassName . '] does not exist');
-            }
-
-            $cloudEngine = new $engineClassName();
-            if (!$cloudEngine instanceof ICloudEngine) {
-                throw new \InvalidArgumentException('cloud engine [' . $engineClassName
-                    . '] is not instance of ICloudEngine');
-            }
-
-            goto init_engine;
-        }
+        self::$currentEngineStr = $f3->get('sysConfig[cloudEngine]');
 
         // 如果用户没有配置，我们这里自动检测云平台环境
+        if (empty($cloudEngineStr)) {
+            // 缺省为 Local
+            self::$currentEngineStr = self::CLOUD_ENGINE_LOCAL;
 
-        //TODO: do it later
+            if (function_exists('sae_debug')) {
+                self::$currentEngineStr = self::CLOUD_ENGINE_SAE;
+                goto init_engine;
+            }
+        }
 
-        init_engine: // 这里初始化引擎
+        init_engine:
+
+        $engineClassName = '\Core\Cloud\\' . self::$currentEngineStr . '\\' . self::$currentEngineStr . 'Engine';
+        if (!class_exists($engineClassName)) {
+            throw new \InvalidArgumentException('cloud engine [' . $engineClassName . '] does not exist');
+        }
+
+        $cloudEngine = new $engineClassName();
+        if (!$cloudEngine instanceof ICloudEngine) {
+            throw new \InvalidArgumentException('cloud engine [' . $engineClassName
+                . '] is not instance of ICloudEngine');
+        }
 
         // 初始化 云引擎
         if (!$cloudEngine->initEnv($system)) {
