@@ -137,7 +137,8 @@ class LocalEngine implements ICloudEngine
         switch ($module) {
             case CloudHelper::CLOUD_MODULE_Log:
                 return new LocalLog();
-
+            case CloudHelper::CLOUD_MODULE_DB:
+                return new LocalDb();
             default:
                 return null;
         }

@@ -35,7 +35,7 @@ class SaeLog implements ICloudLog
     {
         $msg = '[' . Time::localTimeStr('Y-m-d H:i:s') . '][' . $level . '][' . $source . '][' . trim($msg) . ']'
             . PHP_EOL;
-        sae_debug($msg); //记录日志
+        //sae_debug($msg); //记录日志
     }
 
 }

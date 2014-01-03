@@ -18,6 +18,8 @@ class CloudHelper
     const CLOUD_MODULE_Log = 'Log';
     // 文件系统操作模块
     const CLOUD_MODULE_FILESYSTEM = 'FileSystem';
+    // 数据库系统
+    const CLOUD_MODULE_DB = 'Db';
 
     /**
      * 当前的云平台引擎

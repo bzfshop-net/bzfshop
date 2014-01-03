@@ -256,7 +256,7 @@ final class Utils
                     continue;
                 }
                 copy($PathDir, $destination . DIRECTORY_SEPARATOR . $readdirectory);
-                chmod($destination . DIRECTORY_SEPARATOR . $readdirectory, $fileMask);
+                @chmod($destination . DIRECTORY_SEPARATOR . $readdirectory, $fileMask);
             }
 
             $directory->close();
@@ -268,7 +268,7 @@ final class Utils
                 @touch($destDir);
             }
             copy($source, $destination);
-            chmod($destination, $fileMask);
+            @chmod($destination, $fileMask);
         }
     }
 

@@ -58,7 +58,7 @@ class SaeEngine implements ICloudEngine
         $smarty->setCompileDir(RUNTIME_PATH . '/Smarty/' . $systemUpperFirst . '/Compile');
         $smarty->setCacheDir(RUNTIME_PATH . '/Smarty/' . $systemUpperFirst . '/Cache');
         $smarty->compile_locking = false;
-        
+
         // asset 路径，用于发布 css, js , 图片 等
         $f3->set('sysConfig[asset_path_root]', $f3->get('sysConfig[sae_storage_data_path]') . '/asset');
         $f3->set('sysConfig[asset_path_url_prefix]', $f3->get('sysConfig[data_url_prefix]') . '/asset');
@@ -90,7 +90,8 @@ class SaeEngine implements ICloudEngine
         switch ($module) {
             case CloudHelper::CLOUD_MODULE_Log:
                 return new SaeLog();
-
+            case CloudHelper::CLOUD_MODULE_DB:
+                return new SaeDb();
             default:
                 return null;
         }

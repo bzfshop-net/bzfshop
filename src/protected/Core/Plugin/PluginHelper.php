@@ -22,6 +22,7 @@ class PluginHelper
     const SYSTEM_SUPPLIER = 'supplier';
     const SYSTEM_MOBILE   = 'mobile';
     const SYSTEM_CONSOLE  = 'console';
+    const SYSTEM_INSTALL  = 'install';
 
     // 额外的系统
     const SYSTEM_AIMEIDAREN = 'aimeidaren';
