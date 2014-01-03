@@ -7,6 +7,7 @@
  *
  * */
 
+use Core\Cloud\CloudHelper;
 use Core\Helper\Utility\Auth as AuthHelper;
 use Core\Helper\Utility\Route as RouteHelper;
 use Core\Plugin\PluginHelper;
@@ -30,6 +31,7 @@ require_once(PROTECTED_PATH . '/Core/Log/File.php');
 require_once(PROTECTED_PATH . '/Core/Asset/IManager.php');
 require_once(PROTECTED_PATH . '/Core/Asset/SimpleManager.php');
 require_once(PROTECTED_PATH . '/Core/Asset/ManagerHelper.php');
+require_once(PROTECTED_PATH . '/Core/Cloud/CloudHelper.php');
 
 // ---------------------------------------- 1. 设置系统运行设置 --------------------------------------
 
@@ -53,39 +55,8 @@ if (!$f3->get('sysConfig[webroot_url_prefix]')) {
     );
 }
 
-//数据路径
-if (!$f3->get('sysConfig[data_path_root]')) {
-    $f3->set('sysConfig[data_path_root]', realpath(SUPPLIER_PATH . '/../data'));
-}
-
-//数据 url prefix
-if (!$f3->get('sysConfig[data_url_prefix]')) {
-    $f3->set('sysConfig[data_url_prefix]', str_replace('/' . SUPPLIER_DIR, '/data', $f3->get('BASE')));
-}
-
-//图片 image_url_prefix
-if (!$f3->get('sysConfig[image_url_prefix]')) {
-    $f3->set('sysConfig[image_url_prefix]', $f3->get('sysConfig[data_url_prefix]'));
-}
-
-// RunTime 路径
-if (!$f3->get('sysConfig[runtime_path]')) {
-    $f3->set('sysConfig[runtime_path]', realpath(PROTECTED_PATH . '/Runtime'));
-}
-
-define('RUNTIME_PATH', $f3->get('sysConfig[runtime_path]'));
-
-// 设置 Tmp 路径
-$f3->set('TEMP', RUNTIME_PATH . '/Temp/');
-
-// 设置 Log 路径
-$f3->set('LOGS', RUNTIME_PATH . '/Log/Supplier/');
-
-//开启 Cache 功能
-if (!$f3->get('CACHE')) {
-    // 让 F3 自动选择使用最优的 Cache 方案，最差的情况会使用 TEMP/cache 目录文件做缓存
-    $f3->set('CACHE', 'true');
-}
+// 初始化 云服务引擎，云服务引擎会设置好我们的运行环境，包括 可写目录 等
+CloudHelper::detectCloudEnv(PluginHelper::SYSTEM_SUPPLIER);
 
 // 设置网站唯一的 key，防止通用模块之间的冲突
 RouteHelper::$uniqueKey           = 'SUPPLIER';
@@ -96,10 +67,6 @@ OrderBasicService::$orderSnPrefix = 'SUPPLIER';
 $smarty->debugging     = $f3->get('sysConfig[smarty_debug]');
 $smarty->force_compile = $f3->get('sysConfig[smarty_force_compile]');
 $smarty->use_sub_dirs  = $f3->get('sysConfig[smarty_use_sub_dirs]');
-
-//设置 smarty 工作目录
-$smarty->setCompileDir(RUNTIME_PATH . '/Smarty/Supplier/Compile');
-$smarty->setCacheDir(RUNTIME_PATH . '/Smarty/Supplier/Cache');
 
 // ---------------------------------------- 2. 开启系统日志 --------------------------------------
 
@@ -147,15 +114,6 @@ if ($f3->get('DEBUG')) {
 }
 
 // ---------------------------------------- 3. 初始化资源管理器 AssetManager --------------------------------------
-
-// asset 路径，用于发布 css, js , 图片 等
-if (!$f3->get('sysConfig[asset_path_root]')) {
-    $f3->set('sysConfig[asset_path_root]', realpath(SUPPLIER_PATH . '/asset'));
-}
-
-if (!$f3->get('sysConfig[asset_path_url_prefix]')) {
-    $f3->set('sysConfig[asset_path_url_prefix]', $f3->get('sysConfig[webroot_url_prefix]') . '/asset');
-}
 
 \Core\Asset\SimpleManager::instance(
     $f3->get('sysConfig[asset_path_url_prefix]'),
