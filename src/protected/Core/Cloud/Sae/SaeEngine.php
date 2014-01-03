@@ -67,7 +67,34 @@ class SaeEngine implements ICloudEngine
 
     private function initConsoleEnv()
     {
-        // do nothing now
+        global $f3;
+
+        $systemUpperFirst = 'Console';
+
+        $saeStorage = new \SaeStorage();
+
+        //数据路径
+        $f3->set('sysConfig[data_path_root]', $f3->get('sysConfig[sae_storage_data_path]'));
+        $f3->set('sysConfig[data_url_prefix]', rtrim($saeStorage->getUrl('domain', ''), '/'));
+
+        //图片 image_url_prefix
+        if (!$f3->get('sysConfig[image_url_prefix]')) {
+            $f3->set('sysConfig[image_url_prefix]', $f3->get('sysConfig[data_url_prefix]'));
+        }
+
+        // RunTime 路径
+        $f3->set('sysConfig[runtime_path]', $f3->get('sysConfig[sae_runtime]'));
+
+        define('RUNTIME_PATH', $f3->get('sysConfig[runtime_path]'));
+
+        // 设置 Tmp 路径
+        $f3->set('TEMP', RUNTIME_PATH . '/Temp/');
+
+        // 设置 Log 路径
+        $f3->set('LOGS', RUNTIME_PATH . '/Log/' . $systemUpperFirst . '/');
+
+        //开启 Cache 功能
+        $f3->set('CACHE', RUNTIME_PATH . '/Cache/');
     }
 
     public function initEnv($system)

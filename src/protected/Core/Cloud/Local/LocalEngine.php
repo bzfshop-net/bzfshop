@@ -118,12 +118,52 @@ class LocalEngine implements ICloudEngine
 
     private function initConsoleEnv()
     {
-        // do nothing now
+        global $f3;
+
+        $sysPath          = CONSOLE_PATH;
+        $sysDir           = CONSOLE_DIR;
+        $systemUpperFirst = 'Console';
+
+        //数据路径
+        if (!$f3->get('sysConfig[data_path_root]')) {
+            $f3->set('sysConfig[data_path_root]', realpath($sysPath . '/../data'));
+        }
+
+        //数据 url prefix
+        if (!$f3->get('sysConfig[data_url_prefix]')) {
+            $f3->set(
+                'sysConfig[data_url_prefix]',
+                str_replace('/' . $sysDir, '/data', $f3->get('sysConfig[webroot_url_prefix]'))
+            );
+        }
+
+        //图片 image_url_prefix
+        if (!$f3->get('sysConfig[image_url_prefix]')) {
+            $f3->set('sysConfig[image_url_prefix]', $f3->get('sysConfig[data_url_prefix]'));
+        }
+
+        // RunTime 路径
+        if (!$f3->get('sysConfig[runtime_path]')) {
+            $f3->set('sysConfig[runtime_path]', realpath(PROTECTED_PATH . '/Runtime'));
+        }
+
+        define('RUNTIME_PATH', $f3->get('sysConfig[runtime_path]'));
+
+        // 设置 Tmp 路径
+        $f3->set('TEMP', RUNTIME_PATH . '/Temp/');
+
+        // 设置 Log 路径
+        $f3->set('LOGS', RUNTIME_PATH . '/Log/' . $systemUpperFirst . '/');
+
+        //开启 Cache 功能
+        if (!$f3->get('CACHE')) {
+            // 让 F3 自动选择使用最优的 Cache 方案，最差的情况会使用 TEMP/cache 目录文件做缓存
+            $f3->set('CACHE', 'true');
+        }
     }
 
     public function initEnv($system)
     {
-        global $f3;
 
         $this->system = $system;
 
