@@ -7,7 +7,11 @@
  *
  * */
 
+use Core\Cloud\CloudHelper;
+use Core\Plugin\PluginHelper;
+
 define('CONSOLE_PATH', dirname(__FILE__));
+define('CONSOLE_DIR', basename(CONSOLE_PATH));
 
 // 包含整个系统的初始化
 require_once(CONSOLE_PATH . '/../protected/bootstrap-console.php');
@@ -25,31 +29,8 @@ if ($f3->get('sysConfig[time_zone]')) {
     date_default_timezone_set($f3->get('sysConfig[time_zone]'));
 }
 
-//数据路径
-if (!$f3->get('sysConfig[data_path_root]')) {
-    $f3->set('sysConfig[data_path_root]', realpath(CONSOLE_PATH . '/../data'));
-}
-
-// RunTime 路径
-if (!$f3->get('sysConfig[runtime_path]')) {
-    $f3->set('sysConfig[runtime_path]', realpath(PROTECTED_PATH . '/Runtime'));
-}
-
-define('RUNTIME_PATH', $f3->get('sysConfig[runtime_path]'));
-
-// 设置 Tmp 路径
-$f3->set('TEMP', RUNTIME_PATH . '/Temp/');
-// 设置 Log 路径
-$f3->set('LOGS', RUNTIME_PATH . '/Log/Console/');
-//开启 Cache 功能
-if (!$f3->get('CACHE')) {
-    // 让 F3 自动选择使用最优的 Cache 方案，最差的情况会使用 TEMP/cache 目录文件做缓存
-    $f3->set('CACHE', 'true');
-}
-
-//预先加载一些常用模块，提高后面的加载效率
-require_once(PROTECTED_PATH . '/Core/Log/File.php');
-require_once(PROTECTED_PATH . '/Core/Log/Console.php');
+// 初始化 云服务引擎，云服务引擎会设置好我们的运行环境，包括 可写目录 等
+CloudHelper::detectCloudEnv(PluginHelper::SYSTEM_CONSOLE);
 
 $todayDateStr   = \Core\Helper\Utility\Time::localTimeStr('Y-m-d');
 $todayDateArray = explode('-', $todayDateStr);
