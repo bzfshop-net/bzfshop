@@ -7,7 +7,9 @@
  *
  * */
 
+use Core\Cloud\CloudHelper;
 use Core\Helper\Utility\Route as RouteHelper;
+use Core\Plugin\PluginHelper;
 
 if (!defined('BZF_PHP_VERSION_REQUIRE')) {
     die('illegal call, please call index.php');
@@ -36,24 +38,14 @@ if (!$f3->get('sysConfig[webroot_url_prefix]')) {
     );
 }
 
-// RunTime 路径
-if (!$f3->get('sysConfig[runtime_path]')) {
-    $f3->set('sysConfig[runtime_path]', realpath(PROTECTED_PATH . '/Runtime'));
-}
-
-define('RUNTIME_PATH', $f3->get('sysConfig[runtime_path]'));
+// 初始化 云服务引擎，云服务引擎会设置好我们的运行环境，包括 可写目录 等
+CloudHelper::detectCloudEnv(PluginHelper::SYSTEM_INSTALL);
 
 // RUNTIME_PATH 必须要有读写权限
-
-if (!is_writable(RUNTIME_PATH) || !is_readable(RUNTIME_PATH)) {
+@file_put_contents(RUNTIME_PATH . '/install.write', 'install.write');
+if ('install.write' != @file_get_contents(RUNTIME_PATH . '/install.write')) {
     die('错误：[' . RUNTIME_PATH . ']必须有读写权限');
 }
-
-// 设置 Tmp 路径
-$f3->set('TEMP', RUNTIME_PATH . '/Temp/');
-
-// 设置 Log 路径
-$f3->set('LOGS', RUNTIME_PATH . '/Log/Install/');
 
 // 设置网站唯一的 key，防止通用模块之间的冲突
 RouteHelper::$uniqueKey = 'BZFRouteHelper';
@@ -62,10 +54,6 @@ RouteHelper::$uniqueKey = 'BZFRouteHelper';
 $smarty->debugging     = $f3->get('sysConfig[smarty_debug]');
 $smarty->force_compile = $f3->get('sysConfig[smarty_force_compile]');
 $smarty->use_sub_dirs  = $f3->get('sysConfig[smarty_use_sub_dirs]');
-
-//设置 smarty 工作目录
-$smarty->setCompileDir(RUNTIME_PATH . '/Smarty/Install/Compile');
-$smarty->setCacheDir(RUNTIME_PATH . '/Smarty/Install/Cache');
 
 // ---------------------------------------- 2. 开启系统日志 --------------------------------------
 

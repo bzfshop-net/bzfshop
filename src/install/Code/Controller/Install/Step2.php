@@ -48,8 +48,15 @@ class Step2 extends \Controller\BaseController
      */
     public function checkFilePermission($path)
     {
+        global $f3;
         $isPass     = false;
         $valueArray = array();
+
+        if ('Local' != $f3->get('sysConfig[cloudEngine]')) {
+            $isPass       = true;
+            $valueArray[] = '云平台，不检测';
+            goto out;
+        }
 
         if (!file_exists($path)) {
             goto out;

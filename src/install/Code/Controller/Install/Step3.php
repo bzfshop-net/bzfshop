@@ -46,6 +46,15 @@ class Step3 extends \Controller\BaseController
         }
 
         try {
+
+            // 对云平台要做特殊处理
+            if ('Sae' == $f3->get('sysConfig[cloudEngine]')) {
+                $dbPdo       = 'mysql:host=' . SAE_MYSQL_HOST_M . ';port=' . SAE_MYSQL_PORT . ';dbname=' . SAE_MYSQL_DB;
+                $dbUsersName = SAE_MYSQL_USER;
+                $dbPassword  = SAE_MYSQL_PASS;
+                goto import_data;
+            }
+
             // 检查是否需要创建数据库
             $dbPdo    = 'mysql:host=' . $dbHost . ';port=' . $dbPort;
             $dbEngine = new \Core\Modal\DbEngine($dbPdo, $dbUsersName, $dbPassword);
@@ -68,17 +77,8 @@ class Step3 extends \Controller\BaseController
             // 重新初始化数据库连接
             unset($dbPdo);
             unset($dbEngine);
-            $dbPdo     = 'mysql:host=' . $dbHost . ';port=' . $dbPort . ';dbname=' . $dbName;
-            $pdoObject = new \PDO($dbPdo, $dbUsersName, $dbPassword);
+            $dbPdo = 'mysql:host=' . $dbHost . ';port=' . $dbPort . ';dbname=' . $dbName;
 
-            // 解析 sql 文件，导入数据
-            $sqlFileContent = file_get_contents(INSTALL_PATH . '/Asset/data/bzfshop.sql');
-            $sqlFileContent = SqlHelper::removeComment($sqlFileContent);
-            $sqlArray       = SqlHelper::splitToSqlArray($sqlFileContent, ';');
-            foreach ($sqlArray as $sqlQuery) {
-                $pdoObject->exec($sqlQuery);
-            }
-            unset($pdoObject);
 
             // 更新配置文件 env.cfg
             $filePath    = INSTALL_PATH . '/../protected/Config/env.cfg';
@@ -121,6 +121,19 @@ class Step3 extends \Controller\BaseController
                     $fileContent
                 );
             file_put_contents($filePath, $fileContent);
+
+            import_data: // 这里完成导入数据的工作
+
+            $pdoObject = new \PDO($dbPdo, $dbUsersName, $dbPassword);
+
+            // 解析 sql 文件，导入数据
+            $sqlFileContent = file_get_contents(INSTALL_PATH . '/Asset/data/bzfshop.sql');
+            $sqlFileContent = SqlHelper::removeComment($sqlFileContent);
+            $sqlArray       = SqlHelper::splitToSqlArray($sqlFileContent, ';');
+            foreach ($sqlArray as $sqlQuery) {
+                $pdoObject->exec($sqlQuery);
+            }
+            unset($pdoObject);
 
         } catch (\PDOException $e) {
             $this->addFlashMessage($e->getMessage());
