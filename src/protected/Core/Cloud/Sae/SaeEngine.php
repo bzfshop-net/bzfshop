@@ -33,7 +33,10 @@ class SaeEngine implements ICloudEngine
 
         //数据路径
         $f3->set('sysConfig[data_path_root]', $f3->get('sysConfig[sae_storage_data_path]'));
-        $f3->set('sysConfig[data_url_prefix]', rtrim($saeStorage->getUrl('domain', ''), '/'));
+        $f3->set(
+            'sysConfig[data_url_prefix]',
+            rtrim($saeStorage->getUrl($f3->get('sysConfig[sae_storage_data_domain]'), ''), '/')
+        );
 
         //图片 image_url_prefix
         if (!$f3->get('sysConfig[image_url_prefix]')) {
@@ -83,7 +86,10 @@ class SaeEngine implements ICloudEngine
 
         //数据路径
         $f3->set('sysConfig[data_path_root]', $f3->get('sysConfig[sae_storage_data_path]'));
-        $f3->set('sysConfig[data_url_prefix]', rtrim($saeStorage->getUrl('domain', ''), '/'));
+        $f3->set(
+            'sysConfig[data_url_prefix]',
+            rtrim($saeStorage->getUrl('sysConfig[sae_storage_data_domain]', ''), '/')
+        );
 
         //图片 image_url_prefix
         if (!$f3->get('sysConfig[image_url_prefix]')) {
