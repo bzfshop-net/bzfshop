@@ -169,8 +169,15 @@ if ($f3->get('DEBUG')) {
     $f3->get('sysConfig[asset_path_url_prefix]'),
     $f3->get('sysConfig[asset_path_root]')
 );
+
+// 开启 asset 智能重新发布功能
+\Core\Asset\SimpleManager::instance()->enableSmartPublish($f3->get('sysConfig[enable_asset_smart_publish]'));
 // asset 文件 url 开启 hash，文件名采用 时间戳.文件名 的方式
-\Core\Asset\SimpleManager::instance()->enableFileHashUrl(true, true);
+\Core\Asset\SimpleManager::instance()->enableFileHashUrl(
+    $f3->get('sysConfig[enable_asset_hash_url]'),
+    $f3->get('sysConfig[enable_asset_hash_name]')
+);
+
 \Core\Asset\ManagerHelper::setAssetManager(\Core\Asset\SimpleManager::instance());
 
 
