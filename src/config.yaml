@@ -1,0 +1,15 @@
+handle:
+- directoryindex: index.php
+- compress: if ( out_header["Content-type"] ~ "text/css" ) compress
+- compress: if ( out_header["Content-type"] ~ "text/javascript" ) compress
+- compress: if ( out_header["Content-type"] ~ "text/html" ) compress
+- compress: if ( out_header["Content-type"] ~ "text/plain" ) compress
+- compress: if ( out_header["Content-type"] ~ "text/json" ) compress
+- hostaccess:  if(path ~ "/protected") deny "all"
+- hostaccess:  if(path ~ "/console") deny "all"
+- rewrite: if ( !is_dir() && !is_file() && path ~ "/install/(.*)" ) goto "/install/index.php"
+- rewrite: if ( !is_dir() && !is_file() && path ~ "/shop/(.*)" ) goto "/shop/index.php"
+- rewrite: if ( !is_dir() && !is_file() && path ~ "/mobile/(.*)" ) goto "/mobile/index.php"
+- rewrite: if ( !is_dir() && !is_file() && path ~ "/manage/(.*)" ) goto "/manage/index.php"
+- rewrite: if ( !is_dir() && !is_file() && path ~ "/supplier/(.*)" ) goto "/supplier/index.php"
+- rewrite: if ( !is_dir() && !is_file() && path ~ "/(.*)" ) goto "/index.php"
