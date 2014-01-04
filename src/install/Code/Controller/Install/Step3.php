@@ -9,6 +9,7 @@
 
 namespace Controller\Install;
 
+use Core\Cloud\CloudHelper;
 use Core\Helper\Utility\Route as RouteHelper;
 use Core\Helper\Utility\Sql as SqlHelper;
 use Core\Helper\Utility\Validator;
@@ -48,7 +49,7 @@ class Step3 extends \Controller\BaseController
         try {
 
             // 对云平台要做特殊处理
-            if ('Sae' == $f3->get('sysConfig[cloudEngine]')) {
+            if (CloudHelper::CLOUD_ENGINE_SAE == CloudHelper::$currentEngineStr) {
                 $dbPdo       = 'mysql:host=' . SAE_MYSQL_HOST_M . ';port=' . SAE_MYSQL_PORT . ';dbname=' . SAE_MYSQL_DB;
                 $dbUsersName = SAE_MYSQL_USER;
                 $dbPassword  = SAE_MYSQL_PASS;

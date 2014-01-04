@@ -9,6 +9,8 @@
 
 namespace Controller\Install;
 
+use Core\Cloud\CloudHelper;
+
 class Step2 extends \Controller\BaseController
 {
     /**
@@ -52,7 +54,7 @@ class Step2 extends \Controller\BaseController
         $isPass     = false;
         $valueArray = array();
 
-        if ('Local' != $f3->get('sysConfig[cloudEngine]')) {
+        if (CloudHelper::CLOUD_ENGINE_LOCAL != CloudHelper::$currentEngineStr) {
             $isPass       = true;
             $valueArray[] = '云平台，不检测';
             goto out;
