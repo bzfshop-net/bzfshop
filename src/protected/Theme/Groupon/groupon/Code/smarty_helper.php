@@ -8,7 +8,6 @@
  * */
 use Core\Helper\Utility\Route as RouteHelper;
 use Core\Helper\Utility\Time;
-use Core\Service\Goods\Goods as GoodsBasicService;
 
 /**
  * 注册所有我们可能会用到的 function()
@@ -16,14 +15,17 @@ use Core\Service\Goods\Goods as GoodsBasicService;
  * */
 function smarty_helper_register(&$smarty)
 {
-    $smarty->registerPlugin('function', 'bzf_express_query_url', 'smarty_helper_function_express_query_url');
-    $smarty->registerPlugin('function', 'bzf_mobile_query_url', 'smarty_helper_function_mobile_query_url');
-    $smarty->registerPlugin('function', 'bzf_ip_query_url', 'smarty_helper_function_ip_query_url');
-
+    $smarty->registerPlugin(
+        'function',
+        'bzf_query_plugin_feature_var',
+        'smarty_helper_function_query_plugin_feature_var'
+    );
+    $smarty->registerPlugin('function', 'bzf_make_system_url', 'smarty_helper_function_make_system_url');
     $smarty->registerPlugin('function', 'bzf_make_url', 'smarty_helper_function_make_url');
+    $smarty->registerPlugin('function', 'bzf_express_query_url', 'smarty_helper_function_express_query_url');
     $smarty->registerPlugin('function', 'bzf_paginator', 'smarty_helper_function_paginator');
     $smarty->registerPlugin('function', 'bzf_goods_thumb_image', 'smarty_helper_function_goods_thumb_image');
-    $smarty->registerPlugin('function', 'bzf_goods_view_toolbar', 'smarty_helper_function_goods_view_toolbar');
+    $smarty->registerPlugin('function', 'bzf_goods_comment', 'smarty_helper_function_goods_comment');
 
     $smarty->registerPlugin('function', 'bzf_get_asset_url', 'smarty_helper_function_get_asset_url');
     $smarty->registerPlugin(
@@ -37,9 +39,76 @@ function smarty_helper_register(&$smarty)
         'smarty_helper_function_dump_merged_asset_js_url'
     );
 
+    $smarty->registerPlugin('function', 'bzf_get_option_value', 'smarty_helper_function_get_option_value');
+    $smarty->registerPlugin('function', 'bzf_assign_option_value', 'smarty_helper_function_assign_option_value');
+
+    $smarty->registerPlugin('modifier', 'bzf_mask_string', 'smarty_helper_modifier_mask_string');
     $smarty->registerPlugin('modifier', 'bzf_localtime', 'smarty_helper_modifier_localtime');
+    $smarty->registerPlugin('modifier', 'bzf_html_image_lazyload', 'smarty_helper_modifier_html_image_lazyload');
     $smarty->registerPlugin('modifier', 'bzf_money_display', 'smarty_helper_modifier_money_display');
-    $smarty->registerPlugin('modifier', 'bzf_system_name', 'smarty_helper_modifier_system_display_name');
+    $smarty->registerPlugin('modifier', 'bzf_money_int_part', 'smarty_helper_modifier_money_int_part');
+    $smarty->registerPlugin('modifier', 'bzf_money_float_part', 'smarty_helper_modifier_money_float_part');
+}
+
+/**
+ * 查询插件的某些属性，比如 插件的版本信息，财付通支付插件是否支持 网银直连
+ *
+ * @param array $paramArray
+ * @param       $smarty
+ *
+ * @return mixed|null
+ */
+function smarty_helper_function_query_plugin_feature_var(array $paramArray, $smarty)
+{
+    $varName = isset($paramArray['varName']) ? $paramArray['varName'] : '';
+    unset($paramArray['varName']);
+    $uniqueId = isset($paramArray['uniqueId']) ? $paramArray['uniqueId'] : '';
+    unset($paramArray['uniqueId']);
+    $command = isset($paramArray['command']) ? $paramArray['command'] : '';
+    unset($paramArray['command']);
+
+    if (empty($varName) || empty($uniqueId) || empty($command)) {
+        throw new InvalidArgumentException('must provide varName, uniqueId, command');
+    }
+
+    $varValue = null;
+
+    if (empty($uniqueId) || !$pluginInstance = \Core\Plugin\PluginHelper::getPluginInstanceByUniqueId($uniqueId)) {
+        goto out;
+    }
+
+    // execute command to get result
+    $varValue = $pluginInstance->pluginCommand($command, $paramArray);
+
+    out:
+    $smarty->assign($varName, $varValue);
+}
+
+
+/**
+ * 用于生成系统的操作链接，符合系统 URL 调用规范
+ *
+ * 在模板中的使用方法 {{makeUrl controller='/User/Login' username='xxx' password='xxx' }}
+ *
+ * 必须要有 controller 用于指定控制器，其它参数可以没有
+ *
+ * */
+function smarty_helper_function_make_system_url(array $paramArray, $smarty)
+{
+    $system     = isset($paramArray['system']) ? $paramArray['system'] : '';
+    $controller = isset($paramArray['controller']) ? $paramArray['controller'] : '/Error/E404';
+    $static     = isset($paramArray['static']) ? $paramArray['static'] : null;
+
+    if (empty($system)) {
+        return '';
+    }
+
+    // 去除 system,controller, static ，其它都是控制器的参数
+    unset($paramArray['system']);
+    unset($paramArray['controller']);
+    unset($paramArray['static']);
+
+    return RouteHelper::makeShopSystemUrl($system, $controller, $paramArray, $static);
 }
 
 /**
@@ -78,39 +147,14 @@ function smarty_helper_function_express_query_url(array $paramArray, $smarty)
 }
 
 /**
- * 生成手机号查询地址
- *
- * @param array $paramArray
- * @param       $smarty
- *
- * @return string
- */
-function smarty_helper_function_mobile_query_url(array $paramArray, $smarty)
-{
-    return 'http://www.showji.com/search.htm?m=' . @$paramArray['mobile'];
-}
-
-/**
- * 生成IP查询地址
- *
- * @param array $paramArray
- * @param       $smarty
- *
- * @return string
- */
-function smarty_helper_function_ip_query_url(array $paramArray, $smarty)
-{
-    return 'http://www.ip138.com/ips138.asp?ip=' . @$paramArray['ip'];
-}
-
-/**
  * 生成分页栏，用法：{{bzf_paginator count=$totalCount pageNo=$pageNo pageSize=$pageSize }}
  */
 function smarty_helper_function_paginator(array $paramArray, $smarty)
 {
-    $count    = isset($paramArray['count']) ? $paramArray['count'] : 0;
-    $pageNo   = isset($paramArray['pageNo']) ? $paramArray['pageNo'] : 0;
-    $pageSize = isset($paramArray['pageSize']) ? $paramArray['pageSize'] : 10;
+    $count      = isset($paramArray['count']) ? $paramArray['count'] : 0;
+    $pageNo     = isset($paramArray['pageNo']) ? $paramArray['pageNo'] : 0;
+    $pageSize   = isset($paramArray['pageSize']) ? $paramArray['pageSize'] : 10;
+    $currentUrl = isset($paramArray['currentUrl']) ? $paramArray['currentUrl'] : RouteHelper::getRequestURL();
 
     // 不需要分页
     if ($count <= 0 || $count < $pageSize) {
@@ -126,9 +170,6 @@ function smarty_helper_function_paginator(array $paramArray, $smarty)
     if ($totalPage <= 1) {
         return '';
     }
-
-    // 处理参数
-    $currentUrl = RouteHelper::getRequestURL();
 
     // 首页
     $paginator = '<li><a href="' . RouteHelper::addParam($currentUrl, array('pageNo' => 0), true) . '">首页</a></li>';
@@ -181,7 +222,11 @@ function smarty_helper_function_paginator(array $paramArray, $smarty)
             true
         ) . '">末页</a></li>';
 
-    return '<span>（总数：' . $count . '&nbsp;&nbsp;页数：' . ($pageNo + 1) . '/' . $totalPage . '）</span><ul>' . $paginator
+    // 显示总共有多少页
+    $pageCountDisplayStr = isset($paramArray['noPageCount'])
+        ? '' : '<span>（总数：' . $count . '&nbsp;&nbsp;页数：' . ($pageNo + 1) . '/' . $totalPage . '）</span>';
+
+    return $pageCountDisplayStr . '<ul>' . $paginator
     . '</ul>';
 }
 
@@ -202,64 +247,23 @@ function smarty_helper_function_goods_thumb_image(array $paramArray, $smarty)
 }
 
 /**
- * 生成商品查看的 toolbar，用户可以查看 团购、商城、移动
+ * 取得商品的用户评价信息（取得第一页）
  *
  * @param array $paramArray
  * @param       $smarty
  *
  * @return string
  */
-function smarty_helper_function_goods_view_toolbar(array $paramArray, $smarty)
+function smarty_helper_function_goods_comment(array $paramArray, $smarty)
 {
-    $goods_id        = isset($paramArray['goods_id']) ? intval($paramArray['goods_id']) : 0;
-    $system_tag_list = isset($paramArray['system_tag_list']) ? $paramArray['system_tag_list'] : '';
+    $goods_id = isset($paramArray['goods_id']) ? intval($paramArray['goods_id']) : 0;
 
     // 参数不对，没有东西可以输出
     if ($goods_id <= 0) {
-        return 'goods_id [' . $goods_id . '] 非法';
+        return '';
     }
-
-    // 如果不提供 system_tag_list 参数，我们从数据库查询
-    if (!array_key_exists('system_tag_list', $paramArray)) {
-
-        static $goodsBasicService = null;
-        if (!$goodsBasicService) {
-            $goodsBasicService = new GoodsBasicService();
-        }
-
-        // 缓存 5 秒钟
-        $goods = $goodsBasicService->loadGoodsById($goods_id, 5);
-        if (!$goods->isEmpty()) {
-            $system_tag_list = $goods['system_tag_list'];
-        } else {
-            return 'goods_id [' . $goods_id . '] 非法';
-        }
-    }
-
-    // 解析成 System Array
-    $systemArray = \Core\Helper\Utility\Utils::parseTagString($system_tag_list);
-
-    $htmlContent = '<div class="btn-group">';
-
-    $system_url_base_array =
-        json_decode(\Theme\Manage\ManageThemePlugin::getOptionValue('system_url_base_array'), true);
-
-    if (!empty($system_url_base_array)) {
-        foreach ($systemArray as $system) {
-            if (!array_key_exists($system, $system_url_base_array)) {
-                // 不存在的系统，跳过
-                continue;
-            }
-            $themeSystem = $system_url_base_array[$system];
-            $htmlContent .= '<a title="查看' . $themeSystem['name'] . '商品详情" target="_blank" href="'
-                . RouteHelper::makeShopSystemUrl($system, '/Goods/View', array('goods_id' => $goods_id))
-                . '" class="btn btn-mini btn-info">' . $themeSystem['name'] . '</a>';
-        }
-    }
-
-    $htmlContent .= '</div>';
-
-    return htmlspecialchars($htmlContent);
+    $ajaxGoodsCommentController = new \Controller\Ajax\GoodsComment();
+    return $ajaxGoodsCommentController->fetchPage($goods_id, 0);
 }
 
 /**
@@ -277,7 +281,7 @@ function smarty_helper_function_get_asset_url(array $paramArray, $smarty)
     }
 
     return \Core\Asset\ManagerHelper::getAssetUrl(
-        \Theme\Supplier\SupplierThemePlugin::pluginGetUniqueId(),
+        \Theme\Groupon\GrouponThemePlugin::pluginGetUniqueId(),
         $paramArray['asset']
     );
 }
@@ -314,14 +318,14 @@ function smarty_helper_function_dump_merged_asset_css_url(array $paramArray, $sm
     if (!$merge) {
         foreach ($fileRelativeNameArray as $relativeAssetPath) {
             $outputStr .= '<link rel="stylesheet" type="text/css" href="' . \Core\Asset\ManagerHelper::getAssetUrl(
-                    \Theme\Supplier\SupplierThemePlugin::pluginGetUniqueId(),
+                    \Theme\Groupon\GrouponThemePlugin::pluginGetUniqueId(),
                     $relativeAssetPath
                 ) . '"/>' . "\n";
         }
     } else {
         // 合并文件
         $outputStr = '<link rel="stylesheet" type="text/css" href="' . \Core\Asset\ManagerHelper::getMergedAssetCssUrl(
-                \Theme\Supplier\SupplierThemePlugin::pluginGetUniqueId(),
+                \Theme\Groupon\GrouponThemePlugin::pluginGetUniqueId(),
                 $fileRelativeNameArray
             ) . '"/>';
     }
@@ -360,14 +364,14 @@ function smarty_helper_function_dump_merged_asset_js_url(array $paramArray, $sma
     if (!$merge) {
         foreach ($fileRelativeNameArray as $relativeAssetPath) {
             $outputStr .= '<script type="text/javascript" src="' . \Core\Asset\ManagerHelper::getAssetUrl(
-                    \Theme\Supplier\SupplierThemePlugin::pluginGetUniqueId(),
+                    \Theme\Groupon\GrouponThemePlugin::pluginGetUniqueId(),
                     $relativeAssetPath
                 ) . '"></script>' . "\n";
         }
     } else {
         // 合并文件
         $outputStr = '<script type="text/javascript" src="' . \Core\Asset\ManagerHelper::getMergedAssetJsUrl(
-                \Theme\Supplier\SupplierThemePlugin::pluginGetUniqueId(),
+                \Theme\Groupon\GrouponThemePlugin::pluginGetUniqueId(),
                 $fileRelativeNameArray
             ) . '"></script>';
     }
@@ -376,11 +380,104 @@ function smarty_helper_function_dump_merged_asset_js_url(array $paramArray, $sma
 }
 
 /**
+ * 获取主题设置的 option 的值
+ *
+ * @param array $paramArray
+ * @param       $smarty
+ *
+ * @return string
+ */
+function smarty_helper_function_get_option_value(array $paramArray, $smarty)
+{
+    if (!isset($paramArray['optionKey'])) {
+        return '';
+    }
+
+    return \Theme\Groupon\GrouponThemePlugin::getOptionValue($paramArray['optionKey']);
+}
+
+/**
+ * 方便程序取得 optionValue 的一个方法
+ *
+ * @param string $optionKey
+ *
+ * @return string
+ */
+function bzf_get_option_value($optionKey)
+{
+    return \Theme\Groupon\GrouponThemePlugin::getOptionValue($optionKey);
+}
+
+/**
+ * 把一个 option 的值赋值给 smarty 模板，方便在模板中调用
+ *
+ * @param array $paramArray
+ * @param       $smarty
+ */
+function smarty_helper_function_assign_option_value(array $paramArray, $smarty)
+{
+    if (!isset($paramArray['optionKey'])) {
+        return;
+    }
+
+    $optionKey   = $paramArray['optionKey'];
+    $optionValue = \Theme\Groupon\GrouponThemePlugin::getOptionValue($optionKey);
+
+    // 解析 json 值
+    if (@$paramArray['decodeJson']) {
+        $optionValue = json_decode($optionValue, true);
+    }
+
+    $smarty->assign($optionKey, $optionValue);
+}
+
+/**
+ * 对字符串做 mask 防止泄露关键信息，比如显示用户名
+ *
+ * @param $string
+ *
+ * @return string
+ */
+function smarty_helper_modifier_mask_string($string)
+{
+    return \Core\Helper\Utility\Utils::maskString($string);
+}
+
+/**
  * 系统使用的是 GM 时间，这个方法用于转换为 Local Time，并且显示
  */
 function smarty_helper_modifier_localtime($gmTime, $format = null)
 {
     return Time::gmTimeToLocalTimeStr($gmTime, $format);
+}
+
+
+/**
+ * 把 html 中的图片替换成 lazyload 模式
+ *
+ * @param $htmlContent
+ */
+function smarty_helper_modifier_html_image_lazyload($htmlContent)
+{
+    $loadingImage =
+        smarty_helper_function_get_asset_url(array('asset' => 'img/lazyload_placeholder_goods_desc.png'), null);
+
+    $htmlContent = preg_replace(
+        '/<img(.*?)src="(.*?)"(.*?)\/?>/',
+        '<img \1 class="lazyload" src="' . $loadingImage . '" data-original="\2" \3 />',
+        $htmlContent
+    );
+
+    // 这里做 文本替换
+    global $f3;
+    if ($f3->get('sysConfig[goods_desc_text_replace]')) {
+        $replaceArray = $f3->get('sysConfig[goods_desc_text_replace]');
+        foreach ($replaceArray as $key => $value) {
+            $htmlContent = str_replace($key, $value, $htmlContent);
+        }
+    }
+
+    return $htmlContent;
 }
 
 /**
@@ -392,24 +489,32 @@ function smarty_helper_modifier_money_display($price)
 }
 
 /**
- * 取得系统的可显示名字
+ * 取得价格的整数部分
  *
+ * @param $price
+ *
+ * @return int
  */
-function smarty_helper_modifier_system_display_name($system)
+function smarty_helper_modifier_money_int_part($price)
 {
-    if (empty($system)) {
-        return '';
+    return intval(smarty_helper_modifier_money_display($price));
+}
+
+/**
+ * 取得价格的小数部分
+ *
+ * @param $price
+ *
+ * @return int
+ */
+function smarty_helper_modifier_money_float_part($price)
+{
+    $displayPrice = smarty_helper_modifier_money_display($price);
+    $floatValue   = $displayPrice - intval($displayPrice);
+    if (0 == $floatValue) {
+        return '00';
     }
 
-    $system_url_base_array =
-        json_decode(\Theme\Manage\ManageThemePlugin::getOptionValue('system_url_base_array'), true);
-
-    if (!empty($system_url_base_array)) {
-
-        if (!array_key_exists($system, $system_url_base_array)) {
-            // 不存在的系统，跳过
-            return '';
-        }
-        return $system_url_base_array[$system]['name'];
-    }
+    $floatStr = number_format($floatValue, 2, '.', '');
+    return substr($floatStr, strpos($floatStr, '.') + 1);
 }

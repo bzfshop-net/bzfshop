@@ -63,6 +63,14 @@ class SaeEngine implements ICloudEngine
         $f3->set('sysConfig[asset_path_root]', $f3->get('sysConfig[sae_storage_data_path]') . '/asset');
         $f3->set('sysConfig[asset_path_url_prefix]', $f3->get('sysConfig[data_url_prefix]') . '/asset');
 
+        // 我们把 Asset 发布到 Storage，由于 Sae 的 Storage 有一些限制，所以我们关闭 Asset 的智能发布功能
+        // 关闭系统的 asset 合并功能
+        $f3->set('sysConfig[enable_asset_merge]', false);
+        // 关闭 asset 自动重新发布功能，Sae Storage 不支持取时间戳，所以无法自动重新发布
+        $f3->set('sysConfig[enable_asset_smart_publish]', false);
+        $f3->set('sysConfig[enable_asset_hash_url]', false);
+        $f3->set('sysConfig[enable_asset_hash_name]', false);
+
     }
 
     private function initConsoleEnv()

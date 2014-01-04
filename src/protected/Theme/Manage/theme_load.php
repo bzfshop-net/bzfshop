@@ -70,7 +70,9 @@ function smarty_helper_function_dump_merged_asset_css_url(array $paramArray, $sm
         return '';
     }
 
-    $merge = true;
+    global $f3;
+    $merge = $f3->get('sysConfig[enable_asset_merge]');
+
     if (isset($paramArray['merge'])) {
         $merge = $paramArray['merge'];
     }
@@ -116,7 +118,9 @@ function smarty_helper_function_dump_merged_asset_js_url(array $paramArray, $sma
         return '';
     }
 
-    $merge = true;
+    global $f3;
+    $merge = $f3->get('sysConfig[enable_asset_merge]');
+
     if (isset($paramArray['merge'])) {
         $merge = $paramArray['merge'];
     }
