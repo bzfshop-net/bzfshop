@@ -58,8 +58,8 @@ class SaeEngine implements ICloudEngine
         $f3->set('CACHE', RUNTIME_PATH . '/Cache/');
 
         //设置 smarty 工作目录
-        $smarty->setCompileDir(RUNTIME_PATH . '/Smarty/' . $systemUpperFirst . '/Compile');
-        $smarty->setCacheDir(RUNTIME_PATH . '/Smarty/' . $systemUpperFirst . '/Cache');
+        $smarty->setCompileDir(RUNTIME_PATH . '/Smarty');
+        $smarty->setCacheDir(RUNTIME_PATH . '/Smarty');
         $smarty->compile_locking = false;
 
         // asset 路径，用于发布 css, js , 图片 等
