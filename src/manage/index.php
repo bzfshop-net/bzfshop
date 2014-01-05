@@ -29,7 +29,6 @@ require_once(PROTECTED_PATH . '/Core/Plugin/PluginHelper.php');
 require_once(PROTECTED_PATH . '/Core/Plugin/ThemeHelper.php');
 require_once(PROTECTED_PATH . '/Core/Log/File.php');
 require_once(PROTECTED_PATH . '/Core/Asset/IManager.php');
-require_once(PROTECTED_PATH . '/Core/Asset/SimpleManager.php');
 require_once(PROTECTED_PATH . '/Core/Asset/ManagerHelper.php');
 require_once(PROTECTED_PATH . '/Core/Cloud/CloudHelper.php');
 
@@ -55,21 +54,17 @@ if (!$f3->get('sysConfig[webroot_url_prefix]')) {
     );
 }
 
-// 初始化 云服务引擎，云服务引擎会设置好我们的运行环境，包括 可写目录 等
-CloudHelper::detectCloudEnv(PluginHelper::SYSTEM_MANAGE);
-
-// 初始化 smarty 模板引擎
-$smarty->debugging     = $f3->get('sysConfig[smarty_debug]');
-$smarty->force_compile = $f3->get('sysConfig[smarty_force_compile]');
-$smarty->use_sub_dirs  = $f3->get('sysConfig[smarty_use_sub_dirs]');
-
 // 设置网站唯一的 key，防止通用模块之间的冲突
 RouteHelper::$uniqueKey           = 'MANAGE';
 AuthHelper::$uniqueKey            = 'MANAGE';
 AuthHelper::$enableCookieAuth     = true; // manage 用到了 swfupload 用于上传图片，所以必须开启 CookieAuth
 OrderBasicService::$orderSnPrefix = 'MANAGE';
 
-// ---------------------------------------- 2. 开启系统日志 --------------------------------------
+// ------------ 2. 初始化 云服务引擎，云服务引擎会设置好我们的运行环境，包括 可写目录 等 ------------
+
+CloudHelper::initCloudEnv(PluginHelper::SYSTEM_MANAGE);
+
+// ---------------------------------------- 3. 开启系统日志 --------------------------------------
 
 // 设置系统的日志
 $todayDateStr   = \Core\Helper\Utility\Time::localTimeStr('Y-m-d');
@@ -113,23 +108,6 @@ if ($f3->get('DEBUG')) {
         BzfDebug::enableSmartyWebLog();
     }
 }
-
-// ---------------------------------------- 3. 初始化资源管理器 AssetManager --------------------------------------
-
-\Core\Asset\SimpleManager::instance(
-    $f3->get('sysConfig[asset_path_url_prefix]'),
-    $f3->get('sysConfig[asset_path_root]')
-);
-
-// 开启 asset 智能重新发布功能
-\Core\Asset\SimpleManager::instance()->enableSmartPublish($f3->get('sysConfig[enable_asset_smart_publish]'));
-// asset 文件 url 开启 hash，文件名采用 时间戳.文件名 的方式
-\Core\Asset\SimpleManager::instance()->enableFileHashUrl(
-    $f3->get('sysConfig[enable_asset_hash_url]'),
-    $f3->get('sysConfig[enable_asset_hash_name]')
-);
-
-\Core\Asset\ManagerHelper::setAssetManager(\Core\Asset\SimpleManager::instance());
 
 // ---------------------------------------- 4. 加载显示主题 --------------------------------------
 
