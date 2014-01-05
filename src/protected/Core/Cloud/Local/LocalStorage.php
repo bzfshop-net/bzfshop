@@ -22,7 +22,16 @@ class LocalStorage implements ICloudStorage
 
     public function uploadFile($storageId, $targetRelativePath, $sourceFullPath)
     {
-        return move_uploaded_file($sourceFullPath, $storageId . DIRECTORY_SEPARATOR . $targetRelativePath);
+        // 自动建立目录路径
+        $targetFullPath = $storageId . DIRECTORY_SEPARATOR . $targetRelativePath;
+        $pathInfo       = pathinfo($targetFullPath);
+        if (@$pathInfo['dirname'] && !file_exists($pathInfo['dirname'])) {
+            if (!mkdir($pathInfo['dirname'], 0755, true)) {
+                return false;
+            }
+        }
+        // 上传文件
+        return move_uploaded_file($sourceFullPath, $targetFullPath);
     }
 
     public function readFile($storageId, $relativePath)
