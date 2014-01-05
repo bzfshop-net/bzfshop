@@ -191,7 +191,9 @@ class LocalEngine implements ICloudEngine
         $f3->set('LOGS', RUNTIME_PATH . '/Log/' . $systemUpperFirst . '/');
 
         //开启 Cache 功能
-        if (!$f3->get('CACHE')) {
+        if ($f3->get('sysConfig[cache]')) {
+            $f3->set('CACHE', $f3->get('sysConfig[cache]'));
+        } else {
             // 让 F3 自动选择使用最优的 Cache 方案，最差的情况会使用 TEMP/cache 目录文件做缓存
             $f3->set('CACHE', 'true');
         }
