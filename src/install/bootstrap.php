@@ -38,24 +38,21 @@ if (!$f3->get('sysConfig[webroot_url_prefix]')) {
     );
 }
 
-// 初始化 云服务引擎，云服务引擎会设置好我们的运行环境，包括 可写目录 等
-CloudHelper::detectCloudEnv(PluginHelper::SYSTEM_INSTALL);
+// 设置网站唯一的 key，防止通用模块之间的冲突
+RouteHelper::$uniqueKey = 'BZFRouteHelper';
+
+// ------------ 2. 初始化 云服务引擎，云服务引擎会设置好我们的运行环境，包括 可写目录 等 ------------
+
+CloudHelper::initCloudEnv(PluginHelper::SYSTEM_INSTALL);
 
 // RUNTIME_PATH 必须要有读写权限
 @file_put_contents(RUNTIME_PATH . '/install.write', 'install.write');
 if ('install.write' != @file_get_contents(RUNTIME_PATH . '/install.write')) {
     die('错误：[' . RUNTIME_PATH . ']必须有读写权限');
 }
+unlink(RUNTIME_PATH . '/install.write');
 
-// 设置网站唯一的 key，防止通用模块之间的冲突
-RouteHelper::$uniqueKey = 'BZFRouteHelper';
-
-// 初始化 smarty 模板引擎
-$smarty->debugging     = $f3->get('sysConfig[smarty_debug]');
-$smarty->force_compile = $f3->get('sysConfig[smarty_force_compile]');
-$smarty->use_sub_dirs  = $f3->get('sysConfig[smarty_use_sub_dirs]');
-
-// ---------------------------------------- 2. 开启系统日志 --------------------------------------
+// ---------------------------------------- 3. 开启系统日志 --------------------------------------
 
 // 设置一个 fileLogger 方便查看所有的日志输出
 $fileLogger = new \Core\Log\File('install.log');
@@ -82,7 +79,7 @@ if ($f3->get('DEBUG')) {
     }
 }
 
-// ---------------------------------------- 3. 设置工程环境 --------------------------------------
+// ---------------------------------------- 4. 设置工程环境 --------------------------------------
 
 // 设置代码路径
 \Core\Plugin\SystemHelper::addAutoloadPath(INSTALL_PATH . '/Code', true);
@@ -99,7 +96,7 @@ require_once(INSTALL_PATH . '/Code/smarty_helper.php');
 // 注册 smarty 函数
 smarty_helper_register($smarty);
 
-// ---------------------------------------- 4. 为 JavaScript 设置变量 --------------------------------------
+// ---------------------------------------- 5. 为 JavaScript 设置变量 --------------------------------------
 
 // 设置网站的 Base 路径，给 JavaScript 使用
 $smarty->assign(
@@ -113,7 +110,7 @@ $smarty->assign(
     $f3->get('BASE') . '/Asset/'
 );
 
-// ---------------------------------------- 5. 启动程序 --------------------------------------
+// ---------------------------------------- 6. 启动程序 --------------------------------------
 
 // 启动控制器
 $f3->run();
