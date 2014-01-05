@@ -67,6 +67,8 @@ class LocalEngine implements ICloudEngine
                 throw new \InvalidArgumentException('can not init for system [' . $system . ']');
         }
 
+        // -------------------- 1. 设置 data 路径 --------------------------------------
+
         //数据路径
         if (!$f3->get('sysConfig[data_path_root]')) {
             $f3->set('sysConfig[data_path_root]', realpath($sysPath . '/../data'));
@@ -84,6 +86,8 @@ class LocalEngine implements ICloudEngine
         if (!$f3->get('sysConfig[image_url_prefix]')) {
             $f3->set('sysConfig[image_url_prefix]', $f3->get('sysConfig[data_url_prefix]'));
         }
+
+        // -------------------- 2. 设置 runtime 路径 --------------------------------------
 
         // RunTime 路径
         if (!$f3->get('sysConfig[runtime_path]')) {
@@ -104,6 +108,8 @@ class LocalEngine implements ICloudEngine
             $f3->set('CACHE', 'true');
         }
 
+        // -------------------- 3. 设置 Smarty --------------------------------------
+
         // 初始化 smarty 模板引擎
         $smarty->debugging     = $f3->get('sysConfig[smarty_debug]');
         $smarty->force_compile = $f3->get('sysConfig[smarty_force_compile]');
@@ -113,7 +119,7 @@ class LocalEngine implements ICloudEngine
         $smarty->setCompileDir(RUNTIME_PATH . '/Smarty/' . $systemUpperFirst . '/Compile');
         $smarty->setCacheDir(RUNTIME_PATH . '/Smarty/' . $systemUpperFirst . '/Cache');
 
-        //  初始化资源管理器 AssetManager
+        // -------------------- 4. 设置 Asset 管理 --------------------------------------
 
         // asset 路径，用于发布 css, js , 图片 等
         if (!$f3->get('sysConfig[asset_path_root]')) {
@@ -149,6 +155,8 @@ class LocalEngine implements ICloudEngine
         $sysDir           = CONSOLE_DIR;
         $systemUpperFirst = 'Console';
 
+        // -------------------- 1. 设置 data 路径 --------------------------------------
+
         //数据路径
         if (!$f3->get('sysConfig[data_path_root]')) {
             $f3->set('sysConfig[data_path_root]', realpath($sysPath . '/../data'));
@@ -166,6 +174,8 @@ class LocalEngine implements ICloudEngine
         if (!$f3->get('sysConfig[image_url_prefix]')) {
             $f3->set('sysConfig[image_url_prefix]', $f3->get('sysConfig[data_url_prefix]'));
         }
+
+        // -------------------- 2. 设置 runtime 路径 --------------------------------------
 
         // RunTime 路径
         if (!$f3->get('sysConfig[runtime_path]')) {
