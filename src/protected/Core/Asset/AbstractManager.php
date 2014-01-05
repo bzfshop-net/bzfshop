@@ -38,4 +38,18 @@ abstract class AbstractManager extends \Prefab implements IManager
     {
         return $this->registerJsArray;
     }
+
+    public function getMergedAssetJsUrl(
+        $moduleUniqueId,
+        array $jsFileRelativePathArray
+    ) {
+        return 'not implemented';
+    }
+
+    public function getMergedAssetCssUrl(
+        $moduleUniqueId,
+        array $cssFileRelativePathArray
+    ) {
+        return 'not implemented';
+    }
 }

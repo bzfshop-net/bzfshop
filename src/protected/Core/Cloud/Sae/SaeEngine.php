@@ -31,6 +31,8 @@ class SaeEngine implements ICloudEngine
 
         $saeStorage = new \SaeStorage();
 
+        // -------------------- 1. 设置 data 路径 --------------------------------------
+
         //数据路径
         $f3->set('sysConfig[data_path_root]', $f3->get('sysConfig[sae_storage_data_path]'));
         $f3->set(
@@ -42,6 +44,8 @@ class SaeEngine implements ICloudEngine
         if (!$f3->get('sysConfig[image_url_prefix]')) {
             $f3->set('sysConfig[image_url_prefix]', $f3->get('sysConfig[data_url_prefix]'));
         }
+
+        // -------------------- 2. 设置 runtime 路径 --------------------------------------
 
         // RunTime 路径
         $f3->set('sysConfig[runtime_path]', $f3->get('sysConfig[sae_runtime]'));
@@ -57,23 +61,18 @@ class SaeEngine implements ICloudEngine
         //开启 Cache 功能
         $f3->set('CACHE', RUNTIME_PATH . '/Cache/');
 
+        // -------------------- 3. 设置 Smarty --------------------------------------
+
         //设置 smarty 工作目录
         $smarty->setCompileDir(RUNTIME_PATH . '/Smarty');
         $smarty->setCacheDir(RUNTIME_PATH . '/Smarty');
         $smarty->compile_locking = false;
 
-        // asset 路径，用于发布 css, js , 图片 等
-        $f3->set('sysConfig[asset_path_root]', $f3->get('sysConfig[sae_storage_data_path]') . '/asset');
-        $f3->set('sysConfig[asset_path_url_prefix]', $f3->get('sysConfig[data_url_prefix]') . '/asset');
+        // -------------------- 4. 设置 Asset 管理 --------------------------------------
 
-        // 我们把 Asset 发布到 Storage，由于 Sae 的 Storage 有一些限制，所以我们关闭 Asset 的智能发布功能
-        // 关闭系统的 asset 合并功能
-        $f3->set('sysConfig[enable_asset_merge]', false);
-        // 关闭 asset 自动重新发布功能，Sae Storage 不支持取时间戳，所以无法自动重新发布
-        $f3->set('sysConfig[enable_asset_smart_publish]', false);
-        $f3->set('sysConfig[enable_asset_hash_url]', false);
-        $f3->set('sysConfig[enable_asset_hash_name]', false);
-
+        // 我们使用 Sae 专用的 AssetManager
+        SaeAssetManager::instance($system);
+        \Core\Asset\ManagerHelper::setAssetManager(SaeAssetManager::instance());
     }
 
     private function initConsoleEnv()
@@ -83,6 +82,8 @@ class SaeEngine implements ICloudEngine
         $systemUpperFirst = 'Console';
 
         $saeStorage = new \SaeStorage();
+
+        // -------------------- 1. 设置 data 路径 --------------------------------------
 
         //数据路径
         $f3->set('sysConfig[data_path_root]', $f3->get('sysConfig[sae_storage_data_path]'));
@@ -95,6 +96,8 @@ class SaeEngine implements ICloudEngine
         if (!$f3->get('sysConfig[image_url_prefix]')) {
             $f3->set('sysConfig[image_url_prefix]', $f3->get('sysConfig[data_url_prefix]'));
         }
+
+        // -------------------- 2. 设置 runtime 路径 --------------------------------------
 
         // RunTime 路径
         $f3->set('sysConfig[runtime_path]', $f3->get('sysConfig[sae_runtime]'));
