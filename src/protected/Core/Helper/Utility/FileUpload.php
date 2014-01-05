@@ -122,8 +122,8 @@ class FileUpload
             return;
         }
 
-        $relativePath   = $this->getFolder() . '/' . $this->getName();
-        $this->fullName = $this->config["savePath"] . '/' . $relativePath;
+        $this->fullName = $this->config["savePath"] . '/' . $this->getFolder() . '/' . $this->getName();
+        $relativePath   = $this->getRelativePath();
 
         if ($this->stateInfo == $this->stateMap[0]) {
 
@@ -132,7 +132,7 @@ class FileUpload
                 list($this->imageWidth, $this->imageHeight) = getimagesize($file["tmp_name"]);
             }
 
-            if (!$this->cloudStorage->uploadFile($this->config["savePath"], $relativePath, $file["tmp_name"])) {
+            if (!$this->cloudStorage->uploadFile(@$this->config['pathFix'], $relativePath, $file["tmp_name"])) {
                 $this->stateInfo = $this->getStateInfo("MOVE");
             } else {
                 //上传成功，设置错误码
@@ -152,9 +152,9 @@ class FileUpload
     {
         $img            = base64_decode($base64Data);
         $this->fileName = time() . rand(1, 10000) . ".png";
-        $relativePath   = $this->getFolder() . '/' . $this->fileName;
-        $this->fullName = $this->config["savePath"] . '/' . $relativePath;
-        if (!$this->cloudStorage->writeFile($this->config["savePath"], $relativePath, $img)) {
+        $this->fullName = $this->config["savePath"] . '/' . $this->getFolder() . '/' . $this->fileName;
+        $relativePath   = $this->getRelativePath();
+        if (!$this->cloudStorage->writeFile(@$this->config['pathFix'], $relativePath, $img)) {
             $this->stateInfo = $this->getStateInfo("IO");
             return;
         }
@@ -164,17 +164,23 @@ class FileUpload
     }
 
     /**
+     * @return string 返回相对于根目录的路径
+     */
+    public function getRelativePath()
+    {
+        if (!empty($this->config['pathFix'])) {
+            return str_replace($this->config['pathFix'] . '/', '', $this->fullName);
+        }
+        return $this->fullName;
+    }
+
+    /**
      * 获取当前上传成功文件的各项信息
      * @return array
      */
     public function getFileInfo()
     {
-
-        if (!empty($this->config['pathFix'])) {
-            $this->relativeName = str_replace($this->config['pathFix'] . '/', '', $this->fullName);
-        } else {
-            $this->relativeName = $this->fullName;
-        }
+        $this->relativeName = $this->getRelativePath();
 
         $fileInfoArray = array(
             "errorCode"    => $this->errorCode,
