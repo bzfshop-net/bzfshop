@@ -16,8 +16,8 @@ class CloudHelper
 
     // 日志系统
     const CLOUD_MODULE_Log = 'Log';
-    // 文件系统操作模块
-    const CLOUD_MODULE_FILESYSTEM = 'FileSystem';
+    // 数据存储系统，用于存放主要数据
+    const CLOUD_MODULE_STORAGE = 'Storage';
     // 数据库系统
     const CLOUD_MODULE_DB = 'Db';
 

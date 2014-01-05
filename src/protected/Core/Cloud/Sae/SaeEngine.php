@@ -142,6 +142,12 @@ class SaeEngine implements ICloudEngine
                 return new SaeLog();
             case CloudHelper::CLOUD_MODULE_DB:
                 return new SaeDb();
+            case CloudHelper::CLOUD_MODULE_STORAGE:
+                $storage = new SaeStorage();
+                if ($storage->initStorage()) {
+                    return $storage;
+                }
+                return null;
             default:
                 return null;
         }
