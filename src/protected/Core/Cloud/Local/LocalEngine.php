@@ -219,9 +219,9 @@ class LocalEngine implements ICloudEngine
             case CloudHelper::CLOUD_MODULE_Log:
                 return new LocalLog();
             case CloudHelper::CLOUD_MODULE_DB:
-                return new LocalDb();
+                return LocalDb::instance();
             case CloudHelper::CLOUD_MODULE_STORAGE:
-                return new LocalStorage();
+                return LocalStorage::instance();
             default:
                 return null;
         }

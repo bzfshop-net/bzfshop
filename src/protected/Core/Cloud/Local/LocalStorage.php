@@ -11,7 +11,7 @@ namespace Core\Cloud\Local;
 
 use Core\Cloud\ICloudStorage;
 
-class LocalStorage implements ICloudStorage
+class LocalStorage extends \Prefab implements ICloudStorage
 {
 
     public function initStorage()

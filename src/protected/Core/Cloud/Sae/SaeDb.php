@@ -11,8 +11,9 @@ namespace Core\Cloud\Sae;
 
 use Core\Cloud\ICloudDb;
 
-class SaeDb implements ICloudDb
+class SaeDb extends \Prefab implements ICloudDb
 {
+    private static $dbEngine = null;
 
     public function initDb($isWrite = true)
     {
@@ -21,7 +22,11 @@ class SaeDb implements ICloudDb
 
     public function getDb($isWrite = true)
     {
-        $pdo = 'mysql:host=' . SAE_MYSQL_HOST_M . ';port=' . SAE_MYSQL_PORT . ';dbname=' . SAE_MYSQL_DB;
-        return new \Core\Modal\DbEngine($pdo, SAE_MYSQL_USER, SAE_MYSQL_PASS);
+        if (!self::$dbEngine) {
+            $pdo            = 'mysql:host=' . SAE_MYSQL_HOST_M . ';port=' . SAE_MYSQL_PORT . ';dbname=' . SAE_MYSQL_DB;
+            self::$dbEngine = new \Core\Modal\DbEngine($pdo, SAE_MYSQL_USER, SAE_MYSQL_PASS);
+        }
+
+        return self::$dbEngine;
     }
 }

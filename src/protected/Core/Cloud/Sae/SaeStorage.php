@@ -11,13 +11,13 @@ namespace Core\Cloud\Sae;
 
 use Core\Cloud\ICloudStorage;
 
-class SaeStorage implements ICloudStorage
+class SaeStorage extends \Prefab implements ICloudStorage
 {
 
     private static $domain = null;
     private static $saeStorage = null;
 
-    public function initStorage()
+    function __construct()
     {
         if (!self::$domain) {
             global $f3;
@@ -27,7 +27,10 @@ class SaeStorage implements ICloudStorage
         if (!self::$saeStorage) {
             self::$saeStorage = new \SaeStorage();
         }
+    }
 
+    public function initStorage()
+    {
         return true;
     }
 

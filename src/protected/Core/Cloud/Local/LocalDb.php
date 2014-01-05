@@ -11,8 +11,10 @@ namespace Core\Cloud\Local;
 
 use Core\Cloud\ICloudDb;
 
-class LocalDb implements ICloudDb
+class LocalDb extends \Prefab implements ICloudDb
 {
+
+    private static $dbEngine = null;
 
     public function initDb($isWrite = true)
     {
@@ -21,8 +23,12 @@ class LocalDb implements ICloudDb
 
     public function getDb($isWrite = true)
     {
-        global $f3;
-        return new \Core\Modal\DbEngine($f3->get('sysConfig[db_pdo]'),
-            $f3->get('sysConfig[db_username]'), $f3->get('sysConfig[db_password]'));
+        if (!self::$dbEngine) {
+            global $f3;
+            self::$dbEngine = new \Core\Modal\DbEngine($f3->get('sysConfig[db_pdo]'),
+                $f3->get('sysConfig[db_username]'), $f3->get('sysConfig[db_password]'));
+        }
+
+        return self::$dbEngine;
     }
 }

@@ -12,7 +12,7 @@ namespace Core\Cloud\Sae;
 use Core\Cloud\ICloudLog;
 use Core\Helper\Utility\Time;
 
-class SaeLog implements ICloudLog
+class SaeLog extends \Prefab implements ICloudLog
 {
 
     /**
