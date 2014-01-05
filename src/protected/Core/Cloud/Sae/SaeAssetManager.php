@@ -67,7 +67,7 @@ class SaeAssetManager extends AbstractManager
         // 注册 F3 的路由，所有 /asset 请求都由我们自己处理
         $pattern      = '!^(' . $f3->get('BASE') . '/asset)(/.*)$!';
         $patternMatch = array();
-        preg_match($pattern, urldecode($f3->get('URI')), $patternMatch);
+        preg_match($pattern, $f3->get('URI'), $patternMatch);
         if (empty($patternMatch)) {
             goto out_fail;
         }
@@ -88,6 +88,10 @@ class SaeAssetManager extends AbstractManager
         }
 
         // 输出 content-type header 信息
+        header('Content-Type: ' . \Web::instance()->mime($targetPath));
+
+        // 静态资源缓存 1 天
+        $f3->expire(86400);
 
         // 输出asset 内容
         echo $assetContent;
