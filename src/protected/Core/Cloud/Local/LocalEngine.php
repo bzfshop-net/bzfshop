@@ -27,6 +27,9 @@ class LocalEngine implements ICloudEngine
         global $f3;
         global $smarty;
 
+        // 预先加载一些模块，提高后面的加载效率
+        require_once(PROTECTED_PATH . '/Core/Asset/SimpleManager.php');
+
         $systemUpperFirst = ucfirst($system);
         $sysPath          = '';
         $sysDir           = '';
@@ -101,9 +104,16 @@ class LocalEngine implements ICloudEngine
             $f3->set('CACHE', 'true');
         }
 
+        // 初始化 smarty 模板引擎
+        $smarty->debugging     = $f3->get('sysConfig[smarty_debug]');
+        $smarty->force_compile = $f3->get('sysConfig[smarty_force_compile]');
+        $smarty->use_sub_dirs  = $f3->get('sysConfig[smarty_use_sub_dirs]');
+
         //设置 smarty 工作目录
         $smarty->setCompileDir(RUNTIME_PATH . '/Smarty/' . $systemUpperFirst . '/Compile');
         $smarty->setCacheDir(RUNTIME_PATH . '/Smarty/' . $systemUpperFirst . '/Cache');
+
+        //  初始化资源管理器 AssetManager
 
         // asset 路径，用于发布 css, js , 图片 等
         if (!$f3->get('sysConfig[asset_path_root]')) {
@@ -114,6 +124,21 @@ class LocalEngine implements ICloudEngine
             $f3->set('sysConfig[asset_path_url_prefix]', $f3->get('sysConfig[webroot_url_prefix]') . '/asset');
         }
 
+        \Core\Asset\SimpleManager::instance(
+            $f3->get('sysConfig[asset_path_url_prefix]'),
+            $f3->get('sysConfig[asset_path_root]')
+        );
+
+        // 开启 asset 智能重新发布功能
+        \Core\Asset\SimpleManager::instance()->enableSmartPublish($f3->get('sysConfig[enable_asset_smart_publish]'));
+
+        // asset 文件 url 开启 hash，文件名采用 时间戳.文件名 的方式
+        \Core\Asset\SimpleManager::instance()->enableFileHashUrl(
+            $f3->get('sysConfig[enable_asset_hash_url]'),
+            $f3->get('sysConfig[enable_asset_hash_name]')
+        );
+
+        \Core\Asset\ManagerHelper::setAssetManager(\Core\Asset\SimpleManager::instance());
     }
 
     private function initConsoleEnv()
@@ -162,7 +187,7 @@ class LocalEngine implements ICloudEngine
         }
     }
 
-    public function initEnv($system)
+    public function initCloudEnv($system)
     {
 
         $this->system = $system;

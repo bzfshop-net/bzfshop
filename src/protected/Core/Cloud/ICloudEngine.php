@@ -26,7 +26,7 @@ interface ICloudEngine
      *
      * @return boolean
      */
-    public function initEnv($system);
+    public function initCloudEnv($system);
 
     /**
      * 每个云平台都会提供一些模块，比如 FetchUrl，Storage 之类，这里是用于取得对应模块的处理程序

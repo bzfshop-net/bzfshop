@@ -33,7 +33,14 @@ class CloudHelper
     // 当前使用的引擎
     public static $currentEngineStr = null;
 
-    public static function detectCloudEnv($system)
+    /**
+     * 初始化云服务引擎
+     *
+     * @param string $system 当前是哪个系统
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function initCloudEnv($system)
     {
         global $f3;
 
@@ -66,8 +73,8 @@ class CloudHelper
         }
 
         // 初始化 云引擎
-        if (!$cloudEngine->initEnv($system)) {
-            throw new \InvalidArgumentException('cloudEngine initEnv fail');
+        if (!$cloudEngine->initCloudEnv($system)) {
+            throw new \InvalidArgumentException('cloudEngine initCloudEnv fail');
         }
 
         self::$cloudEngine = $cloudEngine;

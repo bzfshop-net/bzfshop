@@ -111,7 +111,7 @@ class SaeEngine implements ICloudEngine
         $f3->set('CACHE', RUNTIME_PATH . '/Cache/');
     }
 
-    public function initEnv($system)
+    public function initCloudEnv($system)
     {
         global $f3;
 
