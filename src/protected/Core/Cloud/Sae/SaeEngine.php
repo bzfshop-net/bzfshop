@@ -58,15 +58,18 @@ class SaeEngine implements ICloudEngine
         // 设置 Log 路径
         $f3->set('LOGS', RUNTIME_PATH . '/Log/' . $systemUpperFirst . '/');
 
-        //开启 Cache 功能
-        $f3->set('CACHE', RUNTIME_PATH . '/Cache/');
+        //Sae 禁止 Cache 功能
+        $f3->set('CACHE', false);
 
         // -------------------- 3. 设置 Smarty --------------------------------------
-        
+
         //设置 smarty 工作目录
         $smarty->setCompileDir(RUNTIME_PATH . '/Smarty');
         $smarty->setCacheDir(RUNTIME_PATH . '/Smarty');
         $smarty->compile_locking = false;
+
+        //Sae 禁止 Smarty 缓存
+        $f3->set('sysConfig[smarty_caching]', false);
 
         // -------------------- 4. 设置 Asset 管理 --------------------------------------
 
