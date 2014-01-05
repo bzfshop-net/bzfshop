@@ -65,7 +65,7 @@ class SaeAssetManager extends AbstractManager
     public function fetchAsset($f3)
     {
         // 注册 F3 的路由，所有 /asset 请求都由我们自己处理
-        $pattern      = '!^(' . $f3->get('BASE') . '/asset)(/.*)$!';
+        $pattern      = '!^(' . $f3->get('BASE') . '/asset)(/[^\?]*)(\?.*)?$!';
         $patternMatch = array();
         preg_match($pattern, $f3->get('URI'), $patternMatch);
         if (empty($patternMatch)) {
