@@ -40,7 +40,6 @@ require_once(PROTECTED_PATH . '/Core/Plugin/PluginHelper.php');
 require_once(PROTECTED_PATH . '/Core/Plugin/ThemeHelper.php');
 require_once(PROTECTED_PATH . '/Core/Log/File.php');
 require_once(PROTECTED_PATH . '/Core/Asset/IManager.php');
-require_once(PROTECTED_PATH . '/Core/Asset/SimpleManager.php');
 require_once(PROTECTED_PATH . '/Core/Asset/ManagerHelper.php');
 require_once(PROTECTED_PATH . '/Core/Cloud/CloudHelper.php');
 
@@ -71,17 +70,8 @@ if (!$f3->get('sysConfig[webroot_url_prefix]')) {
     );
 }
 
-// 初始化 云服务引擎，云服务引擎会设置好我们的运行环境，包括 可写目录 等
-CloudHelper::detectCloudEnv(PluginHelper::SYSTEM_SHOP);
-
 // 设置网站唯一的 key，防止通用模块之间的冲突
 RouteHelper::$uniqueKey = 'BZFRouteHelper';
-
-// 是否开启 URL 伪静态化
-if ($f3->get('sysConfig[enable_static_url][' . PluginHelper::SYSTEM_SHOP . ']')) {
-    RouteHelper::$isMakeStaticUrl = true; // 我们开启 URL 伪静态化
-    RouteHelper::processStaticUrl(); // 解析静态化的 URL
-}
 
 OrderBasicService::$orderSnPrefix  = 'SB';
 ReferHelper::$orderReferStorageKey = 'BZFOrderRefer';
@@ -92,12 +82,11 @@ CartBasicService::$cartSystemId = PluginHelper::SYSTEM_SHOP;
 // 把几个网站的 key 设置成一样，配合 sysConfig[cookie_domain] 设置，就可以实现几个网站 统一登陆
 AuthHelper::$uniqueKey = 'BZFAUTH';
 
-// 初始化 smarty 模板引擎
-$smarty->debugging     = $f3->get('sysConfig[smarty_debug]');
-$smarty->force_compile = $f3->get('sysConfig[smarty_force_compile]');
-$smarty->use_sub_dirs  = $f3->get('sysConfig[smarty_use_sub_dirs]');
+// ------------ 2. 初始化 云服务引擎，云服务引擎会设置好我们的运行环境，包括 可写目录 等 ------------
 
-// ---------------------------------------- 2. 开启系统日志 --------------------------------------
+CloudHelper::initCloudEnv(PluginHelper::SYSTEM_SHOP);
+
+// ---------------------------------------- 3. 开启系统日志 --------------------------------------
 
 $todayDateStr   = \Core\Helper\Utility\Time::localTimeStr('Y-m-d');
 $todayDateArray = explode('-', $todayDateStr);
@@ -172,23 +161,6 @@ if ($f3->get('DEBUG')) {
     );
 }
 
-// ---------------------------------------- 3. 初始化资源管理器 AssetManager --------------------------------------
-
-\Core\Asset\SimpleManager::instance(
-    $f3->get('sysConfig[asset_path_url_prefix]'),
-    $f3->get('sysConfig[asset_path_root]')
-);
-
-// 开启 asset 智能重新发布功能
-\Core\Asset\SimpleManager::instance()->enableSmartPublish($f3->get('sysConfig[enable_asset_smart_publish]'));
-// asset 文件 url 开启 hash，文件名采用 时间戳.文件名 的方式
-\Core\Asset\SimpleManager::instance()->enableFileHashUrl(
-    $f3->get('sysConfig[enable_asset_hash_url]'),
-    $f3->get('sysConfig[enable_asset_hash_name]')
-);
-
-\Core\Asset\ManagerHelper::setAssetManager(\Core\Asset\SimpleManager::instance());
-
 // ---------------------------------------- 4. 加载显示主题 -----------------------------------
 
 // 为 Manage 设置网站的 WebRootBase，这样在 Manage 中就可以对相应网站做操作
@@ -238,6 +210,12 @@ ThemeHelper::loadActiveTheme(
 ThemeHelper::doActiveThemeAction(PluginHelper::SYSTEM_SHOP);
 
 // ---------------------------------------- 7. 启动整个系统 --------------------------------------
+
+// 是否开启 URL 伪静态化
+if ($f3->get('sysConfig[enable_static_url][' . PluginHelper::SYSTEM_SHOP . ']')) {
+    RouteHelper::$isMakeStaticUrl = true; // 我们开启 URL 伪静态化
+    RouteHelper::processStaticUrl(); // 解析静态化的 URL
+}
 
 // 启动控制器
 $f3->run();
