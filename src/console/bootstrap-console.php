@@ -30,7 +30,7 @@ if ($f3->get('sysConfig[time_zone]')) {
 }
 
 // 初始化 云服务引擎，云服务引擎会设置好我们的运行环境，包括 可写目录 等
-CloudHelper::detectCloudEnv(PluginHelper::SYSTEM_CONSOLE);
+CloudHelper::initCloudEnv(PluginHelper::SYSTEM_CONSOLE);
 
 $todayDateStr   = \Core\Helper\Utility\Time::localTimeStr('Y-m-d');
 $todayDateArray = explode('-', $todayDateStr);
