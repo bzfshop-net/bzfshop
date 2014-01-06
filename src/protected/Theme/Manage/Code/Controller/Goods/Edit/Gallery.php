@@ -10,6 +10,7 @@
 namespace Controller\Goods\Edit;
 
 use Core\Cache\ClearHelper;
+use Core\Cloud\CloudHelper;
 use Core\Helper\Image\StorageImage as StorageImageHelper;
 use Core\Helper\Utility\Ajax as AjaxHelper;
 use Core\Helper\Utility\Route as RouteHelper;
@@ -262,28 +263,28 @@ class Gallery extends \Controller\AuthController
             goto out;
         }
 
+        // 把图片保存到 Storage 中
+        $cloudStorage = CloudHelper::getCloudModule(CloudHelper::CLOUD_MODULE_STORAGE);
+
+        // 图片文件先保存到临时文件中
+        $tempSrcFilePath = $cloudStorage->getTempFilePath();
+        file_put_contents($tempSrcFilePath, $request['body']);
+
         // 上传目录
-        $dataPathRoot = $f3->get('sysConfig[data_path_root]');
-        if (empty($dataPathRoot)) {
-            $dataPathRoot = $f3->get('BASE') . '/data';
-        }
+        $dataPathRoot         = $f3->get('sysConfig[data_path_root]');
+        $saveFilePathRelative = 'upload/image/' . date("Y/m/d") . '/' . date("YmdHis") . '_'
+            . rand(1, 10000) . strtolower(strrchr($imageUrl, '.'));
 
-        $saveFilePath = $dataPathRoot . '/upload/image/' . date("Y/m/d");
-        if (!file_exists($saveFilePath)) {
-            if (!mkdir($saveFilePath, 0755, true)) {
-                $this->addFlashMessage('抓取失败，无法保存文件到磁盘，请检查权限设置');
-                goto out;
-            }
+        // 文件上传到 Storage
+        if (!$cloudStorage->moveFileToStorage($dataPathRoot, $saveFilePathRelative, $tempSrcFilePath)) {
+            $this->addFlashMessage('保存文件到存储失败，失败');
+            goto out;
         }
-
-        //保存文件
-        $saveFilePath .= '/' . date("YmdHis") . '_' . rand(1, 10000) . strtolower(strrchr($imageUrl, '.'));
-        file_put_contents($saveFilePath, $request['body']);
+        @unlink($tempSrcFilePath);
 
         // 保存 goods_gallery 记录
-        $imageOriginalFileRelativeName = str_replace($dataPathRoot . '/', '', $saveFilePath);
-
-        $pathInfoArray = pathinfo($imageOriginalFileRelativeName);
+        $imageOriginalFileRelativeName = $saveFilePathRelative;
+        $pathInfoArray                 = pathinfo($imageOriginalFileRelativeName);
 
         //生成头图
         $imageFileRelativeName =
