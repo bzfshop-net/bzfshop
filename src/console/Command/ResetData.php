@@ -47,9 +47,11 @@ class ResetData implements \Clip\Command
         $sqlFileContent = file_get_contents(CONSOLE_PATH . '/../install/Asset/data/bzfshop.sql');
         $sqlFileContent = SqlHelper::removeComment($sqlFileContent);
         $sqlArray       = SqlHelper::splitToSqlArray($sqlFileContent, ';');
+        unset($sqlFileContent);
         foreach ($sqlArray as $sqlQuery) {
             $queryObject = $dbEngine->prepare($sqlQuery);
             $queryObject->execute();
+            unset($sqlQuery);
             unset($queryObject);
         }
         unset($sqlArray);

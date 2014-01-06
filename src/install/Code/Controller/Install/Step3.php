@@ -27,6 +27,10 @@ class Step3 extends \Controller\BaseController
         $smarty->assign('dbName', 'bzfshop');
         $smarty->assign('dbUserName', 'root');
 
+        if (CloudHelper::CLOUD_ENGINE_SAE == CloudHelper::$currentEngineStr) {
+            $smarty->assign('cloud_message', ucwords(CloudHelper::$currentEngineStr) . ' 不需要配置数据库，这里随便填什么都可以');
+        }
+
         // 页面显示
         $smarty->display('install_step3.tpl');
     }

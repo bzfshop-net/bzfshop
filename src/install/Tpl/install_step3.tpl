@@ -26,6 +26,10 @@
         <div class="row">
             <h4>棒主妇开源--导入数据</h4>
 
+            {{if !empty($cloud_message)}}
+                <h5 style="color: red;text-align: right;">{{$cloud_message}}</h5>
+            {{/if}}
+
             <form class="form-horizontal form-horizontal-inline" method="POST">
 
                 <div class="row">
