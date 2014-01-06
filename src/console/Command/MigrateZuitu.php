@@ -9,7 +9,7 @@
 use Console\Modal\DstDataMapper;
 use Console\Modal\SrcDataMapper;
 use Console\Modal\TableMigrate;
-use Core\Helper\Image\Image as ImageHelper;
+use Core\Helper\Image\StorageImage as StorageImageHelper;
 use Core\Helper\Utility\Time;
 use Core\Modal\SqlMapper as DataMapper;
 use Core\Service\Goods\Gallery as GoodsGalleryService;
@@ -32,7 +32,7 @@ function fetchGoodsImage($goods_id, $imageUrl)
         $imageUrl,
         array(
              'user_agent' =>
-             'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729)'
+                 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729)'
         )
     );
 
@@ -65,10 +65,10 @@ function fetchGoodsImage($goods_id, $imageUrl)
     $pathInfoArray              = pathinfo($imageFileRelativeName);
     $imageThumbFileRelativeName =
         $pathInfoArray['dirname'] . '/' . $pathInfoArray['filename'] . '_'
-            . $f3->get('sysConfig[image_thumb_width]') . 'x' . $f3->get('sysConfig[image_thumb_height]') . '.jpg';
+        . $f3->get('sysConfig[image_thumb_width]') . 'x' . $f3->get('sysConfig[image_thumb_height]') . '.jpg';
 
     //生成缩略图
-    ImageHelper::resizeImage(
+    StorageImageHelper::resizeImage(
         $dataPathRoot,
         $imageFileRelativeName,
         $imageThumbFileRelativeName,
@@ -321,11 +321,11 @@ class MigrateZuitu implements \Clip\Command
             // src 数据做转化
             array(
                  'display' => function ($display, $record) {
-                     if ('Y' == $display) {
-                         return 1;
-                     }
-                     return 0;
-                 },
+                         if ('Y' == $display) {
+                             return 1;
+                         }
+                         return 0;
+                     },
             )
         );
 
@@ -369,8 +369,8 @@ class MigrateZuitu implements \Clip\Command
             // src 数据做转化
             array(
                  'group_id' => function ($ec_salt, $record) {
-                     return '@4!@#$%@'; // 注意：这里是最土系统里面写死的值
-                 },
+                         return '@4!@#$%@'; // 注意：这里是最土系统里面写死的值
+                     },
             )
         );
 
@@ -447,35 +447,35 @@ class MigrateZuitu implements \Clip\Command
             // src 数据做转化
             array(
                  'user_id'        => function ($user_id, $record) {
-                     global $f3;
-                     //在这里生成 goods_sn
-                     return $f3->get('sysConfig[goods_sn_prefix]') . $record->id;
-                 },
+                         global $f3;
+                         //在这里生成 goods_sn
+                         return $f3->get('sysConfig[goods_sn_prefix]') . $record->id;
+                     },
                  'express_relate' => function ($express_relate, $record) {
 
-                     // 最土系统 -1 表示免邮费，我们这里修改邮费为 0
-                     if ($record['farefree'] < 0) {
-                         return 0;
-                     }
+                         // 最土系统 -1 表示免邮费，我们这里修改邮费为 0
+                         if ($record['farefree'] < 0) {
+                             return 0;
+                         }
 
-                     $dataArray      = unserialize($express_relate);
-                     $maxShippingFee = 0;
-                     // 取最大的快递费
-                     foreach ($dataArray as $data) {
-                         $maxShippingFee = ($data['price'] > $maxShippingFee) ? $data['price'] : $maxShippingFee;
-                     }
-                     return $maxShippingFee;
-                 },
+                         $dataArray      = unserialize($express_relate);
+                         $maxShippingFee = 0;
+                         // 取最大的快递费
+                         foreach ($dataArray as $data) {
+                             $maxShippingFee = ($data['price'] > $maxShippingFee) ? $data['price'] : $maxShippingFee;
+                         }
+                         return $maxShippingFee;
+                     },
                  'farefree'       => function ($farefree, $record) {
-                     // 最土 -1 表示免运费，我们这里一律改成不免邮费
-                     if ($farefree < 0) {
-                         return 0;
-                     }
-                     return $farefree;
-                 },
+                         // 最土 -1 表示免运费，我们这里一律改成不免邮费
+                         if ($farefree < 0) {
+                             return 0;
+                         }
+                         return $farefree;
+                     },
                  'city_id'        => function ($city_id, $record) {
-                     return 1000; // 所有库存缺省都设置为 1000
-                 },
+                         return 1000; // 所有库存缺省都设置为 1000
+                     },
             ),
             // recordPreFunc
             function ($srcRecord) {
@@ -600,14 +600,14 @@ class MigrateZuitu implements \Clip\Command
             // src 数据做转化
             array(
                  'disable'    => function ($disable, $record) {
-                     return 1;
-                 },
+                         return 1;
+                     },
                  'begin_time' => function ($time, $record) {
-                     return Time::localTimeToGmTime($time);
-                 },
+                         return Time::localTimeToGmTime($time);
+                     },
                  'end_time'   => function ($time, $record) {
-                     return Time::localTimeToGmTime($time);
-                 },
+                         return Time::localTimeToGmTime($time);
+                     },
             )
         );
 
@@ -699,11 +699,11 @@ class MigrateZuitu implements \Clip\Command
             // src 数据做转化
             array(
                  'id'      => function ($ec_salt, $record) {
-                     return '@4!@#$%@'; // 注意：这里是最土系统里面写死的值
-                 },
+                         return '@4!@#$%@'; // 注意：这里是最土系统里面写死的值
+                     },
                  'city_id' => function ($city_id, $record) {
-                     return 'all'; // 注意：这里给所有管理员所有的权限
-                 },
+                         return 'all'; // 注意：这里给所有管理员所有的权限
+                     },
             )
         );
 
@@ -752,16 +752,16 @@ class MigrateZuitu implements \Clip\Command
             // src 数据做转化
             array(
                  'login_time'  => function ($login_time, $record) {
-                     //抓换成 GMT 时间
-                     return Time::localTimeToGmTime($login_time);
-                 },
+                         //抓换成 GMT 时间
+                         return Time::localTimeToGmTime($login_time);
+                     },
                  'create_time' => function ($create_time, $record) {
-                     //抓换成 GMT 时间
-                     return Time::localTimeToGmTime($create_time);
-                 },
+                         //抓换成 GMT 时间
+                         return Time::localTimeToGmTime($create_time);
+                     },
                  'score'       => function ($score, $record) {
-                     return '@4!@#$%@'; // 注意：这里是最土系统里面写死的值
-                 },
+                         return '@4!@#$%@'; // 注意：这里是最土系统里面写死的值
+                     },
             )
         );
 

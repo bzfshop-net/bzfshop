@@ -59,6 +59,24 @@ class SaeStorage extends \Prefab implements ICloudStorage
         return self::$saeStorage->delete(self::$domain, $relativePath);
     }
 
+    public function moveFileToStorage($storageId, $targetRelativePath, $sourceFullPath)
+    {
+        return $this->uploadFile($storageId, $targetRelativePath, $sourceFullPath);
+    }
+
+    public function getTempFilePath($fileName = null)
+    {
+        $fileName = $fileName ? : uniqid();
+        return SAE_TMP_PATH . DIRECTORY_SEPARATOR . $fileName;
+    }
+
+    public function createTempFileForStorageFile($storageId, $relativePath)
+    {
+        $tempFilePath = $this->getTempFilePath(basename($relativePath));
+        file_put_contents($tempFilePath, $this->readFile($storageId, $relativePath));
+        return $tempFilePath;
+    }
+
     public function fileExists($storageId, $relativePath)
     {
         return self::$saeStorage->fileExists(self::$domain, $relativePath);

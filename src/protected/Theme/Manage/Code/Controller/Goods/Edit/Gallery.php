@@ -10,7 +10,7 @@
 namespace Controller\Goods\Edit;
 
 use Core\Cache\ClearHelper;
-use Core\Helper\Image\Image as ImageHelper;
+use Core\Helper\Image\StorageImage as StorageImageHelper;
 use Core\Helper\Utility\Ajax as AjaxHelper;
 use Core\Helper\Utility\Route as RouteHelper;
 use Core\Helper\Utility\Validator;
@@ -104,7 +104,7 @@ class Gallery extends \Controller\AuthController
             $pathInfoArray['dirname'] . '/' . $pathInfoArray['filename'] . '_'
             . $f3->get('sysConfig[image_width]') . 'x' . $f3->get('sysConfig[image_height]') . '.jpg';
 
-        ImageHelper::resizeImage(
+        StorageImageHelper::resizeImage(
             $dataPathRoot,
             $imageOriginalFileRelativeName,
             $imageFileRelativeName,
@@ -117,7 +117,7 @@ class Gallery extends \Controller\AuthController
             $pathInfoArray['dirname'] . '/' . $pathInfoArray['filename'] . '_'
             . $f3->get('sysConfig[image_thumb_width]') . 'x' . $f3->get('sysConfig[image_thumb_height]') . '.jpg';
 
-        ImageHelper::resizeImage(
+        StorageImageHelper::resizeImage(
             $dataPathRoot,
             $imageOriginalFileRelativeName,
             $imageThumbFileRelativeName,
@@ -253,7 +253,7 @@ class Gallery extends \Controller\AuthController
             $imageUrl,
             array(
                  'user_agent' =>
-                 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729)'
+                     'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729)'
             )
         );
 
@@ -290,7 +290,7 @@ class Gallery extends \Controller\AuthController
             $pathInfoArray['dirname'] . '/' . $pathInfoArray['filename'] . '_'
             . $f3->get('sysConfig[image_width]') . 'x' . $f3->get('sysConfig[image_height]') . '.jpg';
 
-        ImageHelper::resizeImage(
+        StorageImageHelper::resizeImage(
             $dataPathRoot,
             $imageOriginalFileRelativeName,
             $imageFileRelativeName,
@@ -303,7 +303,7 @@ class Gallery extends \Controller\AuthController
             $pathInfoArray['dirname'] . '/' . $pathInfoArray['filename'] . '_'
             . $f3->get('sysConfig[image_thumb_width]') . 'x' . $f3->get('sysConfig[image_thumb_height]') . '.jpg';
 
-        ImageHelper::resizeImage(
+        StorageImageHelper::resizeImage(
             $dataPathRoot,
             $imageOriginalFileRelativeName,
             $imageThumbFileRelativeName,

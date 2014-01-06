@@ -62,6 +62,36 @@ interface ICloudStorage
     public function removeFile($storageId, $relativePath);
 
     /**
+     * 把一个传统文件移动到 Storage 保存
+     *
+     * @param string $storageId
+     * @param string $targetRelativePath
+     * @param string $sourceFullPath
+     *
+     * @return mixed
+     */
+    public function moveFileToStorage($storageId, $targetRelativePath, $sourceFullPath);
+
+    /**
+     * 生成一个临时文件的路径，确保可以读写
+     *
+     * @param string $fileName 临时文件名，不写的话会自动生成一个
+     *
+     * @return string
+     */
+    public function getTempFilePath($fileName = null);
+
+    /**
+     * 为 Storage 中的文件创建一个相应的临时文件用于操作
+     *
+     * @param string $storageId
+     * @param string $relativePath
+     *
+     * @return string 返回临时文件的路径
+     */
+    public function createTempFileForStorageFile($storageId, $relativePath);
+
+    /**
      * 文件、目录是否存在
      *
      * @param string $storageId

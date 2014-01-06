@@ -49,6 +49,32 @@ class LocalStorage extends \Prefab implements ICloudStorage
         return unlink($storageId . DIRECTORY_SEPARATOR . $relativePath);
     }
 
+    public function moveFileToStorage($storageId, $targetRelativePath, $sourceFullPath)
+    {
+        // 自动建立目录路径
+        $targetFullPath = $storageId . DIRECTORY_SEPARATOR . $targetRelativePath;
+        $pathInfo       = pathinfo($targetFullPath);
+        if (@$pathInfo['dirname'] && !file_exists($pathInfo['dirname'])) {
+            if (!mkdir($pathInfo['dirname'], 0755, true)) {
+                return false;
+            }
+        }
+        return rename($sourceFullPath, $storageId . DIRECTORY_SEPARATOR . $targetRelativePath);
+    }
+
+    public function getTempFilePath($fileName = null)
+    {
+        $fileName = $fileName ? : uniqid();
+        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName;
+    }
+
+    public function createTempFileForStorageFile($storageId, $relativePath)
+    {
+        $tempFilePath = $this->getTempFilePath(basename($relativePath));
+        copy($storageId . DIRECTORY_SEPARATOR . $relativePath, $tempFilePath);
+        return $tempFilePath;
+    }
+
     public function fileExists($storageId, $relativePath)
     {
         return file_exists($storageId . DIRECTORY_SEPARATOR . $relativePath);
