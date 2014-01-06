@@ -39,8 +39,7 @@ class SaeStorage extends \Prefab implements ICloudStorage
         return self::$saeStorage->upload(
             self::$domain,
             $targetRelativePath,
-            $sourceFullPath,
-            array('expires' => 'modified 1y')
+            $sourceFullPath
         );
     }
 

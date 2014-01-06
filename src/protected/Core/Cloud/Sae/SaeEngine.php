@@ -67,6 +67,9 @@ class SaeEngine implements ICloudEngine
         $smarty->setCompileDir(RUNTIME_PATH . '/Smarty');
         $smarty->setCacheDir(RUNTIME_PATH . '/Smarty');
         $smarty->compile_locking = false;
+        
+        //smarty 在 SAE 下禁用缓存
+        $f3->set('sysConfig[smarty_caching]', false);
 
         // smarty 会对生成的模板文件做一个 chmod 操作，这个操作会导致 Sae 报错
         $smarty->_file_perms = null;
