@@ -111,7 +111,7 @@ class SaeEngine implements ICloudEngine
         define('RUNTIME_PATH', $f3->get('sysConfig[runtime_path]'));
 
         // 设置 Tmp 路径
-        $f3->set('TEMP', RUNTIME_PATH . '/Temp/');
+        $f3->set('TEMP', SAE_TMP_PATH . DIRECTORY_SEPARATOR);
 
         // 设置 Log 路径
         $f3->set('LOGS', RUNTIME_PATH . '/Log/' . $systemUpperFirst . '/');
