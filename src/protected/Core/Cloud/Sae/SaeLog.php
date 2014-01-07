@@ -16,6 +16,8 @@ class SaeLog extends \Prefab implements ICloudLog
 {
     private $logArray = array();
 
+    private $logKeyArray = array();
+
     function __construct()
     {
         register_shutdown_function(array($this, 'outputLog'));
@@ -39,6 +41,15 @@ class SaeLog extends \Prefab implements ICloudLog
      * */
     public function addLogInfo($level, $source, $msg)
     {
+        $logKey = md5('##' . $level . '##' . $source . '##' . $msg . '##');
+
+        // 重复的 log 信息就不要放进来了
+        if (in_array($logKey, $this->logKeyArray)) {
+            return;
+        }
+
+        $this->logKeyArray[] = $logKey;
+
         // 简单的把日志放到数组中而已
         $this->logArray[] = array(
             'time'   => Time::localTimeStr('Y-m-d H:i:s'),
