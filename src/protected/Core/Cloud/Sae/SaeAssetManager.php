@@ -88,7 +88,7 @@ class SaeAssetManager extends AbstractManager
         $targetPath =
             $this->assetBasePath . $relativeAssetPath;
 
-        $targetKey = $this->saeKeyPrefix . md5($targetPath);
+        $targetKey = self::$saeKeyPrefix . md5($targetPath);
 
         $saeKv        = $this->getSaeKv();
         $assetContent = $saeKv->get($targetKey);
@@ -186,7 +186,7 @@ class SaeAssetManager extends AbstractManager
             return false;
         }
 
-        $targetKey = $this->saeKeyPrefix . md5($targetPath);
+        $targetKey = self::$saeKeyPrefix . md5($targetPath);
 
         $saeKv = $this->getSaeKv();
 
