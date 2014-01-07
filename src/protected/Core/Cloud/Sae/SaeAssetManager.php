@@ -233,7 +233,7 @@ class SaeAssetManager extends AbstractManager
 
         for (; ;) {
             // 每次取 100 个
-            $keyValueArray = $saeKv->pkrget(self::$saeKeyPrefix, 100);
+            $keyValueArray = $saeKv->pkrget(self::$saeKeyPrefix, 100, false);
             if (empty($keyValueArray)) {
                 goto out;
             }
