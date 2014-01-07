@@ -85,7 +85,13 @@
             </span>
             <!-- /欢迎信息，用户登录之后会被替换掉 -->
 
-            |&nbsp;<a href="{{bzf_make_url controller='/My/Order'}}">个人中心</a>&nbsp;|&nbsp;客服电话&nbsp;
+            |&nbsp;<a href="{{bzf_make_url controller='/My/Order'}}">个人中心</a>&nbsp;|&nbsp;客服QQ&nbsp;
+            <span>
+                <a style="color:red;font-weight: bold;" target="_blank"
+                   href="http://wpa.qq.com/msgrd?v=3&uin={{bzf_get_option_value optionKey="kefu_qq"}}&site=qq&menu=yes">
+                    {{bzf_get_option_value optionKey="kefu_qq"}}
+                </a>
+            </span>&nbsp;|&nbsp;客服电话&nbsp;
             <span style="color:red;font-weight: bold;">{{bzf_get_option_value optionKey="kefu_telephone"}}</span>
             &nbsp;&nbsp;
         </div>
