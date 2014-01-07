@@ -69,17 +69,35 @@ class LocalEngine implements ICloudEngine
 
         // -------------------- 1. 设置 data 路径 --------------------------------------
 
-        //数据路径
-        if (!$f3->get('sysConfig[data_path_root]')) {
-            $f3->set('sysConfig[data_path_root]', realpath($sysPath . '/../data'));
-        }
+        // 没有自己的目录，比如把 shop 放在根目录了
+        if (empty($sysDir)) {
 
-        //数据 url prefix
-        if (!$f3->get('sysConfig[data_url_prefix]')) {
-            $f3->set(
-                'sysConfig[data_url_prefix]',
-                str_replace('/' . $sysDir, '/data', $f3->get('sysConfig[webroot_url_prefix]'))
-            );
+            //数据路径
+            if (!$f3->get('sysConfig[data_path_root]')) {
+                $f3->set('sysConfig[data_path_root]', realpath($sysPath . '/data'));
+            }
+
+            //数据 url prefix
+            if (!$f3->get('sysConfig[data_url_prefix]')) {
+                $f3->set(
+                    'sysConfig[data_url_prefix]',
+                    $f3->get('sysConfig[webroot_url_prefix]') . '/data'
+                );
+            }
+
+        } else {
+            //数据路径
+            if (!$f3->get('sysConfig[data_path_root]')) {
+                $f3->set('sysConfig[data_path_root]', realpath($sysPath . '/../data'));
+            }
+
+            //数据 url prefix
+            if (!$f3->get('sysConfig[data_url_prefix]')) {
+                $f3->set(
+                    'sysConfig[data_url_prefix]',
+                    str_replace('/' . $sysDir, '/data', $f3->get('sysConfig[webroot_url_prefix]'))
+                );
+            }
         }
 
         //图片 image_url_prefix
