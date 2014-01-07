@@ -10,6 +10,8 @@ namespace Core\Cloud\Sae;
 
 
 use Core\Asset\AbstractManager;
+use Core\Cache\AbstractClear;
+use Core\Cache\ClearHelper;
 
 class SaeAssetManager extends AbstractManager
 {
@@ -17,6 +19,11 @@ class SaeAssetManager extends AbstractManager
      * Sae 的 KVDB 对象
      */
     private $saeKv = null;
+
+    /**
+     * SaeKvDB 的 key 前缀，用于识别 Asset 资源
+     */
+    public static $saeKeyPrefix = '[SaeAsset]';
 
     /**
      * asset 对应的 url 链接前缀
@@ -55,6 +62,9 @@ class SaeAssetManager extends AbstractManager
         // 注册 F3 的路由，所有 /asset 请求都由我们自己处理
         global $f3;
         $f3->route('GET /asset/*', __CLASS__ . '->fetchAsset');
+
+        // 注册 Clear方法，用于清除 Asset 资源
+        ClearHelper::registerInstanceClass(__NAMESPACE__ . '\\' . 'SaeAssetClear');
     }
 
     /**
@@ -78,7 +88,7 @@ class SaeAssetManager extends AbstractManager
         $targetPath =
             $this->assetBasePath . $relativeAssetPath;
 
-        $targetKey = md5($targetPath);
+        $targetKey = $this->saeKeyPrefix . md5($targetPath);
 
         $saeKv        = $this->getSaeKv();
         $assetContent = $saeKv->get($targetKey);
@@ -176,7 +186,7 @@ class SaeAssetManager extends AbstractManager
             return false;
         }
 
-        $targetKey = md5($targetPath);
+        $targetKey = $this->saeKeyPrefix . md5($targetPath);
 
         $saeKv = $this->getSaeKv();
 
@@ -212,4 +222,44 @@ class SaeAssetManager extends AbstractManager
         . '/' . $relativeAssetPath;
     }
 
+    /**
+     * 清除所有的 Asset
+     */
+    public function clearAllAsset()
+    {
+        $saeKv = $this->getSaeKv();
+
+        $clearCount = 0;
+
+        for (; ;) {
+            // 每次取 100 个
+            $keyValueArray = $saeKv->pkrget(self::$saeKeyPrefix, 100);
+            if (empty($keyValueArray)) {
+                goto out;
+            }
+
+            // 清除数据
+            foreach ($keyValueArray as $key => $value) {
+                $saeKv->delete($key);
+                $clearCount++;
+            }
+        }
+
+        out:
+        printLog('clear SaeAsset success count [' . $clearCount . ']', __CLASS__);
+    }
+
+}
+
+/**
+ * 用于清除已经发布的 Asset 资源
+ *
+ * @package Core\Cloud\Sae
+ */
+class SaeAssetClear extends AbstractClear
+{
+    public function clearAllCache()
+    {
+        SaeAssetManager::instance()->clearAllAsset();
+    }
 }
