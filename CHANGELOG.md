@@ -1,6 +1,8 @@
 
-2014-03-01  1.1.0
+2014-02-01  1.0.2
 
+* Shop 主题头部增加了客服QQ的显示
+* bzfshop 使用了新浪的 Storage（上传图片）, Memcache（Smarty 目录），KVDB（Asset 发布）
 * bzfshop 增加 新浪Sae平台 的支持，可以完美跑在 Sae 平台上
 * bzfshop 采用 CloudEngine 架构，方便移植到各种云平台上
 * Shop主题增加设置，可以为商品详情页设置一个公告信息，所有商品的详情页面里面都会显示
