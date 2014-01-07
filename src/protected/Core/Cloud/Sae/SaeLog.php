@@ -10,7 +10,6 @@
 namespace Core\Cloud\Sae;
 
 use Core\Cloud\ICloudLog;
-use Core\Helper\Utility\Time;
 
 class SaeLog extends \Prefab implements ICloudLog
 {
@@ -20,6 +19,8 @@ class SaeLog extends \Prefab implements ICloudLog
 
     function __construct()
     {
+        // 在 php 程序结束的时候才输出 log，
+        // 因为 sae_debug 不知道做了什么会影响 PHP 的正常输出，所以我们只能在 PHP 关闭的时候操作
         register_shutdown_function(array($this, 'outputLog'));
     }
 
@@ -52,7 +53,6 @@ class SaeLog extends \Prefab implements ICloudLog
 
         // 简单的把日志放到数组中而已
         $this->logArray[] = array(
-            'time'   => Time::localTimeStr('Y-m-d H:i:s'),
             'level'  => $level,
             'source' => $source,
             'msg'    => $msg
@@ -65,11 +65,11 @@ class SaeLog extends \Prefab implements ICloudLog
             return;
         }
 
-        sae_set_display_errors(false); //关闭信息输出
+        sae_set_display_errors(false); //关闭网页输出
         foreach ($this->logArray as $logItem) {
             // 采用 sae_debug 输出日志
             sae_debug(
-                '[' . $logItem['time'] . '][' . $logItem['level'] . '][' . $logItem['source'] . ']['
+                '[' . $logItem['level'] . '][' . $logItem['source'] . ']['
                 . trim($logItem['msg']) . ']'
             );
         }
