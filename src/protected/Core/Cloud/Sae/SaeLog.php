@@ -14,6 +14,12 @@ use Core\Helper\Utility\Time;
 
 class SaeLog extends \Prefab implements ICloudLog
 {
+    private $logArray = array();
+
+    function __construct()
+    {
+        register_shutdown_function(array($this, 'outputLog'));
+    }
 
     /**
      *
@@ -21,7 +27,7 @@ class SaeLog extends \Prefab implements ICloudLog
      */
     public function initLog($logFileName = null)
     {
-        sae_set_display_errors(false); //关闭信息输出
+
     }
 
     /**
@@ -33,9 +39,30 @@ class SaeLog extends \Prefab implements ICloudLog
      * */
     public function addLogInfo($level, $source, $msg)
     {
-        $msg = '[' . Time::localTimeStr('Y-m-d H:i:s') . '][' . $level . '][' . $source . '][' . trim($msg) . ']'
-            . PHP_EOL;
-        //sae_debug($msg); //记录日志
+        // 简单的把日志放到数组中而已
+        $this->logArray[] = array(
+            'time'   => Time::localTimeStr('Y-m-d H:i:s'),
+            'level'  => $level,
+            'source' => $source,
+            'msg'    => $msg
+        );
     }
 
+    public function outputLog()
+    {
+        if (empty($this->logArray)) {
+            return;
+        }
+
+        sae_set_display_errors(false); //关闭信息输出
+        foreach ($this->logArray as $logItem) {
+            // 采用 sae_debug 输出日志
+            sae_debug(
+                '[' . $logItem['time'] . '][' . $logItem['level'] . '][' . $logItem['source'] . ']['
+                . trim($logItem['msg']) . ']'
+            );
+        }
+    }
 }
+
+
