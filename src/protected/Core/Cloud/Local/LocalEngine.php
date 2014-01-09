@@ -62,6 +62,8 @@ class LocalEngine implements ICloudEngine
             case PluginHelper::SYSTEM_INSTALL:
                 $sysPath = INSTALL_PATH;
                 $sysDir  = INSTALL_DIR;
+		// install use tmp directory for cache
+		$f3->set('sysConfig[cache]', 'folder='.sys_get_temp_dir());
                 break;
             default:
                 throw new \InvalidArgumentException('can not init for system [' . $system . ']');
