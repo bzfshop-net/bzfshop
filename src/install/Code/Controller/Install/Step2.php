@@ -54,9 +54,9 @@ class Step2 extends \Controller\BaseController
         $isPass     = false;
         $valueArray = array();
 
-        if (CloudHelper::CLOUD_ENGINE_LOCAL != CloudHelper::$currentEngineStr) {
+        if (CloudHelper::CLOUD_ENGINE_SAE == CloudHelper::$currentEngineStr) {
             $isPass       = true;
-            $valueArray[] = '云平台，不检测';
+            $valueArray[] = 'SAE平台，不检测';
             goto out;
         }
 

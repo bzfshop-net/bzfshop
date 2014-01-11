@@ -25,11 +25,27 @@ class Step3 extends \Controller\BaseController
         $smarty->assign('dbHost', 'localhost');
         $smarty->assign('dbPort', '3306');
         $smarty->assign('dbName', 'bzfshop');
-        $smarty->assign('dbUserName', 'root');
 
-        if (CloudHelper::CLOUD_ENGINE_SAE == CloudHelper::$currentEngineStr) {
-            $smarty->assign('cloud_message', strtoupper(CloudHelper::$currentEngineStr) . ' 不需要配置数据库，这里随便填什么都可以');
+        switch (CloudHelper::$currentEngineStr) {
+
+            case CloudHelper::CLOUD_ENGINE_SAE:
+                $smarty->assign('cloud_message', strtoupper(CloudHelper::$currentEngineStr) . ' 不需要配置数据库，请直接下一步');
+                break;
+
+            case CloudHelper::CLOUD_ENGINE_BAE3:
+                $smarty->assign(
+                    'cloud_message',
+                    strtoupper(CloudHelper::$currentEngineStr)
+                    . ' 这里需要的配置信息可以在 '
+                    . strtoupper(CloudHelper::$currentEngineStr)
+                    . ' 官方后台查找到'
+                );
+                break;
+
+            default: // do nothing
         }
+
+        $smarty->assign('currentEngineStr', CloudHelper::$currentEngineStr);
 
         // 页面显示
         $smarty->display('install_step3.tpl');
@@ -40,11 +56,12 @@ class Step3 extends \Controller\BaseController
         // 参数验证
         $validator = new Validator($f3->get('POST'));
 
-        $dbHost      = $validator->required('数据库地址不能为空')->validate('dbHost');
-        $dbPort      = $validator->required('数据库端口不能为空')->digits('数据库端口非法')->validate('dbPort');
-        $dbName      = $validator->required('数据库名不能为空')->validate('dbName');
-        $dbUsersName = $validator->required('用户名不能为空')->validate('dbUserName');
-        $dbPassword  = $validator->required('密码不能为空')->validate('dbPassword');
+        $dbHost = $validator->validate('dbHost');
+        $dbPort = $validator->validate('dbPort');
+        $dbName = $validator->validate('dbName');
+
+        // 系统通用的配置
+        $sysConfig = $validator->validate('sysConfig');
 
         if (!$this->validate($validator)) {
             goto out_fail;
@@ -54,15 +71,21 @@ class Step3 extends \Controller\BaseController
 
             // 对云平台要做特殊处理
             if (CloudHelper::CLOUD_ENGINE_SAE == CloudHelper::$currentEngineStr) {
-                $dbPdo       = 'mysql:host=' . SAE_MYSQL_HOST_M . ';port=' . SAE_MYSQL_PORT . ';dbname=' . SAE_MYSQL_DB;
-                $dbUsersName = SAE_MYSQL_USER;
-                $dbPassword  = SAE_MYSQL_PASS;
+                $dbPdo                    =
+                    'mysql:host=' . SAE_MYSQL_HOST_M . ';port=' . SAE_MYSQL_PORT . ';dbname=' . SAE_MYSQL_DB;
+                $sysConfig['db_username'] = SAE_MYSQL_USER;
+                $sysConfig['db_password'] = SAE_MYSQL_PASS;
                 goto import_data;
+            }
+
+            if (CloudHelper::CLOUD_ENGINE_BAE3 == CloudHelper::$currentEngineStr) {
+                $sysConfig['db_username'] = $sysConfig['bae3_api_key'];
+                $sysConfig['db_password'] = $sysConfig['bae3_secret_key'];
             }
 
             // 检查是否需要创建数据库
             $dbPdo    = 'mysql:host=' . $dbHost . ';port=' . $dbPort;
-            $dbEngine = new \Core\Modal\DbEngine($dbPdo, $dbUsersName, $dbPassword);
+            $dbEngine = new \Core\Modal\DbEngine($dbPdo, $sysConfig['db_username'], $sysConfig['db_password']);
 
             // 检查数据库是否存在，从而确定我们是否应该新建一个数据库
             $shouldCreateDatabase = true;
@@ -96,24 +119,14 @@ class Step3 extends \Controller\BaseController
             $fileContent = file_get_contents($filePath);
             $fileContent =
                 preg_replace('/sysConfig\[db_pdo\]="[^"]*"/', 'sysConfig[db_pdo]="' . $dbPdo . '"', $fileContent);
-            $fileContent =
-                preg_replace(
-                    '/sysConfig\[db_username\]="[^"]*"/',
-                    'sysConfig[db_username]="' . $dbUsersName . '"',
-                    $fileContent
-                );
-            $fileContent =
-                preg_replace(
-                    '/sysConfig\[db_password\]="[^"]*"/',
-                    'sysConfig[db_password]="' . $dbPassword . '"',
-                    $fileContent
-                );
-            $fileContent =
-                preg_replace(
-                    '/CACHE="[^"]*"/',
-                    'CACHE=""',
-                    $fileContent
-                );
+            foreach ($sysConfig as $key => $value) {
+                $fileContent =
+                    preg_replace(
+                        '/sysConfig\[' . $key . '\]="[^"]*"/',
+                        'sysConfig[' . $key . ']="' . $value . '"',
+                        $fileContent
+                    );
+            }
             file_put_contents($filePath, $fileContent);
 
             // 更新配置文件 manage-prod.cfg
@@ -129,7 +142,7 @@ class Step3 extends \Controller\BaseController
 
             import_data: // 这里完成导入数据的工作
 
-            $pdoObject = new \PDO($dbPdo, $dbUsersName, $dbPassword);
+            $pdoObject = new \PDO($dbPdo, $sysConfig['db_username'], $sysConfig['db_password']);
 
             // 解析 sql 文件，导入数据
             $sqlFileContent = file_get_contents(INSTALL_PATH . '/Asset/data/bzfshop.sql');
@@ -153,6 +166,7 @@ class Step3 extends \Controller\BaseController
 
         out_fail: // 失败从这里退出
         global $smarty;
+        $smarty->assign('currentEngineStr', CloudHelper::$currentEngineStr);
         $smarty->display('install_step3.tpl');
     }
 

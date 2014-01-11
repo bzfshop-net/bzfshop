@@ -42,19 +42,19 @@
                         （用户名：测试账号 密码：123456）
                     </p>
 
-                    <p>手机访问：<a target="_blank" href="{{$WEB_ROOT_BASE}}/../mobile">/mobile</a><br/>
+                    <p>手机访问：<a target="_blank" href="{{$WEB_ROOT_BASE}}/../mobile/">/mobile</a><br/>
                         （用户名：测试账号 密码：123456）
                     </p>
 
                     <p>
-                        管理员后台：<a target="_blank" href="{{$WEB_ROOT_BASE}}/../manage">/manage</a><br/>
+                        管理员后台：<a target="_blank" href="{{$WEB_ROOT_BASE}}/../manage/">/manage</a><br/>
                         用户名：admin 密码：123456 <br/>
                         用户名：商品编辑1号 密码：123456<br/>
                         用户名：客服1号 密码：123456
                     </p>
 
                     <p>
-                        供货商后台：<a target="_blank" href="{{$WEB_ROOT_BASE}}/../supplier">/supplier</a><br/>
+                        供货商后台：<a target="_blank" href="{{$WEB_ROOT_BASE}}/../supplier/">/supplier</a><br/>
                         （用户名：广州供货商 密码：123456 | 用户名：自己发货 密码：123456）
                     </p>
                     <br/><br/>
