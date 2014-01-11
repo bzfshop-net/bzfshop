@@ -250,6 +250,9 @@ class Bae3Engine implements ICloudEngine
         $_SERVER["SERVER_PORT"] = 80;
         $f3->set('PORT', 80);
 
+        // 设置系统运行环境
+        Bae3Log::instance()->system = $this->system;
+
         if (PluginHelper::SYSTEM_CONSOLE == $system) {
             $this->initConsoleEnv();
         } else {
@@ -263,7 +266,7 @@ class Bae3Engine implements ICloudEngine
     {
         switch ($module) {
             case CloudHelper::CLOUD_MODULE_Log:
-                return new Bae3Log();
+                return Bae3Log::instance();
             case CloudHelper::CLOUD_MODULE_DB:
                 return Bae3Db::instance();
             case CloudHelper::CLOUD_MODULE_STORAGE:

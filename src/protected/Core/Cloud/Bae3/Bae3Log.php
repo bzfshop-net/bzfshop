@@ -10,12 +10,15 @@
 namespace Core\Cloud\Bae3;
 
 use Core\Cloud\ICloudLog;
-use Core\Helper\Utility\Time;
 
-class Bae3Log implements ICloudLog
+class Bae3Log extends \Prefab implements ICloudLog
 {
 
-    private $file = 'log.log';
+    public $system = 'bzfshop';
+
+    private $file = 'bzfshop.log';
+
+    private $logKeyArray = array();
 
     /**
      *
@@ -24,10 +27,7 @@ class Bae3Log implements ICloudLog
     public function initLog($logFileName = null)
     {
         global $f3;
-        if (empty($logFileName)) {
-            $logFileName = Time::localTimeStr('Y-m-d') . 'log';
-        }
-        $this->file = $f3->get('LOGS') . str_replace('/', '__', $logFileName);
+        $this->file = $f3->get('LOGS') . $this->system . '.log';
 
         if (!is_file($this->file)) {
             // 创建文件
@@ -52,6 +52,14 @@ class Bae3Log implements ICloudLog
         if (!is_file($this->file)) {
             return;
         }
+
+        $logKey = md5('##' . $level . '##' . $source . '##' . $msg . '##');
+
+        // 重复的 log 信息就不要放进来了
+        if (in_array($logKey, $this->logKeyArray)) {
+            return;
+        }
+
         $msg = '[' . $level . '][' . $source . '][' . trim($msg) . ']'
             . PHP_EOL;
         $f3->write($this->file, $msg, true);
