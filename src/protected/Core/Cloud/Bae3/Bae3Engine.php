@@ -77,8 +77,7 @@ class Bae3Engine implements ICloudEngine
             $f3->set(
                 'sysConfig[webroot_schema_host]',
                 $f3->get('SCHEME') . '://' . $f3->get('HOST')
-            // BAE 在检测端口上有问题，这里不加端口
-            //. (('80' != $f3->get('PORT')) ? ':' . $f3->get('PORT') : '')
+                . (('80' != $f3->get('PORT')) ? ':' . $f3->get('PORT') : '')
             );
         }
 
@@ -228,8 +227,8 @@ class Bae3Engine implements ICloudEngine
         // 设置 Tmp 路径
         $f3->set('TEMP', RUNTIME_PATH . '/Temp/');
 
-        // 设置 Log 路径
-        $f3->set('LOGS', RUNTIME_PATH . '/Log/' . $systemUpperFirst . '/');
+        // 设置 Log 路径, BAE3 指定了 log 路径
+        $f3->set('LOGS', '/home/bae/log/');
 
         //开启 Cache 功能
         if ($f3->get('sysConfig[cache]')) {
@@ -243,7 +242,13 @@ class Bae3Engine implements ICloudEngine
     public function initCloudEnv($system)
     {
 
+        global $f3;
+
         $this->system = $system;
+
+        // BAE 系统一些环境变量有问题，我们在这里修复它
+        $_SERVER["SERVER_PORT"] = 80;
+        $f3->set('PORT', 80);
 
         if (PluginHelper::SYSTEM_CONSOLE == $system) {
             $this->initConsoleEnv();
