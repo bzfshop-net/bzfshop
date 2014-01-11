@@ -33,6 +33,16 @@ class SaeEngine implements ICloudEngine
 
         // -------------------- 1. 设置 data 路径 --------------------------------------
 
+        // 当前网站的 webroot_url_prefix
+        if (!$f3->get('sysConfig[webroot_url_prefix]')) {
+            $f3->set(
+                'sysConfig[webroot_url_prefix]',
+                $f3->get('SCHEME') . '://' . $f3->get('HOST')
+                . (('80' != $f3->get('PORT')) ? ':' . $f3->get('PORT') : '')
+                . $f3->get('BASE')
+            );
+        }
+
         //数据路径
         $f3->set('sysConfig[data_path_root]', $f3->get('sysConfig[sae_storage_data_path]'));
         $f3->set(
@@ -67,7 +77,7 @@ class SaeEngine implements ICloudEngine
         $smarty->setCompileDir(RUNTIME_PATH . '/Smarty');
         $smarty->setCacheDir(RUNTIME_PATH . '/Smarty');
         $smarty->compile_locking = false;
-        
+
         //smarty 在 SAE 下禁用缓存
         $f3->set('sysConfig[smarty_caching]', false);
 

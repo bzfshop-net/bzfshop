@@ -24,6 +24,7 @@ class CloudHelper
     // 云引擎定义
     const CLOUD_ENGINE_LOCAL = 'Local';
     const CLOUD_ENGINE_SAE   = 'Sae';
+    const CLOUD_ENGINE_BAE3  = 'Bae3';
 
     /**
      * 当前的云平台引擎
@@ -44,17 +45,22 @@ class CloudHelper
     {
         global $f3;
 
-        $cloudEngine = null;
-
         self::$currentEngineStr = $f3->get('sysConfig[cloudEngine]');
 
         // 如果用户没有配置，我们这里自动检测云平台环境
-        if (empty($cloudEngineStr)) {
+        if (empty(self::$currentEngineStr)) {
             // 缺省为 Local
             self::$currentEngineStr = self::CLOUD_ENGINE_LOCAL;
 
+            // 新浪 SAE 环境识别
             if (function_exists('sae_debug')) {
                 self::$currentEngineStr = self::CLOUD_ENGINE_SAE;
+                goto init_engine;
+            }
+
+            // 百度 BAE 环境识别
+            if (defined('SERVER_SOFTWARE') && 'bae/3.0' === SERVER_SOFTWARE) {
+                self::$currentEngineStr = self::CLOUD_ENGINE_BAE3;
                 goto init_engine;
             }
         }

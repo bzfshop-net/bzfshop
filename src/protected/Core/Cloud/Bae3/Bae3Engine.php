@@ -6,14 +6,15 @@
  *
  */
 
-namespace Core\Cloud\Local;
+namespace Core\Cloud\Bae3;
 
 
 use Core\Cloud\CloudHelper;
 use Core\Cloud\ICloudEngine;
+use Core\Cloud\Local\LocalStorage;
 use Core\Plugin\PluginHelper;
 
-class LocalEngine implements ICloudEngine
+class Bae3Engine implements ICloudEngine
 {
     private $system = null;
 
@@ -76,7 +77,6 @@ class LocalEngine implements ICloudEngine
             $f3->set(
                 'sysConfig[webroot_url_prefix]',
                 $f3->get('SCHEME') . '://' . $f3->get('HOST')
-                . (('80' != $f3->get('PORT')) ? ':' . $f3->get('PORT') : '')
                 . $f3->get('BASE')
             );
         }
@@ -249,9 +249,9 @@ class LocalEngine implements ICloudEngine
     {
         switch ($module) {
             case CloudHelper::CLOUD_MODULE_Log:
-                return new LocalLog();
+                return new Bae3Log();
             case CloudHelper::CLOUD_MODULE_DB:
-                return LocalDb::instance();
+                return Bae3Db::instance();
             case CloudHelper::CLOUD_MODULE_STORAGE:
                 return LocalStorage::instance();
             default:
