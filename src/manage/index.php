@@ -44,16 +44,6 @@ if ($f3->get('sysConfig[time_zone]')) {
     date_default_timezone_set($f3->get('sysConfig[time_zone]'));
 }
 
-// 当前网站的 webroot_url_prefix
-if (!$f3->get('sysConfig[webroot_url_prefix]')) {
-    $f3->set(
-        'sysConfig[webroot_url_prefix]',
-        $f3->get('SCHEME') . '://' . $f3->get('HOST')
-        . (('80' != $f3->get('PORT')) ? ':' . $f3->get('PORT') : '')
-        . $f3->get('BASE')
-    );
-}
-
 // 设置网站唯一的 key，防止通用模块之间的冲突
 RouteHelper::$uniqueKey           = 'MANAGE';
 AuthHelper::$uniqueKey            = 'MANAGE';
