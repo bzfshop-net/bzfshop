@@ -89,11 +89,7 @@ smarty_helper_register($smarty);
 // ---------------------------------------- 5. 为 JavaScript 设置变量 --------------------------------------
 
 // 设置网站的 Base 路径，给 JavaScript 使用
-$smarty->assign(
-    "WEB_ROOT_HOST",
-    $f3->get('SCHEME') . '://' . $f3->get('HOST') . (('80' != $f3->get('PORT')) ? ':' . $f3->get('PORT')
-        : '')
-);
+$smarty->assign("WEB_ROOT_HOST", $f3->get('sysConfig[webroot_schema_host]'));
 $smarty->assign("WEB_ROOT_BASE", $f3->get('BASE'));
 $smarty->assign(
     "WEB_ROOT_BASE_RES",
