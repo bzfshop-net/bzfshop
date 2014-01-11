@@ -71,13 +71,20 @@ class LocalEngine implements ICloudEngine
 
         // -------------------- 1. 设置 data 路径 --------------------------------------
 
+        // 当前网站的 webroot_schema_host
+        if (!$f3->get('sysConfig[webroot_schema_host]')) {
+            $f3->set(
+                'sysConfig[webroot_schema_host]',
+                $f3->get('SCHEME') . '://' . $f3->get('HOST')
+                . (('80' != $f3->get('PORT')) ? ':' . $f3->get('PORT') : '')
+            );
+        }
+
         // 当前网站的 webroot_url_prefix
         if (!$f3->get('sysConfig[webroot_url_prefix]')) {
             $f3->set(
                 'sysConfig[webroot_url_prefix]',
-                $f3->get('SCHEME') . '://' . $f3->get('HOST')
-                . (('80' != $f3->get('PORT')) ? ':' . $f3->get('PORT') : '')
-                . $f3->get('BASE')
+                $f3->get('sysConfig[webroot_schema_host]') . $f3->get('BASE')
             );
         }
 
