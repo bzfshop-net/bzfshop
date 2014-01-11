@@ -137,8 +137,8 @@ class Bae3Engine implements ICloudEngine
         // 设置 Tmp 路径
         $f3->set('TEMP', RUNTIME_PATH . '/Temp/');
 
-        // 设置 Log 路径
-        $f3->set('LOGS', RUNTIME_PATH . '/Log/' . $systemUpperFirst . '/');
+        // 设置 Log 路径, BAE3 指定了 log 路径
+        $f3->set('LOGS', '/home/bae/log/');
 
         //开启 Cache 功能
         if ($f3->get('sysConfig[cache]')) {
