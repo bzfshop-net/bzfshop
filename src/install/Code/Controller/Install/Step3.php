@@ -119,6 +119,8 @@ class Step3 extends \Controller\BaseController
             $fileContent = file_get_contents($filePath);
             $fileContent =
                 preg_replace('/sysConfig\[db_pdo\]="[^"]*"/', 'sysConfig[db_pdo]="' . $dbPdo . '"', $fileContent);
+            // 清除 Cache 的设置
+            $sysConfig['cache'] = '';
             foreach ($sysConfig as $key => $value) {
                 $fileContent =
                     preg_replace(
