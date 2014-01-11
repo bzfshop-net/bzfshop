@@ -19,13 +19,23 @@ Supplier: http://demo.bzfshop.net/supplier
 棒主妇开源(http://www.bzfshop.net) 是 棒主妇商城(http://www.bangzhufu.com) 的开源项目。我们希望提供一个设计严谨、性能优异、完全免费开源的
 B2C商城给大家使用，方便每一个人可以很容易的搭建属于自己的B2C商城。
 
+bzfshop 设计为一个跨平台的程序，可以支持多种平台的安装，目前包括：
+
+* 普通服务器安装（虚拟主机、VPS、阿里云、独立服务器、服务器集群 ...）
+* 新浪 SAE 平台（把 src 目录下内容上传到 SAE 即可）
+* 百度 BAE3 平台（把 src 目录下内容上传到 BAE3 即可）
+
 ***
 
-### 商城在线演示
+### 商城说明
 
 棒主妇开源：http://www.bzfshop.net
 
-在线商城演示：http://www.bzfshop.net/article/253.html
+商城演示：http://www.bzfshop.net/article/253.html
+
+代码下载：http://www.bzfshop.net/article/239.html
+
+官方文档：http://www.bzfshop.net/article/241.html
 
 ### 商城安装方法
 
@@ -44,8 +54,6 @@ B2C商城给大家使用，方便每一个人可以很容易的搭建属于自�
 	程序要求 PHP 版本 >= 5.3.4 ，低于这个版本无法安装
  
     我们假设你已经完成了上面的系统配置问题，现在访问 /install 目录，你会看到安装引导程序，根据引导程序的提示完成安装即可
-	
-	查看这里  安装指南  http://www.bzfshop.net/article/246.html
 
  4. 删除 install 目录
 
