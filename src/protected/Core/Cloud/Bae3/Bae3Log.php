@@ -60,6 +60,8 @@ class Bae3Log extends \Prefab implements ICloudLog
             return;
         }
 
+        $this->logKeyArray[] = $logKey;
+
         $msg = '[' . $level . '][' . $source . '][' . trim($msg) . ']'
             . PHP_EOL;
         $f3->write($this->file, $msg, true);
