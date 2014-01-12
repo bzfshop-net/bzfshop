@@ -119,6 +119,13 @@ class Step3 extends \Controller\BaseController
             $fileContent = file_get_contents($filePath);
             $fileContent =
                 preg_replace('/sysConfig\[db_pdo\]="[^"]*"/', 'sysConfig[db_pdo]="' . $dbPdo . '"', $fileContent);
+            // 清除 demo 配置
+            $fileContent =
+                preg_replace(
+                    '/sysConfig\[is_demo\]=1/',
+                    'sysConfig[is_demo]=0',
+                    $fileContent
+                );
             // 清除 Cache 的设置
             $sysConfig['cache'] = '';
             foreach ($sysConfig as $key => $value) {
@@ -129,17 +136,6 @@ class Step3 extends \Controller\BaseController
                         $fileContent
                     );
             }
-            file_put_contents($filePath, $fileContent);
-
-            // 更新配置文件 manage-prod.cfg
-            $filePath    = INSTALL_PATH . '/../protected/Config/manage-prod.cfg';
-            $fileContent = file_get_contents($filePath);
-            $fileContent =
-                preg_replace(
-                    '/sysConfig\[manage_change_password\]=0/',
-                    'sysConfig[manage_change_password]=1',
-                    $fileContent
-                );
             file_put_contents($filePath, $fileContent);
 
             import_data: // 这里完成导入数据的工作

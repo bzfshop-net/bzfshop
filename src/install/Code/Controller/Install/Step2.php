@@ -169,12 +169,6 @@ class Step2 extends \Controller\BaseController
                 'call'   => array('checkFilePermission', array($bzfshopPath . '/protected/Config/common-prod.cfg'))
             ),
             array(
-                'name'   => '文件权限',
-                'isMust' => true,
-                'desc'   => $bzfshopPath . '/protected/Config/manage-prod.cfg',
-                'call'   => array('checkFilePermission', array($bzfshopPath . '/protected/Config/manage-prod.cfg'))
-            ),
-            array(
                 'name'   => '目录权限',
                 'isMust' => true,
                 'desc'   => $bzfshopPath . '/protected/Runtime',
