@@ -58,6 +58,11 @@ class Cron extends \Controller\AuthController
 
         $cronTaskArray = $cronTaskService->fetchCronTaskArray($searchParamArray, $pageNo * $pageSize, $pageSize);
 
+        // 给模板赋值
+        $smarty->assign('totalCount', $totalCount);
+        $smarty->assign('pageNo', $pageNo);
+        $smarty->assign('pageSize', $pageSize);
+
         $smarty->assign('cronTaskArray', $cronTaskArray);
 
         out_display:

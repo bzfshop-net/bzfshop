@@ -121,7 +121,7 @@
 
         <!-- 分页 -->
         <div class="pagination pagination-right">
-            {{bzf_paginator count=$totalCount|default:0  pageNo=$pageNo|default:0  pageSize=$pageSize|default:10 }}
+            {{bzf_paginator count=$totalCount|default:0  pageNo=$pageNo|default:0  pageSize=$pageSize|default:20 }}
         </div>
         <!-- 分页 -->
 

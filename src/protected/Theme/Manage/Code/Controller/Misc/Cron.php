@@ -32,7 +32,7 @@ class Cron extends \Controller\AuthController
 
         // 设置缺省值
         $pageNo   = (isset($pageNo) && $pageNo > 0) ? $pageNo : 0;
-        $pageSize = (isset($pageSize) && $pageSize > 0) ? $pageSize : 10;
+        $pageSize = (isset($pageSize) && $pageSize > 0) ? $pageSize : 20;
 
         //查询条件
         $searchFormQuery              = array();
@@ -77,6 +77,11 @@ class Cron extends \Controller\AuthController
         }
 
         $cronTaskArray = $cronTaskService->fetchCronTaskArray($searchParamArray, $pageNo * $pageSize, $pageSize);
+
+        // 给模板赋值
+        $smarty->assign('totalCount', $totalCount);
+        $smarty->assign('pageNo', $pageNo);
+        $smarty->assign('pageSize', $pageSize);
 
         $smarty->assign('cronTaskArray', $cronTaskArray);
 
