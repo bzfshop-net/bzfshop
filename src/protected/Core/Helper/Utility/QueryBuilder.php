@@ -141,9 +141,10 @@ final class QueryBuilder
 
                 // 我们支持  age => array('>', 100) 这种写法
                 if (in_array($queryValue[0], array('=', '>', '>=', '<', '<=', '<>'))) {
-                    if (null === $queryValue[1] || (is_string($queryValue[1]) && !empty($queryValue[1]))) {
-                        $condArray[] = array($queryKey . ' ' . $queryValue[0] . ' ? ', $queryValue[1]);
+                    if (null === $queryValue[1] || (is_string($queryValue[1]) && empty($queryValue[1]))) {
+                        continue;
                     }
+                    $condArray[] = array($queryKey . ' ' . $queryValue[0] . ' ? ', $queryValue[1]);
                     continue;
                 }
 
@@ -211,7 +212,7 @@ final class QueryBuilder
             if (is_array($queryValue)) {
                 // 我们支持  age => array('>', 100) 这种写法
                 if (in_array($queryValue[0], array('=', '>', '>=', '<', '<=', '<>'))) {
-                    if (null === $queryValue[1] || (is_string($queryValue[1]) && !empty($queryValue[1]))) {
+                    if (null === $queryValue[1] || (is_string($queryValue[1]) && empty($queryValue[1]))) {
                         continue;
                     }
                     $searchParamArray[] = array_merge(array($queryKey), $queryValue);

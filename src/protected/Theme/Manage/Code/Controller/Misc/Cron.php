@@ -41,9 +41,13 @@ class Cron extends \Controller\AuthController
 
         $returnCode = $validator->digits()->filter('ValidatorIntValue')->validate('return_code');
         if (0 === $returnCode) {
-            $searchFormQuery['return_code'] = 0;
+            $searchFormQuery['task_run_time'] = array('>', 0);
+            $searchFormQuery['return_code']   = 0;
+        } elseif ($returnCode > 0) {
+            $searchFormQuery['task_run_time'] = array('>', 0);
+            $searchFormQuery['return_code']   = array('<>', 0);
         } else {
-            $searchFormQuery['return_code'] = array('<>', 0);
+            // do nothing
         }
 
         //任务时间

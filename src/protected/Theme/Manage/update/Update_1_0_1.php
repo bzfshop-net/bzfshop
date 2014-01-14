@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `bzf_cron_task` (
 
 ALTER TABLE `bzf_cron_task` ADD INDEX ( `task_name` ) ;
 ALTER TABLE `bzf_cron_task` ADD INDEX ( `task_time` ) ;
+ALTER TABLE `bzf_cron_task` ADD INDEX ( `task_run_time` ) ;
 ALTER TABLE `bzf_cron_task` ADD INDEX ( `search_param` ) ;
 ALTER TABLE `bzf_cron_task` ADD INDEX ( `return_code` ) ;
 SQL;
