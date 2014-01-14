@@ -376,6 +376,12 @@ class CreatePrivilege implements \Clip\Command
             '编辑快递公司',
             '编辑快递公司的信息'
         );
+        $metaPrivilegeService->savePrivilegeItem(
+            $privilegeGroup['meta_id'],
+            'manage_misc_cron',
+            'Cron管理',
+            '管理系统的Cron任务'
+        );
 
         // 数据统计
         $privilegeGroup = $metaPrivilegeService->savePrivilegeGroup('manage_stat', '数据统计', '网站的各种数据统计');

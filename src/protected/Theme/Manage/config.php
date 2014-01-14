@@ -9,7 +9,7 @@
 return array(
 
     // 插件基本信息
-    'version'               => '1.0.0',
+    'version'               => '1.0.1',
     'display_name'          => 'Manage管理后台',
     'description'           => <<<DESC
 <p>开发商：棒主妇开源</p>
