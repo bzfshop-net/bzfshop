@@ -61,16 +61,23 @@ class CronHelper
     /**
      * 添加一个 Cron Task 到执行任务列表中
      *
-     * @param string $task_name  任务名
-     * @param string $task_desc  任务描述
-     * @param string $task_class 实现 ICronTask 接口的类名称（全名，包括 namespace）
-     * @param int    $task_time  任务执行的时间，GMT 时间
-     * @param array  $paramArray 任务执行需要的参数
+     * @param string $task_name    任务名
+     * @param string $task_desc    任务描述
+     * @param string $task_class   实现 ICronTask 接口的类名称（全名，包括 namespace）
+     * @param int    $task_time    任务执行的时间，GMT 时间
+     * @param array  $paramArray   任务执行需要的参数
+     * @param string $search_param 用于任务的搜索
      */
-    public static function addCronTask($task_name, $task_desc, $task_class, $task_time, array $paramArray)
-    {
+    public static function addCronTask(
+        $task_name,
+        $task_desc,
+        $task_class,
+        $task_time,
+        array $paramArray,
+        $search_param = null
+    ) {
         $cronTaskService = new CronTaskService();
-        $cronTaskService->addCronTask($task_name, $task_desc, $task_class, $task_time, $paramArray);
+        $cronTaskService->addCronTask($task_name, $task_desc, $task_class, $task_time, $paramArray, $search_param);
 
         // 清除缓存
         ShareCache::clear(self::getCronTaskCacheKey());

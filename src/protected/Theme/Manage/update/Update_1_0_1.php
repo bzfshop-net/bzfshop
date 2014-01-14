@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `bzf_cron_task` (
   `task_run_time` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '任务实际运行时间',
   `task_class` varchar(128) NOT NULL COMMENT '任务的PHP Class',
   `task_param` text DEFAULT NULL,
+  `search_param` varchar(64) DEFAULT NULL COMMENT '用于任务搜索',
   `return_code` int DEFAULT 0 COMMENT '任务设定时间',
   `return_message` varchar(128) DEFAULT NULL COMMENT '任务返回消息',
 
@@ -47,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `bzf_cron_task` (
 
 ALTER TABLE `bzf_cron_task` ADD INDEX ( `task_name` ) ;
 ALTER TABLE `bzf_cron_task` ADD INDEX ( `task_time` ) ;
+ALTER TABLE `bzf_cron_task` ADD INDEX ( `search_param` ) ;
 ALTER TABLE `bzf_cron_task` ADD INDEX ( `return_code` ) ;
 SQL;
 
