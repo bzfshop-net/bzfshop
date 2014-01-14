@@ -70,8 +70,8 @@ SQL;
             $metaPrivilegeService->savePrivilegeItem(
                 $privilegeGroup['meta_id'],
                 'manage_misc_cron',
-                'Cron管理',
-                '管理系统的Cron任务'
+                '定时任务',
+                '管理系统的定时任务'
             );
 
             // 把版本设置为 1.0.1

@@ -9,8 +9,9 @@
 namespace Core\Service\Cron;
 
 use Core\Modal\SqlMapper as DataMapper;
+use Core\Service\BaseService;
 
-class Task
+class Task extends BaseService
 {
     /**
      * 添加一个 Cron Task 到执行任务列表中
@@ -56,4 +57,41 @@ class Task
         );
         return $dataMapper;
     }
+
+    /**
+     * 取得 Cron 任务列表
+     *
+     * @return array 格式 array(array('key'=>'value', 'key'=>'value', ...))
+     *
+     * @param array $condArray 查询条件
+     * @param int   $offset    用于分页的开始 >= 0
+     * @param int   $limit     每页多少条
+     * @param int   $ttl       缓存多少时间
+     */
+    public function fetchCronTaskArray(array $condArray, $offset = 0, $limit = 10, $ttl = 0)
+    {
+        return $this->_fetchArray(
+            'cron_task',
+            '*', // table , fields
+            $condArray,
+            array('order' => 'task_id desc'),
+            $offset,
+            $limit,
+            $ttl
+        );
+    }
+
+    /**
+     * 取得 Cron 任务 总数，可用于分页
+     *
+     * @return int
+     *
+     * @param array $condArray 查询条件
+     * @param int   $ttl       缓存多少时间
+     */
+    public function countCronTaskArray(array $condArray, $ttl = 0)
+    {
+        return $this->_countArray('cron_task', $condArray, null, $ttl);
+    }
+
 } 

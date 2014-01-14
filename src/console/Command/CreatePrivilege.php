@@ -379,8 +379,8 @@ class CreatePrivilege implements \Clip\Command
         $metaPrivilegeService->savePrivilegeItem(
             $privilegeGroup['meta_id'],
             'manage_misc_cron',
-            'Cron管理',
-            '管理系统的Cron任务'
+            '定时任务',
+            '管理系统的定时任务'
         );
 
         // 数据统计

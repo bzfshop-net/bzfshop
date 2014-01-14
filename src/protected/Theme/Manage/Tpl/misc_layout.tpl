@@ -18,6 +18,9 @@
                 <li>
                     <a href="{{bzf_make_url controller='/Misc/Express'}}">快递公司</a>
                 </li>
+                <li>
+                    <a href="{{bzf_make_url controller='/Misc/Cron'}}">定时任务</a>
+                </li>
             </ul>
         </div>
         <!-- /页面上方导航条 -->
