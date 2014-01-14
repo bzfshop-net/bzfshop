@@ -85,23 +85,29 @@
             {{if isset($cronTaskArray)}}
                 {{foreach $cronTaskArray as $cronTask}}
                     <!-- 一个任务 -->
-                    {{if 0 == $cronTask['return_code'] }}
+                    {{if 0 == $cronTask['task_run_time']}}
+                        <tr class="info">
+                            {{elseif 0 == $cronTask['return_code'] }}
                         <tr>
                             {{else}}
                         <tr class="error">
                     {{/if}}
                     <td>{{$cronTask['task_id']}}</td>
-                    <td>{{$cronTask['task_time']|bzf_localtime}}|<br/>{{$cronTask['task_run_time']|bzf_localtime}}
+                    <td>{{$cronTask['task_time']|bzf_localtime}}
+                        <br/>{{$cronTask['task_run_time']|bzf_localtime}}
                     </td>
-                    <td rel="tooltip" data-placement="top"
-                        data-title="{{$cronTask['task_class']}}">{{$cronTask['task_name']}}</td>
-                    <td rel="tooltip" data-placement="top"
-                        data-title="{{$cronTask['task_param']}}">{{$cronTask['task_desc']}}</td>
+                    <td><a rel="tooltip" data-placement="top"
+                           data-title="{{$cronTask['task_class']}}" href="#">{{$cronTask['task_name']}}</a></td>
+                    <td><a rel="tooltip" data-placement="top"
+                           data-title="{{$cronTask['task_param']|replace:'"':'\''}}"
+                           href="#">{{$cronTask['task_desc']}}</a></td>
                     <td>
-                        {{if 0 == $cronTask['return_code'] }}
-                            <i class="icon-ok"></i>
-                        {{else}}
-                            <i class="icon-remove"></i>
+                        {{if $cronTask['task_run_time'] > 0}}
+                            {{if 0 == $cronTask['return_code'] }}
+                                <i class="icon-ok"></i>
+                            {{else}}
+                                <i class="icon-remove"></i>
+                            {{/if}}
                         {{/if}}
                     </td>
                     <td>{{$cronTask['return_message']}}</td>

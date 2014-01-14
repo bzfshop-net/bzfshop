@@ -8,6 +8,7 @@
 
 namespace Core\Service\Cron;
 
+use Core\Cron\CronHelper;
 use Core\Modal\SqlMapper as DataMapper;
 use Core\Service\BaseService;
 
@@ -33,7 +34,7 @@ class Task extends BaseService
     ) {
 
         // 验证任务是否可以添加
-        if (!self::loadTaskClass($task_class)) {
+        if (!CronHelper::loadTaskClass($task_class)) {
             throw new \InvalidArgumentException('class [' . $task_class . '] illegal');
         }
 
@@ -60,7 +61,7 @@ class Task extends BaseService
     {
         $dataMapper = new DataMapper('cron_task');
         $dataMapper->load(
-            array('task_run_time = 0 and task_time >= ?', $task_time),
+            array('task_run_time = 0 and task_time <= ?', $task_time),
             array('order' => 'task_time asc, task_id asc', 'limit' => '1')
         );
         return $dataMapper;

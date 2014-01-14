@@ -19,6 +19,7 @@
             <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/LinkGoods' goods_id=$goods_id }}">关联商品</a></li>
             <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/Promote' goods_id=$goods_id }}">推广渠道</a></li>
             <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/Log' goods_id=$goods_id }}">编辑日志</a></li>
+            <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/Cron' goods_id=$goods_id }}">定时任务</a></li>
         </ul>
         <!-- /编辑页面左侧标签导航 -->
 

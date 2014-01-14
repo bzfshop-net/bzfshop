@@ -34,7 +34,7 @@ class CronController extends BaseController
         while (($cronTask = CronHelper::loadNextUnRunCronTask(Time::gmTime()))
             && $taskCount++ < self::$maxRunTaskCount) {
 
-            $cronResult = array('code' => -1, 'message' => '任务内存错误，请查看日志');
+            $cronResult = array('code' => -1, 'message' => '任务内部错误，请查看日志');
 
             // 加载 Task Class
             $taskInstance = CronHelper::loadTaskClass($cronTask['task_class']);
