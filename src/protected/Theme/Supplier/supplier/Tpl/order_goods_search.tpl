@@ -184,8 +184,8 @@
                 </td>
                 <td>
                     <a style="color:blue;" href="#" ref="popover" data-trigger="hover" data-placement="right"
-                       data-content="{{$orderGoodsItem['refund_note']}}">
-                        {{$orderGoodsItem['refund']|bzf_money_display}}
+                       data-content="{{$orderGoodsItem['suppliers_refund_note']}}">
+                        {{$orderGoodsItem['suppliers_refund']|bzf_money_display}}
                     </a>
                 </td>
                 <td>
