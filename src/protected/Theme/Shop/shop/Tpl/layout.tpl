@@ -346,7 +346,10 @@
 
             <p>ICP备案：<a target="_blank" href="http://www.miit.gov.cn/">{{bzf_get_option_value optionKey="icp"}}</a></p>
 
-            <p>{{bzf_get_option_value optionKey="statistics_code"}}</p>
+            <p><!-- 驱动 Cron 任务-->
+                <img style="width:1px;height:1px;" src="{{bzf_make_url controller='/Cron/Run' static=false}}"/>
+                {{bzf_get_option_value optionKey="statistics_code"}} <!-- 统计代码 -->
+            </p>
         </div>
     </div>
     <!-- /底部，各种资格认证 -->
