@@ -79,6 +79,7 @@
                 <th>描述</th>
                 <th>成功</th>
                 <th>消息</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>
@@ -111,6 +112,12 @@
                         {{/if}}
                     </td>
                     <td>{{$cronTask['return_message']}}</td>
+                    <td>
+                        {{if 0 == $cronTask['task_run_time']}}
+                            <a class="btn btn-small"
+                               href="{{bzf_make_url controller='/Misc/Cron/Remove' task_id=$cronTask['task_id']}}">删除</a>
+                        {{/if}}
+                    </td>
                     </tr>
                     <!-- /一个任务 -->
                 {{/foreach}}

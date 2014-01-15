@@ -89,4 +89,30 @@ class Cron extends \Controller\AuthController
         $smarty->display('misc_cron.tpl');
     }
 
+    public function Remove($f3)
+    {
+        // 权限检查
+        $this->requirePrivilege('manage_misc_cron');
+
+        // 参数验证
+        $validator = new Validator($f3->get('GET'));
+
+        $task_id = $validator->required('任务ID不能为空')->digits('任务ID非法')->min(1)
+            ->filter('ValidatorIntValue')->validate('task_id');
+
+        if (!$this->validate($validator)) {
+            goto out;
+        }
+
+        $cronTaskService = new CronTaskService();
+        if ($cronTaskService->removeCronTaskById($task_id)) {
+            $this->addFlashMessage('定时任务删除成功');
+        } else {
+            $this->addFlashMessage('定时任务删除失败');
+        }
+
+        out:
+        RouteHelper::reRoute($this, RouteHelper::getRefer(), false);
+    }
+
 }

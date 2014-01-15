@@ -89,7 +89,7 @@
                         <td>
                             {{if 0 == $cronTask['task_run_time']}}
                                 <a class="btn btn-small"
-                                   href="{{bzf_make_url controller='/Goods/Edit/Cron/Remove' task_id=$cronTask['task_id']}}">删除</a>
+                                   href="{{bzf_make_url controller='/Misc/Cron/Remove' task_id=$cronTask['task_id']}}">删除</a>
                             {{/if}}
                         </td>
                         </tr>

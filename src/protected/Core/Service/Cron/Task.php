@@ -9,11 +9,56 @@
 namespace Core\Service\Cron;
 
 use Core\Cron\CronHelper;
+use Core\Helper\Utility\Validator;
 use Core\Modal\SqlMapper as DataMapper;
 use Core\Service\BaseService;
 
 class Task extends BaseService
 {
+
+    /**
+     * 通过 task_id 取得一个 cron 任务
+     *
+     * @param  int $task_id
+     * @param int  $ttl
+     *
+     * @return object
+     */
+    public function loadCronTaskById($task_id, $ttl = 0)
+    {
+        return $this->_loadById('cron_task', 'task_id = ?', $task_id, $ttl);
+    }
+
+    /**
+     * 删除一个 cron 任务，注意：已经运行完成的任务不允许删除
+     *
+     * @param int $task_id
+     *
+     * @return bool
+     */
+    public function removeCronTaskById($task_id)
+    {
+        // 首先做参数验证
+        $validator = new Validator(array('task_id' => $task_id));
+        $task_id   = $validator->required()->digits()->min(1)->validate('task_id');
+        $this->validate($validator);
+
+        $cronTask = $this->loadCronTaskById($task_id);
+        if ($cronTask->isEmpty()) {
+            return false;
+        }
+
+        //已经运行完成的任务不允许删除
+        if (0 != $cronTask['task_run_time']) {
+            return false;
+        }
+
+        // 删除任务
+        $cronTask->erase();
+
+        return true;
+    }
+
     /**
      * 添加一个 Cron Task 到执行任务列表中
      *
