@@ -62,6 +62,7 @@ class Task extends BaseService
     /**
      * 添加一个 Cron Task 到执行任务列表中
      *
+     * @param string $user_name    哪个用户添加的
      * @param string $task_name    任务名
      * @param string $task_desc    任务描述
      * @param string $task_class   实现 ICronTask 接口的类名称（全名，包括 namespace）
@@ -70,6 +71,7 @@ class Task extends BaseService
      * @param string $search_param 用于任务的搜索
      */
     public function addCronTask(
+        $user_name,
         $task_name,
         $task_desc,
         $task_class,
@@ -84,6 +86,7 @@ class Task extends BaseService
         }
 
         $dataMapper               = new DataMapper('cron_task');
+        $dataMapper->user_name    = $user_name;
         $dataMapper->task_name    = $task_name;
         $dataMapper->task_desc    = $task_desc;
         $dataMapper->task_class   = $task_class;

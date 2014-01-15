@@ -49,6 +49,7 @@
                 <tr>
                     <th>ID</th>
                     <th>时间</th>
+                    <th>用户</th>
                     <th>名称</th>
                     <th>描述</th>
                     <th>成功</th>
@@ -71,6 +72,7 @@
                         <td>{{$cronTask['task_time']|bzf_localtime}}
                             <br/>{{$cronTask['task_run_time']|bzf_localtime}}
                         </td>
+                        <td>{{$cronTask['user_name']}}</td>
                         <td><a rel="tooltip" data-placement="top"
                                data-title="{{$cronTask['task_class']}}" href="#">{{$cronTask['task_name']}}</a></td>
                         <td><a rel="tooltip" data-placement="top"

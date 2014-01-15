@@ -11,6 +11,7 @@ namespace Controller\Goods\Edit;
 
 use Core\Cron\CronHelper;
 use Core\Cron\GoodsCronTask;
+use Core\Helper\Utility\Auth as AuthHelper;
 use Core\Helper\Utility\QueryBuilder;
 use Core\Helper\Utility\Route as RouteHelper;
 use Core\Helper\Utility\Time;
@@ -92,8 +93,11 @@ class Cron extends \Controller\AuthController
             goto out;
         }
 
+        $authAdminUser = AuthHelper::getAuthUser();
+
         // 添加 Cron 任务
         CronHelper::addCronTask(
+            $authAdminUser['user_name'] . '[' . $authAdminUser['user_id'] . ']',
             GoodsCronTask::$task_name,
             @GoodsCronTask::$actionDesc[$action] . '[' . $goods_id . ']',
             '\\Core\Cron\\GoodsCronTask',

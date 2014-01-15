@@ -33,6 +33,7 @@ namespace Theme\Manage {
 -- 创建 cron 任务列表
 CREATE TABLE IF NOT EXISTS `bzf_cron_task` (
   `task_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(32) DEFAULT NULL COMMENT '哪个用户添加的',
   `task_name` varchar(16) DEFAULT NULL COMMENT '任务名称',
   `task_desc` varchar(128) DEFAULT NULL COMMENT '任务描述',
   `task_time` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '任务设定时间',
