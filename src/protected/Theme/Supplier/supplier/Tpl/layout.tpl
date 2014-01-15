@@ -81,7 +81,10 @@
 <!-- /main_body -->
 
 <!-- 让 main_body 和下面的 footer 中间隔离出一段距离 -->
-<div id="main_body_tail" class="container">&nbsp;</div>
+<div id="main_body_tail" class="container">
+    <!-- 调用 Cron 执行，用于驱动系统的 Cron 去执行一些周期性的任务 -->
+    <img style="width:1px;height:1px;" src="{{bzf_make_url controller='/Cron/Run' static=false}}"/>
+</div>
 <!-- /让 main_body 和下面的 footer 中间隔离出一段距离 -->
 
 <!-- 引入 JS 文件 -->
