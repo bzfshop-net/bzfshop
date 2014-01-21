@@ -19,7 +19,6 @@ namespace Theme\Manage {
          * 1.0.0 是最初始的版本
          */
         protected $sourceVersionAllowed = array('1.0.0');
-
         /**
          * 把版本升级到 1.0.1
          */
@@ -52,13 +51,37 @@ ALTER TABLE `bzf_cron_task` ADD INDEX ( `task_time` ) ;
 ALTER TABLE `bzf_cron_task` ADD INDEX ( `task_run_time` ) ;
 ALTER TABLE `bzf_cron_task` ADD INDEX ( `search_param` ) ;
 ALTER TABLE `bzf_cron_task` ADD INDEX ( `return_code` ) ;
+
+-- 记录管理员的行为
+CREATE TABLE IF NOT EXISTS `bzf_admin_log` (
+  `log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` mediumint(8) unsigned NOT NULL ,
+  `user_name` varchar(60) DEFAULT NULL ,
+  `operate` varchar(16) DEFAULT NULL COMMENT '操作名称',
+  `operate_desc` varchar(128) DEFAULT NULL COMMENT '操作描述',
+  `operate_time` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '操作时间',
+  `operate_data` text DEFAULT NULL COMMENT '操作的数据记录',
+  PRIMARY KEY (`log_id`)
+) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+ALTER TABLE `bzf_admin_log` ADD INDEX ( `user_id` ) ;
+ALTER TABLE `bzf_admin_log` ADD INDEX ( `operate` ) ;
+ALTER TABLE `bzf_admin_log` ADD INDEX ( `operate_time` ) ;
+
+-- 修改 brand 表
+ALTER TABLE `bzf_brand` CHANGE `brand_logo` `brand_logo` VARCHAR( 128 ) NULL DEFAULT NULL ;
+ALTER TABLE `bzf_brand` CHANGE `brand_desc` `brand_desc` VARCHAR( 255 ) NULL DEFAULT NULL ;
+ALTER TABLE `bzf_brand`
+ADD `page_view` TEXT NULL DEFAULT NULL COMMENT '品牌专题页面',
+ADD `page_preview` TEXT NULL DEFAULT NULL COMMENT '编辑预览内容',
+ADD `preview_code` VARCHAR( 128 ) NULL DEFAULT NULL COMMENT '随机码';
+
 SQL;
 
             $dbEngine = DataMapper::getDbEngine();
 
             // 解析 sql 文件，导入数据
             $sqlFileContent = SqlHelper::removeComment($sqlFileContent);
-            $sqlArray       = SqlHelper::splitToSqlArray($sqlFileContent, ';');
+            $sqlArray = SqlHelper::splitToSqlArray($sqlFileContent, ';');
             unset($sqlFileContent);
             foreach ($sqlArray as $sqlQuery) {
                 $queryObject = $dbEngine->prepare($sqlQuery);
@@ -70,7 +93,7 @@ SQL;
 
             // 添加执行权限
             $metaPrivilegeService = new MetaPrivilegeService();
-            $privilegeGroup       = $metaPrivilegeService->loadPrivilegeGroup('manage_misc');
+            $privilegeGroup = $metaPrivilegeService->loadPrivilegeGroup('manage_misc');
             $metaPrivilegeService->savePrivilegeItem(
                 $privilegeGroup['meta_id'],
                 'manage_misc_cron',

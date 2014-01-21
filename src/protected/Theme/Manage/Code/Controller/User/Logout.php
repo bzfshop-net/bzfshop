@@ -9,12 +9,17 @@
 
 namespace Controller\User;
 
-use \Core\Helper\Utility\Route as RouteHelper;
-use \Core\Helper\Utility\Auth as AuthHelper;
+use Core\Helper\Utility\Auth as AuthHelper;
+use Core\Helper\Utility\Route as RouteHelper;
+use Core\Service\User\AdminLog;
 
-class Logout extends \Controller\BaseController {
+class Logout extends \Controller\BaseController
+{
 
-    public function get($f3) {
+    public function get($f3)
+    {
+        AdminLog::logAdminOperate('user_logout', '用户退出', 'IP:' . $f3->get('IP'));
+
         AuthHelper::removeAuthUser();
         $f3->clear('SESSION');
 
@@ -24,7 +29,8 @@ class Logout extends \Controller\BaseController {
         RouteHelper::reRoute($this, '/', false);
     }
 
-    public function post($f3) {
+    public function post($f3)
+    {
         $this->get($f3);
     }
 

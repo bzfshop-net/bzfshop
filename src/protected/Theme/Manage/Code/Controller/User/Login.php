@@ -14,6 +14,7 @@ use Core\Helper\Utility\Route as RouteHelper;
 use Core\Helper\Utility\Validator;
 use Core\Service\Meta\Role as MetaRoleService;
 use Core\Service\User\Admin as AdminUserService;
+use Core\Service\User\AdminLog;
 
 class Login extends \Controller\BaseController
 {
@@ -42,10 +43,10 @@ class Login extends \Controller\BaseController
         // 首先做参数合法性验证
         $validator = new Validator($f3->get('POST'));
 
-        $input              = array();
+        $input = array();
         $input['user_name'] = $validator->required('用户名不能为空')->validate('user_name');
-        $input['password']  = $validator->required('密码不能为空')->validate('password');
-        $p_captcha          = $validator->required('验证码不能为空')->validate('captcha');
+        $input['password'] = $validator->required('密码不能为空')->validate('password');
+        $p_captcha = $validator->required('验证码不能为空')->validate('captcha');
 
         if (!$this->validate($validator)) {
             goto out_fail;
@@ -75,7 +76,7 @@ class Login extends \Controller\BaseController
         $adminUserInfo['role_action_list'] = '';
         if ($adminUserInfo['role_id'] > 0) {
             $metaRoleService = new MetaRoleService();
-            $role            = $metaRoleService->loadRoleById($adminUserInfo['role_id']);
+            $role = $metaRoleService->loadRoleById($adminUserInfo['role_id']);
             if (!$role->isEmpty()) {
                 // 赋值角色权限
                 $adminUserInfo['role_action_list'] = $role['meta_data'];
@@ -83,6 +84,13 @@ class Login extends \Controller\BaseController
         }
 
         AuthHelper::saveAuthUser($adminUserInfo);
+
+        try {
+            // 记录用户登录日志
+            AdminLog::logAdminOperate('user_login', '用户登录', 'IP:' . $f3->get('IP'));
+        } catch (\Exception $e) {
+            // do nothing
+        }
 
         $this->addFlashMessage("登陆成功");
 
