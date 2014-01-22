@@ -163,8 +163,8 @@ class Admin extends \Controller\AuthController
             $this->requirePrivilege('manage_account_admin_edit_change_account_password');
             $inputArray['password'] = $password;
 
-            if (!$f3->get('sysConfig[manage_change_password]')) {
-                $this->addFlashMessage('网站配置禁止修改密码');
+            if ($f3->get('sysConfig[is_demo]')) {
+                $this->addFlashMessage('演示系统不允许修改密码');
                 goto out;
             }
         }

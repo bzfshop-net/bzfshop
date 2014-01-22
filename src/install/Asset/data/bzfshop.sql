@@ -744,7 +744,7 @@ CREATE TABLE IF NOT EXISTS `bzf_meta` (
   KEY `meta_key` (`meta_key`),
   KEY `meta_sort_order` (`meta_sort_order`),
   KEY `meta_status` (`meta_status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5785 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5786 ;
 
 INSERT INTO `bzf_meta` VALUES(25, 0, 'express', NULL, '申通快递', 'Shentong', NULL, '10', 0, 1);
 INSERT INTO `bzf_meta` VALUES(26, 0, 'express', NULL, '圆通快递', 'Yuantong', NULL, '10', 0, 1);
@@ -892,7 +892,7 @@ INSERT INTO `bzf_meta` VALUES(5125, 0, 'goods_category', NULL, '家用电器', N
 INSERT INTO `bzf_meta` VALUES(5123, 0, 'goods_category', NULL, '运动户外', NULL, NULL, NULL, 10, 1);
 INSERT INTO `bzf_meta` VALUES(5120, 0, 'goods_category', NULL, '鞋/箱包', NULL, NULL, NULL, 14, 1);
 INSERT INTO `bzf_meta` VALUES(5121, 0, 'goods_category', NULL, '首饰饰品/手表眼镜', NULL, NULL, NULL, 12, 1);
-INSERT INTO `bzf_meta` VALUES(5098, 0, 'plugin_option', 'd100e97e30c7aa7f9983a782fb48a5c9_version', NULL, NULL, NULL, '1.0.4', 0, 1);
+INSERT INTO `bzf_meta` VALUES(5098, 0, 'plugin_option', 'd100e97e30c7aa7f9983a782fb48a5c9_version', NULL, NULL, NULL, '1.0.5', 0, 1);
 INSERT INTO `bzf_meta` VALUES(5097, 0, 'plugin_option', 'system_shop_theme', NULL, NULL, NULL, 'Shop', 0, 1);
 INSERT INTO `bzf_meta` VALUES(5099, 0, 'plugin_option', 'd100e97e30c7aa7f9983a782fb48a5c9_site_name', NULL, NULL, NULL, '棒主妇开源', 0, 1);
 INSERT INTO `bzf_meta` VALUES(5100, 0, 'plugin_option', 'd100e97e30c7aa7f9983a782fb48a5c9_seo_title', NULL, NULL, NULL, '棒主妇开源商城演示 - 棒主妇商城的开源项目', 0, 1);
@@ -1022,6 +1022,7 @@ INSERT INTO `bzf_meta` VALUES(5778, 0, 'plugin_option', '6bd20db6e32257f12c7d8b0
 INSERT INTO `bzf_meta` VALUES(5779, 0, 'plugin_option', '6bd20db6e32257f12c7d8b025e46ffc5_smarty_cache_time_article_view', NULL, NULL, NULL, '86400', 0, 1);
 INSERT INTO `bzf_meta` VALUES(5783, 5766, 'privilege_item', 'manage_misc_cache', '缓存管理', NULL, '管理系统的各种缓存数据', NULL, 0, 1);
 INSERT INTO `bzf_meta` VALUES(5784, 0, 'article_category', NULL, '系统文章', NULL, '系统自身的一些内容说明，比如 关于我们 之类', NULL, 0, 1);
+INSERT INTO `bzf_meta` VALUES(5785, 0, 'plugin_option', 'd100e97e30c7aa7f9983a782fb48a5c9_goods_view_detail_notice', NULL, NULL, NULL, NULL, 0, 1);
 
 DROP TABLE IF EXISTS `bzf_order_action`;
 CREATE TABLE IF NOT EXISTS `bzf_order_action` (

@@ -15,6 +15,16 @@
  *
  */
 
+// 如果已经安装过了，不能重复安装
+if (
+    // 普通本地环境
+    file_exists(dirname(__FILE__) . '/../data/install.lock')
+    // Sae 环境
+    || (function_exists('sae_debug') && file_exists('saestor://data/install.lock'))
+) {
+    die('你已经安装过了，如果需要再次安装请手动删除 data 目录下的 install.lock 文件');
+}
+
 define('BZF_PHP_VERSION_REQUIRE', '5.3.4');
 
 // 检查 PHP 版本，用 PHP 5.2 的人就不要瞎折腾了

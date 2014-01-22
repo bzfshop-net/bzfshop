@@ -9,7 +9,7 @@
 return array(
 
     // 插件基本信息
-    'version'                               => '1.0.4',
+    'version'                               => '1.0.5',
     'display_name'                          => '棒主妇商城主题',
     'description'                           => <<<DESC
 <p>开发商：棒主妇开源</p>
@@ -61,6 +61,7 @@ CODE
     'shop_index_adv_slider'                 => null,
     'shop_index_advblock_json_data'         => null,
     'shop_index_notice'                     => '这里是网站公告',
+    'goods_view_detail_notice'              => null,
     'goods_search_adv_slider'               => null,
     'goods_view_adv_slider'                 => null,
     'goods_view_adv_slider'                 => null,

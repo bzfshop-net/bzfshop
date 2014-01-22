@@ -1,6 +1,6 @@
 <?php
-use Core\Helper\Utility\Route;
 use Core\Helper\Utility\Sql as SqlHelper;
+use Core\Modal\SqlMapper as DataMapper;
 
 /**
  * @author QiangYu
@@ -17,7 +17,7 @@ class ResetData implements \Clip\Command
     /**
      * 删除一个目录下面所有的目录以及里面的内容
      *
-     * @param string $targetDir  目录
+     * @param string $targetDir 目录
      */
     private function removeAllDirInsideDir($targetDir)
     {
@@ -41,18 +41,20 @@ class ResetData implements \Clip\Command
         // 1. reset 整个数据库
         printLog('Begin Reset Database', 'ResetData');
 
-        $pdoObject = new \PDO($f3->get('sysConfig[db_pdo]'), $f3->get('sysConfig[db_username]'), $f3->get(
-            'sysConfig[db_password]'
-        ));
+        $dbEngine = DataMapper::getDbEngine();
 
         // 解析 sql 文件，导入数据
         $sqlFileContent = file_get_contents(CONSOLE_PATH . '/../install/Asset/data/bzfshop.sql');
         $sqlFileContent = SqlHelper::removeComment($sqlFileContent);
         $sqlArray       = SqlHelper::splitToSqlArray($sqlFileContent, ';');
+        unset($sqlFileContent);
         foreach ($sqlArray as $sqlQuery) {
-            $pdoObject->exec($sqlQuery);
+            $queryObject = $dbEngine->prepare($sqlQuery);
+            $queryObject->execute();
+            unset($sqlQuery);
+            unset($queryObject);
         }
-        unset($pdoObject);
+        unset($sqlArray);
 
         printLog('End Reset Database', 'ResetData');
 

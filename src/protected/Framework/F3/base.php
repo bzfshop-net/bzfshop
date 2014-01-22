@@ -1420,8 +1420,8 @@ final class Base {
 			mb_internal_encoding($charset);
 		ini_set('display_errors',0);
 		// Deprecated directives
-		@ini_set('magic_quotes_gpc',0);
-		@ini_set('register_globals',0);
+		//@ini_set('magic_quotes_gpc',0);  // QiangYu  comment this code for SAE
+		//@ini_set('register_globals',0);  // QiangYu  comment this code for SAE
 		// Abort on startup error
 		// Intercept errors/exceptions; PHP5.3-compatible
 		error_reporting(E_ALL|E_STRICT);

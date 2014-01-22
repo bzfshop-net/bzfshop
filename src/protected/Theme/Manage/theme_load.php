@@ -70,7 +70,9 @@ function smarty_helper_function_dump_merged_asset_css_url(array $paramArray, $sm
         return '';
     }
 
-    $merge = true;
+    global $f3;
+    $merge = $f3->get('sysConfig[enable_asset_merge]');
+
     if (isset($paramArray['merge'])) {
         $merge = $paramArray['merge'];
     }
@@ -116,7 +118,9 @@ function smarty_helper_function_dump_merged_asset_js_url(array $paramArray, $sma
         return '';
     }
 
-    $merge = true;
+    global $f3;
+    $merge = $f3->get('sysConfig[enable_asset_merge]');
+
     if (isset($paramArray['merge'])) {
         $merge = $paramArray['merge'];
     }
@@ -159,10 +163,7 @@ $smarty->registerPlugin(
 );
 
 // 设置网站的 Base 路径，给 JavaScript 使用
-$smarty->assign(
-    "WEB_ROOT_HOST",
-    $f3->get('SCHEME') . '://' . $f3->get('HOST') . (('80' != $f3->get('PORT')) ? ':' . $f3->get('PORT') : '')
-);
+$smarty->assign("WEB_ROOT_HOST", $f3->get('sysConfig[webroot_schema_host]'));
 $smarty->assign("WEB_ROOT_BASE", $f3->get('BASE'));
 $smarty->assign(
     "WEB_ROOT_BASE_RES",

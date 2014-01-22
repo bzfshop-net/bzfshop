@@ -9,6 +9,7 @@
 
 namespace Core\Modal;
 
+use Core\Cloud\CloudHelper;
 use Core\Helper\Utility\Utils;
 
 class SqlMapper extends \DB\SQL\Mapper
@@ -48,8 +49,9 @@ class SqlMapper extends \DB\SQL\Mapper
             global $f3;
             // 初始化全站数据库
             static::$tablePrefix = $f3->get('sysConfig[db_table_prefix]');
-            static::$dbEngine    = new \Core\Modal\DbEngine($f3->get('sysConfig[db_pdo]'),
-                $f3->get('sysConfig[db_username]'), $f3->get('sysConfig[db_password]'));
+            // 获得云平台的数据库引擎
+            $cloudModuleDb    = CloudHelper::getCloudModule(CloudHelper::CLOUD_MODULE_DB);
+            static::$dbEngine = $cloudModuleDb->getDb();
         }
 
         return static::$dbEngine;

@@ -9,6 +9,8 @@
 
 namespace Controller\Install;
 
+use Core\Cloud\CloudHelper;
+
 class Step2 extends \Controller\BaseController
 {
     /**
@@ -48,8 +50,15 @@ class Step2 extends \Controller\BaseController
      */
     public function checkFilePermission($path)
     {
+        global $f3;
         $isPass     = false;
         $valueArray = array();
+
+        if (CloudHelper::CLOUD_ENGINE_SAE == CloudHelper::$currentEngineStr) {
+            $isPass       = true;
+            $valueArray[] = 'SAE平台，不检测';
+            goto out;
+        }
 
         if (!file_exists($path)) {
             goto out;
@@ -158,12 +167,6 @@ class Step2 extends \Controller\BaseController
                 'isMust' => true,
                 'desc'   => $bzfshopPath . '/protected/Config/common-prod.cfg',
                 'call'   => array('checkFilePermission', array($bzfshopPath . '/protected/Config/common-prod.cfg'))
-            ),
-            array(
-                'name'   => '文件权限',
-                'isMust' => true,
-                'desc'   => $bzfshopPath . '/protected/Config/manage-prod.cfg',
-                'call'   => array('checkFilePermission', array($bzfshopPath . '/protected/Config/manage-prod.cfg'))
             ),
             array(
                 'name'   => '目录权限',

@@ -43,8 +43,8 @@ class Profile extends \Controller\AuthController
         if (!Utils::isBlank($input['password'])) {
             $validator->required('必须提供旧密码才能修改密码')->validate('oldpassword');
 
-            if (!$f3->get('sysConfig[manage_change_password]')) {
-                $this->addFlashMessage('网站配置禁止修改密码');
+            if ($f3->get('sysConfig[is_demo]')) {
+                $this->addFlashMessage('演示系统不允许修改密码');
                 goto out;
             }
         }

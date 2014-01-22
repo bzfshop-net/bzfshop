@@ -6,10 +6,13 @@
 
 namespace Core\Helper\Utility;
 
+use Core\Cloud\CloudHelper;
 use Core\Helper\Image\Image;
 
 class FileUpload
 {
+    // 云引擎的 Storage 模块
+    private $cloudStorage = null;
 
     private $errorCode = -1; // 错误码，错误为 -1 ，上传成功为 0
     private $fileField; //表单提交时候文件对应的名字，比如 $_POST['upfile']
@@ -61,6 +64,9 @@ class FileUpload
      */
     public function __construct($fileField, $config, $base64 = false)
     {
+        // 取得云引擎的 Storage 模块
+        $this->cloudStorage = CloudHelper::getCloudModule(CloudHelper::CLOUD_MODULE_STORAGE);
+
         $this->fileField = $fileField;
         $this->config    = $config;
         $this->stateInfo = $this->stateMap[0];
@@ -116,19 +122,19 @@ class FileUpload
             return;
         }
 
-        $this->fullName = $this->getFolder() . '/' . $this->getName();
+        $this->fullName = $this->config["savePath"] . '/' . $this->getFolder() . '/' . $this->getName();
+        $relativePath   = $this->getRelativePath();
 
         if ($this->stateInfo == $this->stateMap[0]) {
 
-            if (!move_uploaded_file($file["tmp_name"], $this->fullName)) {
+            if (in_array($this->fileType, $this->imageType)) {
+                // 如果是图片我们需要取得图片的 宽度 和 高度
+                list($this->imageWidth, $this->imageHeight) = getimagesize($file["tmp_name"]);
+            }
+
+            if (!$this->cloudStorage->uploadFile(@$this->config['pathFix'], $relativePath, $file["tmp_name"])) {
                 $this->stateInfo = $this->getStateInfo("MOVE");
             } else {
-
-                if (in_array($this->fileType, $this->imageType)) {
-                    // 如果是图片我们需要取得图片的 宽度 和 高度
-                    list($this->imageWidth, $this->imageHeight) = getimagesize($this->fullName);
-                }
-
                 //上传成功，设置错误码
                 $this->errorCode = 0;
             }
@@ -146,8 +152,9 @@ class FileUpload
     {
         $img            = base64_decode($base64Data);
         $this->fileName = time() . rand(1, 10000) . ".png";
-        $this->fullName = $this->getFolder() . '/' . $this->fileName;
-        if (!file_put_contents($this->fullName, $img)) {
+        $this->fullName = $this->config["savePath"] . '/' . $this->getFolder() . '/' . $this->fileName;
+        $relativePath   = $this->getRelativePath();
+        if (!$this->cloudStorage->writeFile(@$this->config['pathFix'], $relativePath, $img)) {
             $this->stateInfo = $this->getStateInfo("IO");
             return;
         }
@@ -157,17 +164,23 @@ class FileUpload
     }
 
     /**
+     * @return string 返回相对于根目录的路径
+     */
+    public function getRelativePath()
+    {
+        if (!empty($this->config['pathFix'])) {
+            return str_replace($this->config['pathFix'] . '/', '', $this->fullName);
+        }
+        return $this->fullName;
+    }
+
+    /**
      * 获取当前上传成功文件的各项信息
      * @return array
      */
     public function getFileInfo()
     {
-
-        if (!empty($this->config['pathFix'])) {
-            $this->relativeName = str_replace($this->config['pathFix'] . '/', '', $this->fullName);
-        } else {
-            $this->relativeName = $this->fullName;
-        }
+        $this->relativeName = $this->getRelativePath();
 
         $fileInfoArray = array(
             "errorCode"    => $this->errorCode,
@@ -240,22 +253,12 @@ class FileUpload
     }
 
     /**
-     * 按照日期自动创建存储文件夹
+     * 返回按照日期组合的文件夹，相对目录
      * @return string
      */
     private function getFolder()
     {
-        $pathStr = $this->config["savePath"];
-        if (strrchr($pathStr, "/") != "/") {
-            $pathStr .= "/";
-        }
-        $pathStr .= date("Y/m/d");
-        if (!file_exists($pathStr)) {
-            if (!mkdir($pathStr, 0755, true)) {
-                return false;
-            }
-        }
-        return $pathStr;
+        return date("Y/m/d");
     }
 
 }

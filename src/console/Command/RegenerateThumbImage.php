@@ -1,6 +1,6 @@
 <?php
 
-use Core\Helper\Image\Image as ImageHelper;
+use Core\Helper\Image\StorageImage as StorageImageHelper;
 use Core\Service\BaseService;
 use Core\Service\Goods\Gallery as GoodsGalleryService;
 
@@ -49,7 +49,7 @@ class RegenerateThumbImage implements \Clip\Command
 
                 //重新生存缩略图
                 printLog('Re-generate File :' . $imageThumbFileRelativeName);
-                ImageHelper::resizeImage(
+                StorageImageHelper::resizeImage(
                     $dataPathRoot,
                     $goodsGalleryItem['img_original'],
                     $imageThumbFileRelativeName,
