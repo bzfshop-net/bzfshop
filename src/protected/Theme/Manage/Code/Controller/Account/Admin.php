@@ -13,11 +13,13 @@ use Core\Helper\Utility\Auth as AuthHelper;
 use Core\Helper\Utility\QueryBuilder;
 use Core\Helper\Utility\Request;
 use Core\Helper\Utility\Route as RouteHelper;
+use Core\Helper\Utility\Time;
 use Core\Helper\Utility\Utils;
 use Core\Helper\Utility\Validator;
 use Core\Service\Meta\Privilege as MetaPrivilegeService;
 use Core\Service\Meta\Role as MetaRoleService;
 use Core\Service\User\Admin as AdminUserService;
+use Core\Service\User\AdminLog as AdminLogService;
 
 class Admin extends \Controller\AuthController
 {
@@ -34,18 +36,18 @@ class Admin extends \Controller\AuthController
 
         // 参数验证
         $validator = new Validator($f3->get('GET'));
-        $pageNo    = $validator->digits()->min(0)->validate('pageNo');
-        $pageSize  = $validator->digits()->min(0)->validate('pageSize');
+        $pageNo = $validator->digits()->min(0)->validate('pageNo');
+        $pageSize = $validator->digits()->min(0)->validate('pageSize');
 
         //查询条件
-        $formQuery                   = array();
-        $formQuery['user_name']      = $validator->validate('user_name');
+        $formQuery = array();
+        $formQuery['user_name'] = $validator->validate('user_name');
         $formQuery['user_real_name'] = $validator->validate('user_real_name');
-        $formQuery['user_desc']      = $validator->validate('user_desc');
-        $formQuery['role_id']        = $validator->digits()->validate('role_id');
+        $formQuery['user_desc'] = $validator->validate('user_desc');
+        $formQuery['role_id'] = $validator->digits()->validate('role_id');
 
         // 设置缺省值
-        $pageNo   = (isset($pageNo) && $pageNo > 0) ? $pageNo : 0;
+        $pageNo = (isset($pageNo) && $pageNo > 0) ? $pageNo : 0;
         $pageSize = (isset($pageSize) && $pageSize > 0) ? $pageSize : 10;
 
         if (!$this->validate($validator)) {
@@ -57,7 +59,7 @@ class Admin extends \Controller\AuthController
 
         // 查询管理员列表
         $adminUserService = new AdminUserService();
-        $totalCount       = $adminUserService->countAdminArray($condArray);
+        $totalCount = $adminUserService->countAdminArray($condArray);
         if ($totalCount <= 0) { // 没用户，可以直接退出了
             goto out_display;
         }
@@ -72,7 +74,7 @@ class Admin extends \Controller\AuthController
 
         // 取得角色列表
         $metaRoleService = new MetaRoleService();
-        $roleArray       = $metaRoleService->fetchRoleArray();
+        $roleArray = $metaRoleService->fetchRoleArray();
 
         // 建立  roleId --> role 的倒查表
         $roleIdToRoleArray = array();
@@ -112,15 +114,15 @@ class Admin extends \Controller\AuthController
 
         // 参数验证
         $validator = new Validator($f3->get('GET'));
-        $user_id   = $validator->digits()->min(1)->validate('user_id');
-        $user_id   = ($user_id > 0) ? $user_id : 0;
+        $user_id = $validator->digits()->min(1)->validate('user_id');
+        $user_id = ($user_id > 0) ? $user_id : 0;
         if (!$this->validate($validator)) {
             goto out;
         }
 
         // 查询管理员信息
         $adminUserService = new AdminUserService();
-        $adminUser        = $adminUserService->loadAdminById($user_id);
+        $adminUser = $adminUserService->loadAdminById($user_id);
         if (0 != $user_id && $adminUser->isEmpty()) { // 不存在的管理员
             $this->addFlashMessage('管理员不存在');
             goto out;
@@ -150,14 +152,14 @@ class Admin extends \Controller\AuthController
 
         // 用户提交了更新请求，这里做管理员信息更新
         // 参数验证
-        $inputArray                   = array();
-        $validator                    = new Validator($f3->get('POST'));
-        $inputArray['user_name']      = $validator->required()->minlength(3)->validate('user_name');
-        $inputArray['disable']        = $validator->filter('ValidatorIntValue')->validate('disable');
+        $inputArray = array();
+        $validator = new Validator($f3->get('POST'));
+        $inputArray['user_name'] = $validator->required()->minlength(3)->validate('user_name');
+        $inputArray['disable'] = $validator->filter('ValidatorIntValue')->validate('disable');
         $inputArray['user_real_name'] = $validator->required()->minlength(2)->validate('user_real_name');
-        $inputArray['is_kefu']        = $validator->filter('ValidatorIntValue')->validate('is_kefu');
-        $inputArray['user_desc']      = $validator->validate('user_desc');
-        $password                     = $validator->validate('password');
+        $inputArray['is_kefu'] = $validator->filter('ValidatorIntValue')->validate('is_kefu');
+        $inputArray['user_desc'] = $validator->validate('user_desc');
+        $password = $validator->validate('password');
         if (!Utils::isBlank($password)) {
             // 权限检查
             $this->requirePrivilege('manage_account_admin_edit_change_account_password');
@@ -215,7 +217,6 @@ class Admin extends \Controller\AuthController
         $smarty->display('account_admin_edit.tpl');
     }
 
-
     /**
      * 管理员权限管理
      *
@@ -230,14 +231,14 @@ class Admin extends \Controller\AuthController
 
         // 参数验证
         $validator = new Validator($f3->get('GET'));
-        $user_id   = $validator->required()->digits()->min(1)->validate('user_id');
+        $user_id = $validator->required()->digits()->min(1)->validate('user_id');
         if (!$this->validate($validator)) {
             goto out_fail;
         }
 
         // 查询管理员信息
         $adminUserService = new AdminUserService();
-        $adminUser        = $adminUserService->loadAdminById($user_id);
+        $adminUser = $adminUserService->loadAdminById($user_id);
         if ($adminUser->isEmpty()) { // 不存在的管理员
             $this->addFlashMessage('管理员不存在');
             goto out_fail;
@@ -283,7 +284,7 @@ class Admin extends \Controller\AuthController
         $action_list_str = implode(',', $actionCodeArray);
 
         update_privilege:
-        $adminUser->role_id     = $f3->get('POST[role_id]');
+        $adminUser->role_id = $f3->get('POST[role_id]');
         $adminUser->action_list = $action_list_str;
         $adminUser->save();
         $this->addFlashMessage('管理员权限保存成功');
@@ -305,4 +306,69 @@ class Admin extends \Controller\AuthController
         );
     }
 
+    /**
+     * 管理员操作日志
+     *
+     * @param $f3
+     */
+    public function ListLog($f3)
+    {
+        // 权限检查
+        $this->requirePrivilege('manage_account_admin_listlog');
+
+        global $smarty;
+
+        // 参数验证
+        $validator = new Validator($f3->get('GET'));
+        $pageNo = $validator->digits()->min(0)->validate('pageNo');
+        $pageSize = $validator->digits()->min(0)->validate('pageSize');
+
+        //查询条件
+        $formQuery = array();
+        $formQuery['user_id'] = $validator->filter('ValidatorIntValue')->validate('user_id');
+        $formQuery['operate'] = $validator->validate('operate');
+        $formQuery['operate_desc'] = $validator->validate('operate_desc');
+
+        //操作时间
+        $operateTimeStartStr = $validator->validate('operate_time_start');
+        $operateTimeStart = Time::gmStrToTime($operateTimeStartStr) ? : null;
+        $operateTimeEndStr = $validator->validate('operate_time_end');
+        $operateTimeEnd = Time::gmStrToTime($operateTimeEndStr) ? : null;
+        $formQuery['operate_time'] = array($operateTimeStart, $operateTimeEnd);
+
+        // 设置缺省值
+        $pageNo = (isset($pageNo) && $pageNo > 0) ? $pageNo : 0;
+        $pageSize = (isset($pageSize) && $pageSize > 0) ? $pageSize : 20;
+
+        if (!$this->validate($validator)) {
+            goto out_display;
+        }
+
+        // 建立查询条件
+        $condArray = QueryBuilder::buildQueryCondArray($formQuery);
+
+        // 查询管理员列表
+        $adminLogService = new AdminLogService();
+        $totalCount = $adminLogService->countAdminLogArray($condArray);
+        if ($totalCount <= 0) { // 没数据，可以直接退出了
+            goto out_display;
+        }
+
+        // 页数超过最大值，返回第一页
+        if ($pageNo * $pageSize >= $totalCount) {
+            RouteHelper::reRoute($this, '/Account/Admin/ListLog');
+        }
+
+        // 管理员列表
+        $adminLogArray = $adminLogService->fetchAdminLogArray($condArray, $pageNo * $pageSize, $pageSize);
+
+        // 给模板赋值
+        $smarty->assign('totalCount', $totalCount);
+        $smarty->assign('pageNo', $pageNo);
+        $smarty->assign('pageSize', $pageSize);
+        $smarty->assign('adminLogArray', $adminLogArray);
+
+        out_display:
+        $smarty->display('account_admin_listlog.tpl');
+    }
 }

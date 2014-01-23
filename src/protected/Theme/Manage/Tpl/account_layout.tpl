@@ -16,7 +16,8 @@
                 <li><a href="{{bzf_make_url controller='/Account/User/Money'}}">用户资金</a></li>
                 <li><a href="{{bzf_make_url controller='/Account/Supplier/ListUser'}}">供货商</a></li>
                 <li><a href="{{bzf_make_url controller='/Account/Admin/ListUser'}}">管理员</a></li>
-                <li><a href="{{bzf_make_url controller='/Account/Role/ListRole'}}">角色</a></li>
+                <li><a href="{{bzf_make_url controller='/Account/Role/ListRole'}}">管理员角色</a></li>
+                <li><a href="{{bzf_make_url controller='/Account/Admin/ListLog'}}">管理员日志</a></li>
             </ul>
         </div>
         <!-- /页面上方导航条 -->

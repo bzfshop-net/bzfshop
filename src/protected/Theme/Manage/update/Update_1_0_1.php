@@ -101,6 +101,14 @@ SQL;
                 '管理系统的定时任务'
             );
 
+            $privilegeGroup = $metaPrivilegeService->loadPrivilegeGroup('manage_account');
+            $metaPrivilegeService->savePrivilegeItem(
+                $privilegeGroup['meta_id'],
+                'manage_account_admin_listlog',
+                '管理员日志',
+                '查看管理员的操作日志'
+            );
+
             // 把版本设置为 1.0.1
             ManageThemePlugin::saveOptionValue('version', $this->targetVersion);
 

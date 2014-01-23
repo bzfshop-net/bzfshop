@@ -37,4 +37,41 @@ class AdminLog extends \Core\Service\BaseService
         $dataMapper->save();
         unset($dataMapper);
     }
+
+    /**
+     * 取得管理员日志列表
+     *
+     * @return array 格式 array(array('key'=>'value', 'key'=>'value', ...))
+     *
+     * @param array $condArray 查询条件
+     * @param int $offset 用于分页的开始 >= 0
+     * @param int $limit 每页多少条
+     * @param int $ttl 缓存多少时间
+     */
+    public function fetchAdminLogArray(array $condArray, $offset = 0, $limit = 10, $ttl = 0)
+    {
+        return $this->_fetchArray(
+            'admin_log',
+            '*', // table , fields
+            $condArray,
+            array('order' => 'log_id desc'),
+            $offset,
+            $limit,
+            $ttl
+        );
+    }
+
+    /**
+     * 取得管理员日志总数，可用于分页
+     *
+     * @return int
+     *
+     * @param array $condArray 查询条件
+     * @param int $ttl 缓存多少时间
+     */
+    public function countAdminLogArray(array $condArray, $ttl = 0)
+    {
+        return $this->_countArray('admin_log', $condArray, null, $ttl);
+    }
+
 }
