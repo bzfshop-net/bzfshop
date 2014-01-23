@@ -22,6 +22,9 @@
                     <a href="{{bzf_make_url controller='/Goods/Category'}}">商品分类</a>
                 </li>
                 <li>
+                    <a href="{{bzf_make_url controller='/Goods/Brand/ListBrand'}}">商品品牌</a>
+                </li>
+                <li>
                     <a href="{{bzf_make_url controller='/Goods/Comment/ListComment'}}">用户评价</a>
                 </li>
             </ul>

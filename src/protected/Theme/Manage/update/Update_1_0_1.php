@@ -68,12 +68,11 @@ ALTER TABLE `bzf_admin_log` ADD INDEX ( `operate` ) ;
 ALTER TABLE `bzf_admin_log` ADD INDEX ( `operate_time` ) ;
 
 -- 修改 brand 表
+ALTER TABLE `bzf_brand` CHANGE `sort_order` `sort_order` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `bzf_brand` CHANGE `brand_logo` `brand_logo` VARCHAR( 128 ) NULL DEFAULT NULL ;
 ALTER TABLE `bzf_brand` CHANGE `brand_desc` `brand_desc` VARCHAR( 255 ) NULL DEFAULT NULL ;
-ALTER TABLE `bzf_brand`
-ADD `page_view` TEXT NULL DEFAULT NULL COMMENT '品牌专题页面',
-ADD `page_preview` TEXT NULL DEFAULT NULL COMMENT '编辑预览内容',
-ADD `preview_code` VARCHAR( 128 ) NULL DEFAULT NULL COMMENT '随机码';
+ALTER TABLE `bzf_brand` ADD `is_custom` int NULL DEFAULT 0 COMMENT '是否自定义页面';
+ALTER TABLE `bzf_brand` ADD `custom_page` TEXT NULL DEFAULT NULL COMMENT '品牌自定义页面';
 
 SQL;
 
@@ -107,6 +106,14 @@ SQL;
                 'manage_account_admin_listlog',
                 '管理员日志',
                 '查看管理员的操作日志'
+            );
+
+            $privilegeGroup = $metaPrivilegeService->loadPrivilegeGroup('manage_goods');
+            $metaPrivilegeService->savePrivilegeItem(
+                $privilegeGroup['meta_id'],
+                'manage_goods_brand_listbrand',
+                '商品品牌',
+                '管理商品品牌'
             );
 
             // 把版本设置为 1.0.1

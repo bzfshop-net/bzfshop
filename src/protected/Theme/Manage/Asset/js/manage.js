@@ -778,7 +778,7 @@ jQuery((function (window, $) {
         width: $('#goods_edit_goods_desc_textarea').outerWidth(false)
     });
 
-    /******************* article_article_edit.tpl 网站文章内容编辑 ******************/
+    /******************* article_article_edit.tpl 网站文章内容编辑，商品品牌页面编辑 ******************/
     KindEditor.create('#article_article_edit_content_textarea', {
         filterMode: true,
         themeType: 'default',
@@ -791,6 +791,21 @@ jQuery((function (window, $) {
         formatUploadUrl: false,
         allowFileManager: true,
         width: $('#article_article_edit_content_textarea').outerWidth(false)
+    });
+
+    /******************* goods_brand_edit.tpl 商品品牌页面编辑 ******************/
+    KindEditor.create('#goods_brand_edit_custom_page_textarea', {
+        filterMode: true,
+        themeType: 'default',
+        cssData: "body {font-family: '微软雅黑', 'Microsoft Yahei', '宋体', 'songti', STHeiti, Helmet, Freesans, sans-serif;font-size: 15px; }",
+        uploadJson: bZF.makeUrl('/File/KindEditor?action=upload&dirname=image_other'), // '/File/Upload'
+        fileManagerJson: bZF.makeUrl('/File/KindEditor?action=manage&dirname=image_other'),
+        extraFileUploadParams: {
+            bzfshop_auth_cookie_key: $.cookie(WEB_COOKIE_AUTH_KEY)
+        },
+        formatUploadUrl: false,
+        allowFileManager: true,
+        width: $('#goods_brand_edit_custom_page_textarea').outerWidth(false)
     });
 
     /*********** goods_edit_gallery.tpl  商品编辑页面，商品相册批量上传图片 ***********/

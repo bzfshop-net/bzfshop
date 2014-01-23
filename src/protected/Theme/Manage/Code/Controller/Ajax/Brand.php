@@ -10,7 +10,7 @@
 namespace Controller\Ajax;
 
 use Core\Helper\Utility\Ajax;
-use Core\Service\Brand\Brand as BrandService;
+use Core\Service\Goods\Brand as BrandService;
 
 class Brand extends \Controller\AuthController
 {
@@ -22,14 +22,14 @@ class Brand extends \Controller\AuthController
     public function ListBrand($f3)
     {
         // 检查缓存
-        $cacheKey   = md5(__NAMESPACE__ . '\\' . __CLASS__ . '\\' . __METHOD__);
+        $cacheKey = md5(__NAMESPACE__ . '\\' . __CLASS__ . '\\' . __METHOD__);
         $brandArray = $f3->get($cacheKey);
         if (!empty($brandArray)) {
             goto out;
         }
 
         $brandService = new BrandService();
-        $brandArray   = $brandService->fetchBrandArray();
+        $brandArray = $brandService->fetchBrandIdNameArray();
 
         $f3->set($cacheKey, $brandArray, 300); //缓存 5 分钟
 
