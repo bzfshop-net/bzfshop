@@ -38,6 +38,31 @@
                 </div>
 
                 <div class="control-group">
+                    <label class="control-label">品牌Logo</label>
+
+                    <div class="controls">
+                        <!-- 一张图片 -->
+                        <div class="thumbnail gallery-item" style="float:left;width:100px;">
+                            <!-- 图片 -->
+                            <div class="image-container">
+                                <img id="goods_brand_edit_upload_brand_logo"
+                                     class="lazyload" width="100" height="50" style="width:100px;height:50px;"
+                                     src="{{bzf_get_asset_url asset='img/blank.gif'}}"
+                                     data-original="{{$brand_logo|default}}"/>
+                            </div>
+                        </div>
+                        <!-- /一张图片 -->
+                        <input id="goods_brand_edit_upload_brand_logo_input"
+                               name="brand_logo" type="hidden"
+                               value="{{$brand_logo|default}}"/>
+                        &nbsp;&nbsp;
+                        <button id="goods_brand_edit_upload_brand_logo_button" type="button"
+                                class="btn btn-small btn-success">上传图片
+                        </button>
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">自定义页面</label>
 
                     <div class="controls">

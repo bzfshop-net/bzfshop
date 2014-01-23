@@ -1375,6 +1375,14 @@ jQuery((function (window, $) {
         });
     };
 
+    /*****************  goods_brand_edit.tpl 商品品牌 上传 logo 图片 *********************/
+    bZF.uploadImage('#goods_brand_edit_upload_brand_logo_button',
+        function (clickObject, url, title, width, height, border, align) {
+            $('#goods_brand_edit_upload_brand_logo').attr('src', url);
+            $('#goods_brand_edit_upload_brand_logo_input').val(url);
+        }, 'image_other');
+
+
     /****************** community_article.tpl 页面显示 rss 文章 ********************/
     $('#bzf_community_article_rss_panel').rssfeed('http://www.bzfshop.net/feed', {
         limit: 20,

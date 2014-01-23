@@ -24,6 +24,6 @@ class Image
             return false;
         }
         $imageInfo = getimagesize($imagePath);
-        return 3 == $imageInfo['channels'];
+        return 3 == @$imageInfo['channels'];
     }
 }

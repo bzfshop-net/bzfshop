@@ -102,6 +102,7 @@ class Brand extends \Controller\AuthController
         $validator = new Validator($f3->get('POST'));
         $goodsBrand->brand_name = $validator->required()->validate('brand_name');
         $goodsBrand->brand_desc = $validator->required()->validate('brand_desc');
+        $goodsBrand->brand_logo = $validator->validate('brand_logo');
         $goodsBrand->is_custom = $validator->digits()->filter('ValidatorIntValue')->validate('is_custom');
         $goodsBrand->custom_page = $f3->get('POST[custom_page]');
 
