@@ -58,7 +58,7 @@
                 <li><a href="{{bzf_make_url controller='/Order/Index'}}">订单管理</a></li>
                 <li><a href="{{bzf_make_url controller='/Article/Index'}}">文章管理</a></li>
                 <li><a href="{{bzf_make_url controller='/Account/Index'}}">账号管理</a></li>
-                <li><a href="{{bzf_make_url controller='/Misc/Index'}}">杂项设置</a></li>
+                <li><a href="{{bzf_make_url controller='/Misc/Index'}}">杂项管理</a></li>
                 <li><a href="{{bzf_make_url controller='/Stat/Index'}}">数据统计</a></li>
                 <li><a href="{{bzf_make_url controller='/Plugin/Index'}}">插件主题</a></li>
                 <li><a href="{{bzf_make_url controller='/Community/Announce'}}">开源社区</a></li>

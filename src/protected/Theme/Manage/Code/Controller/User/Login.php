@@ -87,7 +87,7 @@ class Login extends \Controller\BaseController
 
         try {
             // 记录用户登录日志
-            AdminLog::logAdminOperate('user_login', '用户登录', 'IP:' . $f3->get('IP'));
+            AdminLog::logAdminOperate('user.login', '用户登录', 'IP:' . $f3->get('IP'));
         } catch (\Exception $e) {
             // do nothing
         }

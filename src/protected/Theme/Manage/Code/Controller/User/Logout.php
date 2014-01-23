@@ -18,7 +18,7 @@ class Logout extends \Controller\BaseController
 
     public function get($f3)
     {
-        AdminLog::logAdminOperate('user_logout', '用户退出', 'IP:' . $f3->get('IP'));
+        AdminLog::logAdminOperate('user.logout', '用户退出', 'IP:' . $f3->get('IP'));
 
         AuthHelper::removeAuthUser();
         $f3->clear('SESSION');

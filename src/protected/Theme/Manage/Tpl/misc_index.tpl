@@ -1,7 +1,7 @@
 {{extends file='misc_layout.tpl'}}
 {{block name=misc_main_body}}
     <script>
-        window.bz_set_breadcrumb_status.push({index: 0, text: '杂项设置', link: window.location.href});
+        window.bz_set_breadcrumb_status.push({index: 0, text: '杂项管理', link: window.location.href});
     </script>
     <!-- 页面主体内容 -->
     <div class="row" style="height:500px;position: relative;">
