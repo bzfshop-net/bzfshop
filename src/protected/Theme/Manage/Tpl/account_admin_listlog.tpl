@@ -65,7 +65,7 @@
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th>操作ID</th>
+                <th>日志ID</th>
                 <th>操作时间</th>
                 <th>管理员</th>
                 <th>操作</th>
