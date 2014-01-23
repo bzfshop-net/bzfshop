@@ -18,25 +18,8 @@
 
                 <div class="control-group">
                     <div class="controls">
-
                         <span class="input-label">任务名称</span>
                         <input class="span2" type="text" name="task_name" value="{{$task_name|default}}"/>
-                        <span class="input-label">任务描述</span>
-                        <input class="span2" type="text" name="task_desc" value="{{$task_desc|default}}"/>
-
-                        <span class="input-label">是否成功</span>
-                        <select class="span1 select2-simple" name="return_code"
-                                data-placeholder="请选择" data-initValue="{{$return_code|default}}">
-                            <option value=""></option>
-                            <option value="0">成功</option>
-                            <option value="1">失败</option>
-                        </select>
-
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <div class="controls">
 
                         <span class="input-label">任务时间</span>
 
@@ -55,7 +38,21 @@
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                         </span>
                         </div>
+                    </div>
+                </div>
 
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label">任务描述</span>
+                        <input class="span2" type="text" name="task_desc" value="{{$task_desc|default}}"/>
+
+                        <span class="input-label">是否成功</span>
+                        <select class="span1 select2-simple" name="return_code"
+                                data-placeholder="请选择" data-initValue="{{$return_code|default}}">
+                            <option value=""></option>
+                            <option value="0">成功</option>
+                            <option value="1">失败</option>
+                        </select>
                     </div>
                 </div>
 
