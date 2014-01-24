@@ -17,6 +17,7 @@ use Core\Helper\Utility\Route as RouteHelper;
 use Core\Helper\Utility\Time;
 use Core\Helper\Utility\Validator;
 use Core\Service\Cron\Task as CronTaskService;
+use Core\Service\Goods\Goods as GoodsBasicService;
 
 class Cron extends \Controller\AuthController
 {
@@ -32,11 +33,20 @@ class Cron extends \Controller\AuthController
         $validator = new Validator($f3->get('GET'));
 
         $goods_id = $validator->required('商品ID不能为空')->digits()->min(1)->validate('goods_id');
-        $pageNo   = $validator->digits()->min(0)->validate('pageNo');
+
+        // 商品信息
+        $goodsBasicService = new GoodsBasicService();
+        $goods = $goodsBasicService->loadGoodsById($goods_id);
+        if ($goods->isEmpty()) {
+            $this->addFlashMessage('商品ID[' . $goods . ']非法');
+            goto out_fail;
+        }
+
+        $pageNo = $validator->digits()->min(0)->validate('pageNo');
         $pageSize = $validator->digits()->min(0)->validate('pageSize');
 
         // 设置缺省值
-        $pageNo   = (isset($pageNo) && $pageNo > 0) ? $pageNo : 0;
+        $pageNo = (isset($pageNo) && $pageNo > 0) ? $pageNo : 0;
         $pageSize = (isset($pageSize) && $pageSize > 0) ? $pageSize : 20;
 
         if (!$this->validate($validator)) {
@@ -44,15 +54,15 @@ class Cron extends \Controller\AuthController
         }
 
         //查询条件
-        $searchFormQuery                 = array();
-        $searchFormQuery['task_name']    = array('=', GoodsCronTask::$task_name);
+        $searchFormQuery = array();
+        $searchFormQuery['task_name'] = array('=', GoodsCronTask::$task_name);
         $searchFormQuery['search_param'] = array('=', $goods_id);
 
         // 建立查询条件
         $searchParamArray = QueryBuilder::buildQueryCondArray($searchFormQuery);
 
         $cronTaskService = new CronTaskService();
-        $totalCount      = $cronTaskService->countCronTaskArray($searchParamArray);
+        $totalCount = $cronTaskService->countCronTaskArray($searchParamArray);
         if ($totalCount <= 0) { // 没任务，可以直接退出了
             goto out_display;
         }
@@ -64,6 +74,7 @@ class Cron extends \Controller\AuthController
         $smarty->assign('pageNo', $pageNo);
         $smarty->assign('pageSize', $pageSize);
 
+        $smarty->assign('goods', $goods->toArray());
         $smarty->assign('cronTaskArray', $cronTaskArray);
 
         out_display:
@@ -83,11 +94,11 @@ class Cron extends \Controller\AuthController
         $validator = new Validator($f3->get('POST'));
 
         $goods_id = $validator->required('商品ID不能为空')->validate('goods_id');
-        $action   = $validator->required('操作不能为空')->validate('action');
+        $action = $validator->required('操作不能为空')->validate('action');
 
         //任务时间
         $taskTimeStr = $validator->required('必须选择时间')->validate('task_time');
-        $taskTime    = Time::gmStrToTime($taskTimeStr) ? : null;
+        $taskTime = Time::gmStrToTime($taskTimeStr) ? : null;
 
         if (!$this->validate($validator)) {
             goto out;
@@ -102,7 +113,7 @@ class Cron extends \Controller\AuthController
             @GoodsCronTask::$actionDesc[$action] . '[' . $goods_id . ']',
             '\\Core\Cron\\GoodsCronTask',
             $taskTime,
-            array('goods_id' => $goods_id, 'action' => $action),
+            $f3->get('POST'),
             $goods_id
         );
 

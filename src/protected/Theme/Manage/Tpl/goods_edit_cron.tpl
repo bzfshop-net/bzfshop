@@ -14,32 +14,12 @@
 
             <!-- 这里是条件筛选区 -->
             <div class="row well well-small">
-                <form class="form-horizontal form-horizontal-inline" method="POST" style="margin: 0px 0px 0px 0px;">
-
-                    <div class="control-group">
-                        <div class="controls">
-                            <input type="hidden" name="goods_id" value="{{$goods_id}}"/>
-                            <span class="input-label">任务时间</span>
-
-                            <div class="input-append date datetimepicker">
-                                <input class="span2" type="text" name="task_time"/>
-                                <span class="add-on">
-                                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                                </span>
-                            </div>
-
-                            <span class="input-label">任务操作</span>
-                            <select class="span1 select2-simple" name="action">
-                                <option value="Online">上架</option>
-                                <option value="Offline">下架</option>
-                            </select>
-
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <button type="submit" class="btn btn-success">增加任务</button>
-                        </div>
-                    </div>
-
-                </form>
+                <button type="button" class="btn btn-info"
+                        onclick="$('#goods_edit_cron_set_onsale_modal').modal({dynamic: true});">定时上下架
+                </button>
+                <button type="button" class="btn btn-info"
+                        onclick="$('#goods_edit_cron_set_price_modal').modal({dynamic: true});">定时改价
+                </button>
             </div>
             <!-- /这里是条件筛选区 -->
 
@@ -113,5 +93,104 @@
 
     </div>
     <!-- /商品编辑页面主体内容 -->
+
+    <!-- 商品定时上下架 modal -->
+    <div id="goods_edit_cron_set_onsale_modal" class="modal hide fade" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4>商品定时上下架</h4>
+        </div>
+        <form class="form-horizontal form-horizontal-inline" method="POST">
+
+            <div class="modal-body">
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="hidden" name="goods_id" value="{{$goods_id}}"/>
+                        <span class="input-label">任务时间</span>
+
+                        <div class="input-append date datetimepicker">
+                            <input class="span2" type="text" data-validation-required-message="不能为空" name="task_time"/>
+                                <span class="add-on">
+                                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label">任务操作</span>
+                        <select class="span1 select2-simple" name="action">
+                            <option value="Online">上架</option>
+                            <option value="Offline">下架</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">添加任务</button>
+                <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            </div>
+        </form>
+    </div>
+    <!-- /商品定时上下架 modal -->
+
+    <!-- 商品定时改价格 modal -->
+    <div id="goods_edit_cron_set_price_modal" class="modal hide fade" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4>商品定时改价</h4>
+        </div>
+        <form class="form-horizontal form-horizontal-inline" method="POST">
+
+            <div class="modal-body">
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="hidden" name="goods_id" value="{{$goods_id}}"/>
+                        <input type="hidden" name="action" value="setPrice"/>
+                        <span class="input-label">任务时间</span>
+
+                        <div class="input-append date datetimepicker">
+                            <input class="span2" type="text" data-validation-required-message="不能为空" name="task_time"/>
+                                <span class="add-on">
+                                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label">商品标题</span>
+                        <input type="text" class="span4" name="goods[goods_name]" value="{{$goods['goods_name']}}"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label">商品价格</span>
+                        <input type="text" class="span2" name="goods[shop_price]" pattern="^\d+(\.\d+)?$"
+                               data-validation-required-message="销售价不能为空"
+                               data-validation-pattern-message="销售价无效"
+                               value="{{$goods['shop_price']|bzf_money_display}}"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label">价格提示</span>
+                        <input type="text" class="span2" name="goods[shop_price_notice]"
+                               value="{{$goods['shop_price_notice']}}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">添加任务</button>
+                <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            </div>
+        </form>
+    </div>
+    <!-- /商品定时改价格 modal -->
 
 {{/block}}

@@ -67,6 +67,9 @@ ALTER TABLE `bzf_admin_log` ADD INDEX ( `user_id` ) ;
 ALTER TABLE `bzf_admin_log` ADD INDEX ( `operate` ) ;
 ALTER TABLE `bzf_admin_log` ADD INDEX ( `operate_time` ) ;
 
+-- 修改价格表，增加价格说明
+ALTER TABLE `bzf_goods` ADD `shop_price_notice` VARCHAR( 32 ) NULL DEFAULT NULL COMMENT '价格说明' AFTER `shop_price`;
+
 -- 修改 brand 表
 ALTER TABLE `bzf_brand` CHANGE `sort_order` `sort_order` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `bzf_brand` CHANGE `brand_logo` `brand_logo` VARCHAR( 128 ) NULL DEFAULT NULL ;
