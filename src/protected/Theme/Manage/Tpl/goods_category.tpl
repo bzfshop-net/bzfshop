@@ -14,6 +14,8 @@
 
         <!-- 这里是条件筛选区 -->
         <div class="row well well-small">
+            <button id="bzf_goods_category_tree_table_button_expand" class="btn btn-success">全部展开</button>
+            <button id="bzf_goods_category_tree_table_button_collapse" class="btn btn-success">全部收起</button>
             <button class="btn btn-info" onclick="bZF.show_goods_category_edit_modal();">新建分类</button>
         </div>
         <!-- /这里是条件筛选区 -->

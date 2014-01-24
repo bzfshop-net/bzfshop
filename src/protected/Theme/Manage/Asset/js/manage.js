@@ -1338,7 +1338,13 @@ jQuery((function (window, $) {
     };
 
     /************* goods_category.tpl 页面，商品分类树形结构 *************/
-    $("#bzf_goods_category_tree_table").treetable({ expandable: true, clickableNodeNames: true, initialState: 'expanded' });
+    $("#bzf_goods_category_tree_table").treetable({ expandable: true, clickableNodeNames: true, initialState: 'collapsed' });
+    $('#bzf_goods_category_tree_table_button_expand').click(function () {
+        $("#bzf_goods_category_tree_table").treetable('expandAll');
+    });
+    $('#bzf_goods_category_tree_table_button_collapse').click(function () {
+        $("#bzf_goods_category_tree_table").treetable('collapseAll');
+    });
 
     bZF.show_goods_category_edit_modal = function (categoryBlock) {
         if (categoryBlock) {
