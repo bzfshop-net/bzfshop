@@ -127,6 +127,9 @@
             <span>现价：</span>
                 <span id="bzf_goods_view_shop_price_input_span"
                       style="color:#E4006E;font-size:20px;font-weight: bold;">￥{{$goodsInfo['shop_price']|bzf_money_display}}</span>
+            {{if (isset($goodsInfo['shop_price_notice']) && !empty($goodsInfo['shop_price_notice']))}}
+                <label class="label label-warning">{{$goodsInfo['shop_price_notice']}}</label>
+            {{/if}}
             <input type="hidden" id="bzf_goods_view_shop_price_input"
                    value="{{$goodsInfo['shop_price']|bzf_money_display}}"/>
         </div>
