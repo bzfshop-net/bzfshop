@@ -12,7 +12,6 @@
 
 <!-- 合并所有的 JS 文件, 使用 merge=false 参数关闭合并，这样可以对单个文件做调试 -->
 {{bzf_dump_merged_asset_js_url
-merge=false
 asset='bootstrap-custom/js/json2.js,
        bootstrap-custom/js/jquery-1.8.3.min.js,
        bootstrap-custom/js/jquery.cookie.js,
