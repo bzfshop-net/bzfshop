@@ -2,7 +2,7 @@
 {{block name=main_body}}
 
     <!-- 用 JS 设置页面的导航菜单 -->
-    <script>
+    <script type="text/javascript">
         window.bzf_set_nav_status.push(function ($) {
             $("#bzf_header_nav_menu li:has(a[href='{{bzf_make_url controller='/'}}'])").addClass("active");
         });
@@ -173,7 +173,7 @@
             <!-- 商品加价 -->
             <input type="hidden" id="bzf_goods_view_goods_spec_add_price" value="0"/>
             <!-- JS 记录商品 Spec 属性 -->
-            <script>
+            <script type="text/javascript">
                 var goods_view_goods_spec_json = '{{$goodsSpecJson nofilter}}';
             </script>
             <!-- 商品的选择 -->

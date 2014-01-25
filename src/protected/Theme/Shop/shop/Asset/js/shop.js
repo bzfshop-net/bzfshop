@@ -1062,20 +1062,6 @@ jQuery((function (window, $) {
     $('#bzf_goods_view_goods_comments_pane div.pagination li a').on('click', bZF.loadGoodsComment);
 
     /**
-     * user_login.tpl 页面，用户登陆注册
-     *
-     * 验证码图片显示，当输入框第一次获得焦点的时候取得验证码
-     * */
-    $("#captcha_input_login").one('focus', function () {
-        bZF.loadCaptchaImage("#captcha_image_login");
-    });
-
-    $("#captcha_input_register").one('focus', function () {
-        bZF.loadCaptchaImage("#captcha_image_register");
-    });
-
-
-    /**
      * goods_index.tpl 页面，推荐关联商品
      */
     $('.jcarousel-skin-goods-recommand-compact').jcarousel({

@@ -50,11 +50,15 @@
     '}}
     <!-- /合并所有的 Css 文件, 使用 merge=false 参数关闭合并，这样可以对单个文件做调试 -->
 
+    <!-- 这里是页面专用的 css 代码 -->
+    {{block name=page_css_block}}{{/block}}
+    <!-- 这里是页面专用的 css 代码 -->
+
 </head>
 <body>
 
 <!-- 用 JS 设置页面的导航菜单 -->
-<script>
+<script type="text/javascript">
     window.bzf_set_nav_status = []; // 用于设置导航栏状态的数组，里面是很多设置 function()
 </script>
 
@@ -292,7 +296,7 @@
     <!-- /页面右边悬浮框 -->
 
     <!-- 定义网站的起始路径，用于 JavaScript 的 Ajax 操作调用 -->
-    <script>
+    <script type="text/javascript">
         var WEB_ROOT_HOST = '{{$WEB_ROOT_HOST}}';
         var WEB_ROOT_BASE = '{{$WEB_ROOT_BASE}}';
         var WEB_ROOT_BASE_RES = '{{$WEB_ROOT_BASE_RES}}';
@@ -325,6 +329,10 @@
        js/shop.js
 '}}
     <!-- /合并所有的 JS 文件, 使用 merge=false 参数关闭合并，这样可以对单个文件做调试 -->
+
+    <!-- 这里是页面专用的 JS 代码 -->
+    {{block name=page_js_block}}{{/block}}
+    <!-- 这里是页面专用的 JS 代码 -->
 
     <!-- 底部，各种资格认证 -->
     <div class="container">

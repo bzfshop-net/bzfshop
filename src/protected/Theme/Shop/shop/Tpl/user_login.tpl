@@ -2,7 +2,7 @@
 {{block name=main_body}}
 
     <!-- 用 JS 设置页面的导航菜单 -->
-    <script>
+    <script type="text/javascript">
         window.bzf_set_nav_status.push(function ($) {
             $("#bzf_header_nav_menu li:has(a[href='{{bzf_make_url controller='/'}}'])").addClass("active");
         });
@@ -203,4 +203,27 @@
     </div>
     <!-- /主体内容 row -->
 
+{{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+            /**
+             * user_login.tpl 页面，用户登陆注册
+             *
+             * 验证码图片显示，当输入框第一次获得焦点的时候取得验证码
+             * */
+            $("#captcha_input_login").one('focus', function () {
+                bZF.loadCaptchaImage("#captcha_image_login");
+            });
+
+            $("#captcha_input_register").one('focus', function () {
+                bZF.loadCaptchaImage("#captcha_image_register");
+            });
+
+        })(window, jQuery));
+    </script>
 {{/block}}

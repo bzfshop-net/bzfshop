@@ -2,7 +2,7 @@
 {{block name=main_body_my}}
 
     <!-- 用 JS 设置页面的导航菜单 -->
-    <script>
+    <script type="text/javascript">
         window.bzf_set_nav_status.push(function ($) {
             $("#my_nav_tabbar li:has(a[href='{{bzf_make_url controller='/My/Order'}}'])").addClass("active");
         });
