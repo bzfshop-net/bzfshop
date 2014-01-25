@@ -1,6 +1,6 @@
 {{extends file='plugin_layout.tpl'}}
 {{block name=plugin_main_body}}
-    <script>
+    <script type="text/javascript">
         window.bz_set_breadcrumb_status.push({index: 0, text: '插件主题', link: window.location.href});
     </script>
     <!-- 页面主体内容 -->

@@ -1,6 +1,6 @@
 {{extends file='goods_layout.tpl'}}
 {{block name=goods_main_body}}
-    <script>
+    <script type="text/javascript">
         window.bz_set_breadcrumb_status.push({index: 0, text: '商品管理', link: window.location.href});
     </script>
     <!-- 页面主体内容 -->

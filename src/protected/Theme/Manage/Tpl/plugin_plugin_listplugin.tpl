@@ -1,6 +1,6 @@
 {{extends file='plugin_layout.tpl'}}
 {{block name=plugin_main_body}}
-    <script>
+    <script type="text/javascript">
         window.bz_set_nav_status.push(function ($) {
             $("#plugin_tabbar li:has(a[href='{{bzf_make_url controller='/Plugin/Plugin/ListPlugin'}}'])").addClass("active");
         });

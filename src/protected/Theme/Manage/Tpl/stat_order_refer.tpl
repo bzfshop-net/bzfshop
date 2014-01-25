@@ -2,7 +2,7 @@
 {{block name=stat_order_main_body}}
 
     <!-- 用 JS 设置商品编辑页面左侧不同的 Tab 选中状态 -->
-    <script>
+    <script type="text/javascript">
         window.bz_set_nav_status.push(function ($) {
             $("#stat_order_tab_left li:has(a[href='{{bzf_make_url controller='/Stat/Order/Refer' }}'])").addClass("active");
         });

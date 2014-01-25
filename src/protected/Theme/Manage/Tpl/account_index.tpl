@@ -1,6 +1,6 @@
 {{extends file='account_layout.tpl'}}
 {{block name=account_main_body}}
-    <script>
+    <script type="text/javascript">
         window.bz_set_breadcrumb_status.push({index: 0, text: '账号管理', link: window.location.href});
     </script>
     <!-- 页面主体内容 -->

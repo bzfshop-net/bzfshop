@@ -1,6 +1,6 @@
 {{extends file='stat_kaohe_layout.tpl'}}
 {{block name=stat_kaohe_main_body}}
-    <script>
+    <script type="text/javascript">
         window.bz_set_breadcrumb_status.push({index: 1, text: '业绩考核', link: window.location.href});
     </script>
     <!-- 左侧每个标签的具体内容 -->

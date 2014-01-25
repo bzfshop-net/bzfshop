@@ -2,7 +2,7 @@
 {{block name=article_main_body}}
 
     <!-- 用 JS 设置页面的导航菜单 -->
-    <script>
+    <script type="text/javascript">
         window.bz_set_nav_status.push(function ($) {
             $("#article_tabbar li:has(a[href='{{bzf_make_url controller='/Article/Category'}}'])").addClass("active");
         });

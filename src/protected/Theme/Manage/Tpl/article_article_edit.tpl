@@ -2,7 +2,7 @@
 {{block name=article_edit_main_body}}
 
     <!-- 用 JS 设置文章编辑页面左侧不同的 Tab 选中状态 -->
-    <script>
+    <script type="text/javascript">
         window.bz_set_nav_status.push(function ($) {
             $("#article_edit_tab_left li:has(a[href='{{bzf_make_url controller='/Article/Article/Edit' article_id=$article_id }}'])").addClass("active");
         });
