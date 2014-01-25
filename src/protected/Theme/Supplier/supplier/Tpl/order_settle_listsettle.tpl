@@ -2,7 +2,7 @@
 {{block name=order_main_body}}
 
     <!-- 用 JS 设置页面的导航菜单 -->
-    <script>
+    <script type="text/javascript">
         window.bz_set_nav_status.push(function ($) {
             $("#order_tabbar li:has(a[href='{{bzf_make_url controller='/Order/Settle/ListSettle'}}'])").addClass("active");
         });
@@ -137,4 +137,22 @@
     </div>
     <!-- /页面主体内容 -->
 
+{{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+            /******* 订单结算页面，结算详情 ***********/
+            bZF.Order_Settle_ajaxDetail = function (settle_id) {
+                var ajaxCallUrl = bZF.makeUrl('/Order/Settle/ajaxDetail');
+                $('#order_settle_listsettle_modal_detail').load(ajaxCallUrl + '?settle_id=' + settle_id, function () {
+                    $('#order_settle_listsettle_modal_detail').modal({dynamic: true});
+                });
+            };
+
+        })(window, jQuery));
+    </script>
 {{/block}}

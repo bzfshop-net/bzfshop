@@ -2,7 +2,7 @@
 {{block name=order_main_body}}
 
     <!-- 用 JS 设置页面的导航菜单 -->
-    <script>
+    <script type="text/javascript">
         window.bz_set_nav_status.push(function ($) {
             $("#order_tabbar li:has(a[href='{{bzf_make_url controller='/Order/Excel'}}'])").addClass("active");
         });
@@ -84,4 +84,24 @@
     </div>
     <!-- /页面主体内容 -->
 
+{{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+
+            /**
+             *  订单快递单号批量上传页面，美化上传文件按钮
+             */
+            (function ($) {
+                if ($('#order_goods_excel_upload_file_input').length > 0) {
+                    SI.Files.stylizeById('order_goods_excel_upload_file_input');
+                }
+            })(jQuery);
+
+        })(window, jQuery));
+    </script>
 {{/block}}

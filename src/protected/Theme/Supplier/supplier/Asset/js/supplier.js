@@ -363,15 +363,6 @@ jQuery((function (window, $) {
 
     /** ------------------------------------- /后台系统通用的代码 -----------------------------------------**/
 
-
-    /******* 商品列表页面显示商品统计数据的调用 ***********/
-    bZF.Goods_ListGoods_Statistics = function (goods_id) {
-        var ajaxCallUrl = bZF.makeUrl('/Goods/Search/Statistics');
-        $('#goods_statistics_dialog').load(ajaxCallUrl + '?goods_id=' + goods_id, function () {
-            $('#goods_statistics_dialog').modal({dynamic: true});
-        });
-    };
-
     /******* 订单列表页面显示订单详情数据的调用 ***********/
     bZF.Order_ListOrder_Detail = function (rec_id) {
         var ajaxCallUrl = bZF.makeUrl('/Order/Goods/ajaxDetail');
@@ -406,29 +397,5 @@ jQuery((function (window, $) {
             }
         });
     };
-
-    /**
-     *  订单快递单号批量上传页面，美化上传文件按钮
-     */
-    (function ($) {
-        if ($('#order_goods_excel_upload_file_input').length > 0) {
-            SI.Files.stylizeById('order_goods_excel_upload_file_input');
-        }
-    })(jQuery);
-
-    /******* 订单结算页面，结算详情 ***********/
-    bZF.Order_Settle_ajaxDetail = function (settle_id) {
-        var ajaxCallUrl = bZF.makeUrl('/Order/Settle/ajaxDetail');
-        $('#order_settle_listsettle_modal_detail').load(ajaxCallUrl + '?settle_id=' + settle_id, function () {
-            $('#order_settle_listsettle_modal_detail').modal({dynamic: true});
-        });
-    };
-
-    /**
-     * 验证码图片显示，当输入框第一次获得焦点的时候取得验证码
-     * */
-    $("#captcha_input").one('focus', function () {
-        bZF.loadCaptchaImage("#captcha_image");
-    });
 
 })(window, jQuery));

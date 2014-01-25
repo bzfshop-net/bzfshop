@@ -1,5 +1,5 @@
 <!-- 定义网站的起始路径，用于 JavaScript 的 Ajax 操作调用 -->
-<script>
+<script type="text/javascript">
     var WEB_ROOT_HOST = '{{$WEB_ROOT_HOST}}';
     var WEB_ROOT_BASE = '{{$WEB_ROOT_BASE}}';
     var WEB_ROOT_BASE_RES = '{{$WEB_ROOT_BASE_RES}}';
