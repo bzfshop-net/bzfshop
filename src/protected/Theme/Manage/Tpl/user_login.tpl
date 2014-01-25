@@ -111,7 +111,25 @@
     window.browser_is_lte_ie7_fwtewgjgowjgw = true;
 </script>
 <![endif]-->
+
 <script type="text/javascript">
+    /**
+     * 这里的代码等 document.ready 才执行
+     */
+    jQuery((function (window, $) {
+        /**
+         * user_login.tpl   user_register.tpl
+         *
+         * 验证码图片显示，当输入框第一次获得焦点的时候取得验证码
+         * */
+        $("#captcha_input").one('focus', function () {
+            bZF.loadCaptchaImage("#captcha_image");
+        });
+    })(window, jQuery));
+</script>
+
+<script type="text/javascript">
+
     (function () {
         if (!window.browser_is_lte_ie7_fwtewgjgowjgw) {
             return;

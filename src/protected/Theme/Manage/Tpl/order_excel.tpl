@@ -118,3 +118,84 @@
     <!-- /页面主体内容 -->
 
 {{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+            /**
+             *  order_excel.tpl    批量下载订单页面，美化上传文件按钮
+             */
+            if ($('#order_goods_excel_upload_file_input').size() > 0) {
+                SI.Files.stylizeById('order_goods_excel_upload_file_input');
+            }
+
+            /**
+             * order_excel.tpl
+             *
+             * 订单批量下载页面，根据用户选择的时间段取得这个时间段里面有销售的供货商
+             */
+            bZF.order_excel_supplier_select = function () {
+                var pay_time_start = $('#order_excel_pay_time_start').val();
+                var pay_time_end = $('#order_excel_pay_time_end').val();
+                var extra_refund_time_start = $('#order_excel_extra_refund_time_start').val();
+                var extra_refund_time_end = $('#order_excel_extra_refund_time_end').val();
+
+                var callUrl = bZF.makeUrl('/Ajax/Supplier/ListOrderGoodsSupplierIdName?pay_time_start=' + encodeURI(pay_time_start)
+                        + '&pay_time_end=' + encodeURI(pay_time_end) + '&extra_refund_time_start=' + encodeURI(extra_refund_time_start)
+                        + '&extra_refund_time_end=' + encodeURI(extra_refund_time_end));
+
+                // ajax  调用
+                bZF.ajaxCallGet(callUrl, function (data) {
+                    if (!data) {
+                        bZF.showMessage('没有供货商');
+                        return;
+                    }
+                    var supplierArray = data;
+                    // 设置 360tuan_cateogry_1 的数据
+                    var optionHtml = '<option value=""></option>';
+                    $.each(supplierArray, function (index, elem) {
+                        optionHtml += '<option value="' + elem.suppliers_id + '">' + elem.suppliers_name + '</option>';
+                    });
+                    $('#order_settle_supplier_select').html(optionHtml);
+                    //重新设置一次初始值
+                    $('#order_settle_supplier_select').select2('val', null);
+                    bZF.showMessage('取供货商列表成功');
+                });
+            };
+
+            /************************** order_excel.tpl  订单下载 *****************************/
+            $('#stat_order_refer_download_button').on('click', function () {
+
+                var add_time_start = $('#stat_order_refer_add_time_start').val();
+                var add_time_end = $('#stat_order_refer_add_time_end').val();
+                var pay_time_start = $('#stat_order_refer_pay_time_start').val();
+                var pay_time_end = $('#stat_order_refer_pay_time_end').val();
+                var utm_source = $('#stat_order_refer_utm_source').find('option:selected').val();
+                var utm_medium = $('#stat_order_refer_utm_medium').find('option:selected').val();
+                var login_type = $('#stat_order_refer_login_type').find('option:selected').val();
+
+                // 参数检查
+                if (!add_time_start && !add_time_end && !pay_time_start && !pay_time_end) {
+                    bZF.showMessage('必须提供最少一个查询时间');
+                    return;
+                }
+
+                // 构造调用链接
+                var callUrl = bZF.makeUrl('/Stat/Order/Refer/Download'
+                        + '?add_time_start=' + add_time_start
+                        + '&add_time_end=' + add_time_end
+                        + '&pay_time_start=' + pay_time_start
+                        + '&pay_time_end=' + pay_time_end
+                        + '&utm_source=' + utm_source
+                        + '&utm_medium=' + utm_medium
+                        + '&login_type=' + login_type);
+
+                window.open(encodeURI(callUrl));
+            });
+
+        })(window, jQuery));
+    </script>
+{{/block}}

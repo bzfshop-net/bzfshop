@@ -198,3 +198,95 @@
     <!-- /页面主体内容 -->
 
 {{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+
+            /**
+             * order_settle.tpl
+             *
+             * 订单结算页面，根据用户选择的结算时间段取得这个时间段里面有销售的供货商
+             */
+            bZF.order_settle_supplier_select = function () {
+                var pay_time_start = $('#order_settle_pay_time_start').val();
+                if (!pay_time_start) {
+                    bZF.showMessage('付款开始时间不能为空');
+                    return;
+                }
+
+                var pay_time_end = $('#order_settle_pay_time_end').val();
+                if (!pay_time_end) {
+                    bZF.showMessage('付款结束时间不能为空');
+                    return;
+                }
+
+                var callUrl = bZF.makeUrl('/Ajax/Supplier/ListOrderGoodsSupplierIdName?pay_time_start=' +
+                        encodeURI(pay_time_start) + '&pay_time_end=' + encodeURI(pay_time_end) + '&supplier_for_settle=true');
+
+                // ajax  调用
+                bZF.ajaxCallGet(callUrl, function (data) {
+                    if (!data) {
+                        bZF.showMessage('没有需要结算的供货商');
+                        return;
+                    }
+
+                    supplierArray = data;
+                    // 设置 360tuan_cateogry_1 的数据
+                    var optionHtml = '<option value=""></option>';
+                    $.each(supplierArray, function (index, elem) {
+                        optionHtml += '<option value="' + elem.suppliers_id + '">' + elem.suppliers_name + '</option>';
+                    });
+                    $('#order_settle_supplier_select').html(optionHtml);
+                    //重新设置一次初始值
+                    $('#order_settle_supplier_select').select2('val', null);
+                    bZF.showMessage('取供货商列表成功');
+                });
+            };
+
+            /**
+             *  order_settle.tpl
+             *
+             * 订单结算页面，用于计算结算金额
+             */
+            bZF.order_settle_calculate = function () {
+
+                var orderSettleItemSize = $('#order_settle_item_size').val();
+                if (!orderSettleItemSize || orderSettleItemSize <= 0) {
+                    return; // 没有需要结算的订单
+                }
+
+                var totalItemSelectCount = 0;
+                var totalGoodsPrice = 0;
+                var totalShippingFee = 0;
+                var totalRefund = 0;
+
+                // 遍历所有选择的订单
+                for (var orderSettleItemIndex = 0; orderSettleItemIndex < orderSettleItemSize; orderSettleItemIndex++) {
+                    if (!$('#order_settle_item_' + orderSettleItemIndex + '_checkbox').attr('checked')) {
+                        continue; // 没有选 checkbox，不需要计算
+                    }
+
+                    // 计算
+                    totalItemSelectCount++;
+                    totalGoodsPrice += parseFloat($('#order_settle_item_' + orderSettleItemIndex + '_goods_price').text());
+                    totalShippingFee += parseFloat($('#order_settle_item_' + orderSettleItemIndex + '_shipping_fee').text());
+                    totalRefund += parseFloat($('#order_settle_item_' + orderSettleItemIndex + '_refund').text());
+                }
+
+                // 显示计算的结果
+                $('#order_settle_order_goods_count').text(totalItemSelectCount);
+                $('#order_settle_total_goods_price').text(totalGoodsPrice.toFixed(2));
+                $('#order_settle_total_shipping_fee').text(totalShippingFee.toFixed(2));
+                $('#order_settle_total_refund').text(totalRefund.toFixed(2));
+                $('#order_settle_total_settle_money').text((totalGoodsPrice + totalShippingFee - totalRefund).toFixed(2));
+            };
+            //页面启动加载的时候执行一次
+            bZF.order_settle_calculate();
+
+        })(window, jQuery));
+    </script>
+{{/block}}

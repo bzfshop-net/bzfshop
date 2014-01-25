@@ -340,3 +340,31 @@
 
     </form>
 {{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+
+            /************ goods_edit_edit.tpl 商品编辑页面，商品详情编辑框的创建 ****************/
+
+            /****** 注意，由于上传采用了 swfupload 插件，我们需要做 post 认证，否则无法上传“bzfshop_auth_cookie_key” *****/
+            KindEditor.create('#goods_edit_goods_desc_textarea', {
+                filterMode: true,
+                themeType: 'default',
+                cssData: "body {font-family: '微软雅黑', 'Microsoft Yahei', '宋体', 'songti', STHeiti, Helmet, Freesans, sans-serif;font-size: 15px; }",
+                uploadJson: bZF.makeUrl('/File/KindEditor?action=upload'), // '/File/Upload'
+                fileManagerJson: bZF.makeUrl('/File/KindEditor?action=manage'),
+                extraFileUploadParams: {
+                    bzfshop_auth_cookie_key: $.cookie(WEB_COOKIE_AUTH_KEY)
+                },
+                formatUploadUrl: false,
+                allowFileManager: true,
+                width: $('#goods_edit_goods_desc_textarea').outerWidth(false)
+            });
+
+        })(window, jQuery));
+    </script>
+{{/block}}

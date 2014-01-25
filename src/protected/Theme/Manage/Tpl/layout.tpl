@@ -19,11 +19,15 @@
     {{include file="layout_block_link_css.tpl"}}
     <!-- /引入 CSS 文件 -->
 
+    <!-- 这里是页面专用的 css 代码 -->
+    {{block name=page_css_block}}{{/block}}
+    <!-- 这里是页面专用的 css 代码 -->
+
 </head>
 
 <body>
 <!-- 用 JS 设置页面的导航菜单 -->
-<script>
+<script type="text/javascript">
     window.bz_set_nav_status = []; // 用于设置导航栏状态的数组，里面是很多设置 function()
     window.bz_set_breadcrumb_status = []; // 用于设置 breadcrumb 的数组，里面是很多设置 {index:1, text:'商品编辑', link:'http://...'}
 </script>
@@ -95,6 +99,10 @@
 <!-- 引入 JS 文件 -->
 {{include file="layout_block_link_js.tpl"}}
 <!-- /引入 JS 文件 -->
+
+<!-- 这里是页面专用的 JS 代码 -->
+{{block name=page_js_block}}{{/block}}
+<!-- 这里是页面专用的 JS 代码 -->
 
 {{if 0 == $DEBUG}}
     <!-- 尾部 footer -->

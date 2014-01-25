@@ -108,3 +108,29 @@
 
     </form>
 {{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+
+            /******************* article_article_edit.tpl 网站文章内容编辑，商品品牌页面编辑 ******************/
+            KindEditor.create('#article_article_edit_content_textarea', {
+                filterMode: true,
+                themeType: 'default',
+                cssData: "body {font-family: '微软雅黑', 'Microsoft Yahei', '宋体', 'songti', STHeiti, Helmet, Freesans, sans-serif;font-size: 15px; }",
+                uploadJson: bZF.makeUrl('/File/KindEditor?action=upload&dirname=image_article'), // '/File/Upload'
+                fileManagerJson: bZF.makeUrl('/File/KindEditor?action=manage&dirname=image_article'),
+                extraFileUploadParams: {
+                    bzfshop_auth_cookie_key: $.cookie(WEB_COOKIE_AUTH_KEY)
+                },
+                formatUploadUrl: false,
+                allowFileManager: true,
+                width: $('#article_article_edit_content_textarea').outerWidth(false)
+            });
+
+        })(window, jQuery));
+    </script>
+{{/block}}

@@ -104,3 +104,34 @@
     <!-- /页面主体内容 -->
 
 {{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+            /******************* goods_brand_edit.tpl 商品品牌页面编辑 ******************/
+            KindEditor.create('#goods_brand_edit_custom_page_textarea', {
+                filterMode: true,
+                themeType: 'default',
+                cssData: "body {font-family: '微软雅黑', 'Microsoft Yahei', '宋体', 'songti', STHeiti, Helmet, Freesans, sans-serif;font-size: 15px; }",
+                uploadJson: bZF.makeUrl('/File/KindEditor?action=upload&dirname=image_other'), // '/File/Upload'
+                fileManagerJson: bZF.makeUrl('/File/KindEditor?action=manage&dirname=image_other'),
+                extraFileUploadParams: {
+                    bzfshop_auth_cookie_key: $.cookie(WEB_COOKIE_AUTH_KEY)
+                },
+                formatUploadUrl: false,
+                allowFileManager: true,
+                width: $('#goods_brand_edit_custom_page_textarea').outerWidth(false)
+            });
+
+            /*****************  goods_brand_edit.tpl 商品品牌 上传 logo 图片 *********************/
+            bZF.uploadImage('#goods_brand_edit_upload_brand_logo_button',
+                    function (clickObject, url, title, width, height, border, align) {
+                        $('#goods_brand_edit_upload_brand_logo').attr('src', url);
+                        $('#goods_brand_edit_upload_brand_logo_input').val(url);
+                    }, 'image_other');
+        })(window, jQuery));
+    </script>
+{{/block}}

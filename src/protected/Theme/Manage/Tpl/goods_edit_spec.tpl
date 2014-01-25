@@ -194,3 +194,74 @@
 
 
 {{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+
+            /*********************************** goods_edit_spec.tpl 编辑商品的 规格 ********************************************/
+
+                // 添加一个 control group
+            bZF.goods_edit_spec_add_control_group = function (elem) {
+                // 取父节点 control group
+                var controlGroupNode = elem.parentNode.parentNode;
+                var cloneNode = controlGroupNode.cloneNode(true);
+                // 删除多余的 help-block
+                $('div.help-block', cloneNode).remove();
+                // 把按钮替换成删除按钮
+                $('button', cloneNode).remove();
+                $('div.controls', cloneNode).append($('<button type="button" class="btn btn-mini btn-danger"  onclick="bZF.goods_edit_spec_remove_control_group(this);"><i class="icon-remove"></i></button>&nbsp;<button onclick="bZF.moveNodePrev(this.parentNode.parentNode);return false;" class="btn btn-mini btn-info" type="button"><i class="icon-arrow-up"></i></button>&nbsp;<button onclick="bZF.moveNodeNext(this.parentNode.parentNode);return false;"  class="btn btn-mini btn-info" type="button"><i class="icon-arrow-down"></i></button>'));
+                // 插入节点
+                $(cloneNode).insertAfter(controlGroupNode);
+                // 做 html enhance
+                //bZF.enhanceHtml(cloneNode);
+            };
+
+            // 删除一个 control group
+            bZF.goods_edit_spec_remove_control_group = function (elem) {
+                // 取父节点 control group
+                var controlGroupNode = elem.parentNode.parentNode;
+                $(controlGroupNode).remove();
+            };
+
+            // 打开对话框，选择规格关联的商品头图
+            bZF.goods_edit_spec_select_image_modal = function (elem) {
+                var $dialog = jQuery('#goods_edit_spec_select_goods_image_modal');
+                $dialog.data('callObject', elem);
+                $dialog.modal();
+            };
+
+            // 确认选择了某个头图
+            bZF.goods_edit_spec_select_image_confirm = function () {
+                var $option = $('#goods_edit_spec_select_goods_image_modal select').find('option:selected');
+                var imgId = parseInt($option.val());
+                var imgUrl = $option.text();
+                imgId = isNaN(imgId) ? 0 : imgId;
+
+                // 无效图片
+                if (imgId <= 0) {
+                    return;
+                }
+
+                // 取得绑定的 callObject
+                var $dialog = jQuery('#goods_edit_spec_select_goods_image_modal');
+                var callObject = $dialog.data('callObject');
+                if (!callObject) {
+                    console.log('goods_edit_spec_select_goods_image_modal has no callObject');
+                    return;
+                }
+
+                // 设置用户的选择
+                $('img', callObject).attr('src', imgUrl);
+                $('input[name="imgIdArray[]"]', callObject).val(imgId);
+
+                // 关闭对话框
+                $dialog.modal('hide');
+            };
+
+        })(window, jQuery));
+    </script>
+{{/block}}

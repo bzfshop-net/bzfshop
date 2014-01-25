@@ -187,3 +187,49 @@
     <!-- /商品分类转移商品 modal -->
 
 {{/block}}
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+
+            /************* goods_category.tpl 页面，商品分类树形结构 *************/
+            $("#bzf_goods_category_tree_table").treetable({ expandable: true, clickableNodeNames: true, initialState: 'collapsed' });
+            $('#bzf_goods_category_tree_table_button_expand').click(function () {
+                $("#bzf_goods_category_tree_table").treetable('expandAll');
+            });
+            $('#bzf_goods_category_tree_table_button_collapse').click(function () {
+                $("#bzf_goods_category_tree_table").treetable('collapseAll');
+            });
+
+            bZF.show_goods_category_edit_modal = function (categoryBlock) {
+                if (categoryBlock) {
+                    // 编辑,给对话框赋值
+                    $('#goods_category_edit_modal input[name="meta_id"]').val($('input[name="meta_id"]', categoryBlock).val());
+                    $('#goods_category_edit_modal input[name="meta_name"]').val($('input[name="meta_name"]', categoryBlock).val());
+                    $('#goods_category_edit_modal input[name="meta_sort_order"]').val($('input[name="meta_sort_order"]', categoryBlock).val());
+                    $('#goods_category_edit_modal select[name="meta_status"]').select2('val', $('input[name="meta_status"]', categoryBlock).val());
+                    $('#goods_category_edit_modal select[name="parent_meta_id"]').select2('val', $('input[name="parent_meta_id"]', categoryBlock).val());
+                } else {
+                    // 新建
+                    $('#goods_category_edit_modal input[name="meta_id"]').val(0);
+                    $('#goods_category_edit_modal input[name="meta_name"]').val('');
+                    $('#goods_category_edit_modal input[name="meta_sort_order"]').val(0);
+                    $('#goods_category_edit_modal select[name="meta_status"]').select2('val', 1);
+                    $('#goods_category_edit_modal select[name="parent_meta_id"]').select2('val', 0);
+                }
+                // 显示对话框
+                $('#goods_category_edit_modal').modal({dynamic: true});
+            };
+
+            bZF.show_goods_category_transfer_goods_modal = function (categoryBlock) {
+                $('#goods_category_transfer_goods_modal input[name="meta_id"]').val($('input[name="meta_id"]', categoryBlock).val());
+                // 显示对话框
+                $('#goods_category_transfer_goods_modal').modal({dynamic: true});
+            };
+
+
+        })(window, jQuery));
+    </script>
+{{/block}}

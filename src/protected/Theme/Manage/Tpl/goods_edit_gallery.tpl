@@ -103,3 +103,38 @@
     <!-- /商品编辑页面主体内容 -->
 
 {{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+
+            /*********** goods_edit_gallery.tpl  商品编辑页面，商品相册批量上传图片 ***********/
+            bZF.loadKindEditorTheme();
+
+            $('#goods_edit_gallery_upload_image_batch').click(function () {
+                var editor = KindEditor.editor({
+                    allowFileManager: true,
+                    formatUploadUrl: false,
+                    uploadJson: bZF.makeUrl('/Goods/Edit/Gallery/Upload'),
+                    extraFileUploadParams: {
+                        bzfshop_auth_cookie_key: $.cookie(WEB_COOKIE_AUTH_KEY),
+                        goods_id: $('#goods_edit_gallery_upload_image_batch_goodsid').val()
+                    }
+                });
+                editor.loadPlugin('multiimage', function () {
+                    editor.plugin.multiImageDialog({
+                        clickFn: function (urlList) {
+                            //刷新整个页面
+                            document.location.reload();
+                            editor.hideDialog();
+                        }
+                    });
+                });
+            });
+
+        })(window, jQuery));
+    </script>
+{{/block}}

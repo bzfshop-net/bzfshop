@@ -150,3 +150,24 @@
     <!-- /页面主体内容 -->
 
 {{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+
+            /***********  order_settle_listsettle.tpl  订单结算页面，结算详情 ***********/
+            bZF.Order_Settle_ajaxDetail = function (settle_id) {
+                var ajaxCallUrl = bZF.makeUrl('/Order/Settle/ajaxDetail');
+                $('#order_settle_listsettle_modal_update').load(ajaxCallUrl + '?settle_id=' + settle_id, function () {
+                    // html enhance
+                    bZF.enhanceHtml($('#order_settle_listsettle_modal_update'));
+                    $('#order_settle_listsettle_modal_update').modal({dynamic: true});
+                });
+            };
+
+        })(window, jQuery));
+    </script>
+{{/block}}
