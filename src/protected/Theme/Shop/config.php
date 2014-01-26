@@ -108,7 +108,7 @@ CODE
              ),
         )
     ),
-    'head_nav_json_data'                    => array(array('title' => '导航1', 'url' => '#')),
-    'friend_link_json_data'                 => array(array('title' => '友链1', 'url' => '#')),
+    'head_nav_json_data'                    => json_encode(array(array('title' => '导航1', 'url' => '#'))),
+    'friend_link_json_data'                 => json_encode(array(array('title' => '友链1', 'url' => '#'))),
 );
 
