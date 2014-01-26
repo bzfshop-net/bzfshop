@@ -46,7 +46,8 @@
                             <!-- 图片 -->
                             <div class="image-container">
                                 <img id="goods_brand_edit_upload_brand_logo"
-                                     class="lazyload" width="100" height="50" style="width:100px;height:50px;"
+                                     class="lazyload" width="{{bzf_get_sysconfig key='brand_logo_width'}}"
+                                     style="width:{{bzf_get_sysconfig key='brand_logo_width'}}px;height:{{bzf_get_sysconfig key='brand_logo_height'}}px;"
                                      src="{{bzf_get_asset_url asset='img/blank.gif'}}"
                                      data-original="{{$brand_logo|default}}"/>
                             </div>

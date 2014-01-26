@@ -59,7 +59,8 @@
                         <td>{{$goodsBrand['brand_id']}}</td>
                         <td>
                             {{if !empty($goodsBrand['brand_logo'])}}
-                                <img class="lazyload" width="100" style="width:100px;height:50px;"
+                                <img class="lazyload" width="{{bzf_get_sysconfig key='brand_logo_width'}}"
+                                     style="width:{{bzf_get_sysconfig key='brand_logo_width'}}px;height:{{bzf_get_sysconfig key='brand_logo_height'}}px;"
                                      src="{{bzf_get_asset_url asset='img/blank.gif'}}"
                                      data-original="{{$goodsBrand['brand_logo']}}"/>
                             {{/if}}

@@ -29,6 +29,7 @@ function smarty_helper_register(&$smarty)
     $smarty->registerPlugin('function', 'bzf_mobile_query_url', 'smarty_helper_function_mobile_query_url');
     $smarty->registerPlugin('function', 'bzf_ip_query_url', 'smarty_helper_function_ip_query_url');
 
+    $smarty->registerPlugin('function', 'bzf_get_sysconfig', 'smarty_helper_function_get_sysconfig');
     $smarty->registerPlugin('function', 'bzf_make_url', 'smarty_helper_function_make_url');
     $smarty->registerPlugin('function', 'bzf_paginator', 'smarty_helper_function_paginator');
     $smarty->registerPlugin('function', 'bzf_goods_thumb_image', 'smarty_helper_function_goods_thumb_image');
@@ -125,6 +126,24 @@ function smarty_helper_function_dump_register_js(array $paramArray, $smarty)
 }
 
 /**
+ * 取得系统配置数据
+ *
+ * @param array $paramArray
+ * @param $smarty
+ * @return string
+ */
+function smarty_helper_function_get_sysconfig(array $paramArray, $smarty)
+{
+    $key = isset($paramArray['key']) ? $paramArray['key'] : null;
+    if (empty($key)) {
+        return '';
+    }
+
+    global $f3;
+    return $f3->get('sysConfig[' . $key . ']');
+}
+
+/**
  * 用于生成系统的操作链接，符合系统 URL 调用规范
  *
  * 在模板中的使用方法 {{makeUrl controller='/User/Login' username='xxx' password='xxx' }}
@@ -135,7 +154,7 @@ function smarty_helper_function_dump_register_js(array $paramArray, $smarty)
 function smarty_helper_function_make_url(array $paramArray, $smarty)
 {
     $controller = isset($paramArray['controller']) ? $paramArray['controller'] : '/Error/E404';
-    $static     = isset($paramArray['static']) ? $paramArray['static'] : null;
+    $static = isset($paramArray['static']) ? $paramArray['static'] : null;
 
     // 去除 controller, static ，其它都是控制器的参数
     unset($paramArray['controller']);
@@ -190,8 +209,8 @@ function smarty_helper_function_ip_query_url(array $paramArray, $smarty)
  */
 function smarty_helper_function_paginator(array $paramArray, $smarty)
 {
-    $count    = isset($paramArray['count']) ? $paramArray['count'] : 0;
-    $pageNo   = isset($paramArray['pageNo']) ? $paramArray['pageNo'] : 0;
+    $count = isset($paramArray['count']) ? $paramArray['count'] : 0;
+    $pageNo = isset($paramArray['pageNo']) ? $paramArray['pageNo'] : 0;
     $pageSize = isset($paramArray['pageSize']) ? $paramArray['pageSize'] : 10;
 
     // 不需要分页
@@ -219,7 +238,7 @@ function smarty_helper_function_paginator(array $paramArray, $smarty)
     $displayPageCount = 5;
 
     $pageStart = ($pageNo - $displayPageCount > 0) ? ($pageNo - $displayPageCount) : 0;
-    $pageEnd   = ($pageNo + $displayPageCount < $totalPage) ? ($pageNo + $displayPageCount) : $totalPage - 1;
+    $pageEnd = ($pageNo + $displayPageCount < $totalPage) ? ($pageNo + $displayPageCount) : $totalPage - 1;
 
     for ($pageIndex = $pageStart; $pageIndex <= $pageEnd; $pageIndex++) {
         $link = '';
@@ -323,7 +342,7 @@ function smarty_helper_function_thumb_image(array $paramArray, $smarty)
  */
 function smarty_helper_function_goods_view_toolbar(array $paramArray, $smarty)
 {
-    $goods_id        = isset($paramArray['goods_id']) ? intval($paramArray['goods_id']) : 0;
+    $goods_id = isset($paramArray['goods_id']) ? intval($paramArray['goods_id']) : 0;
     $system_tag_list = isset($paramArray['system_tag_list']) ? $paramArray['system_tag_list'] : '';
 
     // 参数不对，没有东西可以输出
@@ -401,7 +420,7 @@ function smarty_helper_modifier_dictionary_name($key)
     }
 
     $metaDictionaryService = new MetaDictionaryService();
-    $dictItem              = $metaDictionaryService->getWord($key, 600); //缓存 10 分钟
+    $dictItem = $metaDictionaryService->getWord($key, 600); //缓存 10 分钟
     return $dictItem['name'];
 }
 
