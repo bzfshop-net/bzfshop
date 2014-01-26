@@ -51,6 +51,8 @@
                         <td>{{$goodsType['meta_name']}}</td>
                         <td>{{$goodsType['meta_desc']|nl2br}}</td>
                         <td>
+                            <a href="{{bzf_make_url controller='/Goods/Type/ListAttr' typeId=$goodsType['meta_id']}}"
+                               class="btn btn-small">属性列表</a>
                             <a href="{{bzf_make_url controller='/Goods/Type/Edit' meta_id=$goodsType['meta_id']}}"
                                class="btn btn-small">编辑</a>
                         </td>

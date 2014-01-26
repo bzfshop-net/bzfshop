@@ -119,7 +119,7 @@ class Type extends \Controller\AuthController
 
         out_display:
 
-        // 新建的品牌，reRoute 到编辑页面
+        // 新建的，reRoute 到编辑页面
         if (!$meta_id) {
             RouteHelper::reRoute(
                 $this,
@@ -143,6 +143,232 @@ class Type extends \Controller\AuthController
 
         global $smarty;
         $smarty->display('goods_type_edit.tpl');
+    }
+
+    public function ListAttr($f3)
+    {
+        // 权限检查
+        $this->requirePrivilege('manage_goods_type_listtype');
+
+        global $smarty;
+
+        // 参数验证
+        $validator = new Validator($f3->get('GET'));
+        $meta_id = $validator->required()->digits()->min(1)->validate('typeId');
+
+        if (!$this->validate($validator)) {
+            goto out_fail;
+        }
+
+        $goodsTypeService = new GoodsTypeService();
+
+        $goodsType = $goodsTypeService->loadGoodsTypeById($meta_id);
+        if ($goodsType->isEmpty()) {
+            $this->addFlashMessage('商品类型[' . $meta_id . ']非法');
+            goto out_fail;
+        }
+
+        // 取得属性树形结构
+        $goodsTypeAttrTree = $goodsTypeService->getGoodsTypeAttrTree($meta_id);
+
+        // 把树变成扁平结构利于显示
+        $goodsAttrTreeTable = array();
+        foreach ($goodsTypeAttrTree as $attrItem) {
+            $goodsAttrTreeTable[] = $attrItem;
+            if (isset($attrItem['itemArray'])) {
+                foreach ($attrItem['itemArray'] as $subItem) {
+                    $goodsAttrTreeTable[] = $subItem;
+                }
+            }
+        }
+
+        // 给模板赋值
+        $smarty->assign('goodsType', $goodsType);
+        $smarty->assign('goodsAttrTreeTable', $goodsAttrTreeTable);
+
+        out_display:
+        $smarty->display('goods_type_listattr.tpl');
+        return;
+
+        out_fail:
+        RouteHelper::reRoute($this, '/Goods/Type/ListType');
+    }
+
+    public function AttrGroupEdit($f3)
+    {
+        // 权限检查
+        $this->requirePrivilege('manage_goods_type_listtype');
+
+        global $smarty;
+
+        // 参数验证
+        $validator = new Validator($f3->get('GET'));
+        $meta_id = $validator->digits()->min(1)->validate('meta_id');
+        if (!$meta_id) {
+            $meta_id = 0;
+        }
+
+        $goodsTypeService = new GoodsTypeService();
+        $goodsAttrGroup = $goodsTypeService->loadGoodsTypeAttrGroupById($meta_id);
+
+        if (!$f3->get('POST')) {
+            // 没有 post ，只是普通的显示
+            goto out_display;
+        }
+
+        unset($validator);
+        $validator = new Validator($f3->get('POST'));
+
+        if (0 === $meta_id) {
+            // 新建的组
+            $goodsAttrGroup->parent_meta_id = $validator->required()->validate('typeId');
+        }
+
+        $goodsAttrGroup->meta_name = $validator->required()->validate('meta_name');
+        $goodsAttrGroup->meta_desc = $validator->required()->validate('meta_desc');
+
+        if (!$this->validate($validator)) {
+            goto out_display;
+        }
+
+        $goodsAttrGroup->save();
+
+        if (0 === $meta_id) {
+            $this->addFlashMessage('新建商品属性组成功');
+        } else {
+            $this->addFlashMessage('更新商品属性组成功');
+        }
+
+        // 记录管理员日志
+        AdminLog::logAdminOperate('goods.type.attrgroup.edit', '商品属性组', $goodsAttrGroup->meta_name);
+
+        out_display:
+
+        // 新建的，reRoute 到编辑页面
+        if (!$meta_id) {
+            RouteHelper::reRoute(
+                $this,
+                RouteHelper::makeUrl('/Goods/Type/AttrGroupEdit', array('meta_id' => $goodsAttrGroup->meta_id), true)
+            );
+        }
+
+        //给 smarty 模板赋值
+        $smarty->assign('typeId', $goodsAttrGroup->parent_meta_id);
+        $smarty->assign($goodsAttrGroup->toArray());
+        $smarty->display('goods_type_attrgroupedit.tpl');
+        return;
+
+        out_fail: // 失败从这里退出
+        RouteHelper::reRoute($this, '/Goods/Type/ListType');
+    }
+
+    public function AttrGroupCreate($f3)
+    {
+        // 新建商品类型，权限检查
+        $this->requirePrivilege('manage_goods_type_listtype');
+        // 参数验证
+        $validator = new Validator($f3->get('GET'));
+        $typeId = $validator->required()->digits()->min(1)->validate('typeId');
+
+        if (!$this->validate($validator)) {
+            goto out_fail;
+        }
+
+        global $smarty;
+        $smarty->display('goods_type_attrgroupedit.tpl');
+        return;
+
+        out_fail: // 失败从这里退出
+        RouteHelper::reRoute($this, '/Goods/Type/ListType');
+    }
+
+    public function AttrItemEdit($f3)
+    {
+        // 权限检查
+        $this->requirePrivilege('manage_goods_type_listtype');
+
+        global $smarty;
+
+        // 参数验证
+        $validator = new Validator($f3->get('GET'));
+        $meta_id = $validator->digits()->min(1)->validate('meta_id');
+        if (!$meta_id) {
+            $meta_id = 0;
+        }
+
+        $goodsTypeService = new GoodsTypeService();
+        $goodsAttrItem = $goodsTypeService->loadGoodsTypeAttrItemById($meta_id);
+
+        if (!$f3->get('POST')) {
+            // 没有 post ，只是普通的显示
+            goto out_display;
+        }
+
+        unset($validator);
+        $validator = new Validator($f3->get('POST'));
+
+        if (0 === $meta_id) {
+            // 新建的组
+            $goodsAttrItem->parent_meta_id = $validator->required()->validate('typeId');
+        }
+
+        $goodsAttrItem->meta_key = $validator->digits()->validate('meta_key');
+        $goodsAttrItem->meta_name = $validator->required()->validate('meta_name');
+        $goodsAttrItem->meta_desc = $validator->required()->validate('meta_desc');
+
+        if (!$this->validate($validator)) {
+            goto out_display;
+        }
+
+        $goodsAttrItem->save();
+
+        if (0 === $meta_id) {
+            $this->addFlashMessage('新建商品属性成功');
+        } else {
+            $this->addFlashMessage('更新商品属性成功');
+        }
+
+        // 记录管理员日志
+        AdminLog::logAdminOperate('goods.type.attritem.edit', '商品属性', $goodsAttrItem->meta_name);
+
+        out_display:
+
+        // 新建的，reRoute 到编辑页面
+        if (!$meta_id) {
+            RouteHelper::reRoute(
+                $this,
+                RouteHelper::makeUrl('/Goods/Type/AttrItemEdit', array('meta_id' => $goodsAttrItem->meta_id), true)
+            );
+        }
+
+        //给 smarty 模板赋值
+        $smarty->assign('typeId', $goodsAttrItem->parent_meta_id);
+        $smarty->assign($goodsAttrItem->toArray());
+        $smarty->display('goods_type_attritemedit.tpl');
+        return;
+
+        out_fail: // 失败从这里退出
+        RouteHelper::reRoute($this, '/Goods/Type/ListType');
+    }
+
+    public function AttrItemCreate($f3)
+    {
+        // 新建商品类型，权限检查
+        $this->requirePrivilege('manage_goods_type_listtype');
+        // 参数验证
+        $validator = new Validator($f3->get('GET'));
+        $typeId = $validator->required()->digits()->min(1)->validate('typeId');
+
+        if (!$this->validate($validator)) {
+            goto out_fail;
+        }
+
+        global $smarty;
+        $smarty->display('goods_type_attritemedit.tpl');
+        return;
+
+        out_fail: // 失败从这里退出
+        RouteHelper::reRoute($this, '/Goods/Type/ListType');
     }
 
 }
