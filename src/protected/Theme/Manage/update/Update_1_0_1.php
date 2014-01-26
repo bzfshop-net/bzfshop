@@ -118,6 +118,12 @@ SQL;
                 '商品品牌',
                 '管理商品品牌'
             );
+            $metaPrivilegeService->savePrivilegeItem(
+                $privilegeGroup['meta_id'],
+                'manage_goods_type_listtype',
+                '商品类型',
+                '管理商品类型'
+            );
 
             // 把版本设置为 1.0.1
             ManageThemePlugin::saveOptionValue('version', $this->targetVersion);

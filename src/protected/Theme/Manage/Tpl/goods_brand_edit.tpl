@@ -32,6 +32,7 @@
 
                     <div class="controls">
                         <textarea class="span5" rows="3" cols="20"
+                                  data-validation-required-message="不能为空"
                                   name="brand_desc">{{$brand_desc|default}}</textarea>
                     </div>
 
