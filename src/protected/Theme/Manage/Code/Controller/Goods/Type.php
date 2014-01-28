@@ -182,6 +182,16 @@ class Type extends \Controller\AuthController
             }
         }
 
+        // 属性的显示
+        foreach ($goodsAttrTreeTable as &$goodsAttrTreeItem) {
+            if (GoodsTypeService::META_TYPE_GOODS_TYPE_ATTR_ITEM == $goodsAttrTreeItem['meta_type']) {
+                $goodsAttrTreeItem['attr_type_desc'] = @GoodsTypeService::$attrItemTypeDesc[$goodsAttrTreeItem['meta_ename']];
+                if (!empty($goodsAttrTreeItem['meta_data'])) {
+                    $goodsAttrTreeItem['meta_data'] = str_replace(',', "\n", $goodsAttrTreeItem['meta_data']);
+                }
+            }
+        }
+
         // 给模板赋值
         $smarty->assign('goodsType', $goodsType);
         $smarty->assign('goodsAttrTreeTable', $goodsAttrTreeTable);
@@ -226,6 +236,7 @@ class Type extends \Controller\AuthController
 
         $goodsAttrGroup->meta_name = $validator->required()->validate('meta_name');
         $goodsAttrGroup->meta_desc = $validator->required()->validate('meta_desc');
+        $goodsAttrGroup->meta_sort_order = $validator->digits()->validate('meta_sort_order');
 
         if (!$this->validate($validator)) {
             goto out_display;
@@ -316,6 +327,7 @@ class Type extends \Controller\AuthController
         $goodsAttrItem->meta_key = $validator->digits()->validate('meta_key');
         $goodsAttrItem->meta_name = $validator->required()->validate('meta_name');
         $goodsAttrItem->meta_desc = $validator->required()->validate('meta_desc');
+        $goodsAttrItem->meta_sort_order = $validator->digits()->validate('meta_sort_order');
         // 属性类型，单选、单行输入、多行输入
         $goodsAttrItem->meta_ename = $validator->required()->validate('meta_ename');
         // 选项列表，逗号分隔

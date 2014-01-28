@@ -62,8 +62,8 @@
                             <td>&nbsp;</td>
                             <td>{{$goodsTypeAttr['meta_desc']|nl2br}}</td>
                             <td>{{$goodsTypeAttr['meta_sort_order']}}</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                            <td>{{$goodsTypeAttr['attr_type_desc']|default}}</td>
+                            <td>{{$goodsTypeAttr['meta_data']|nl2br nofilter}}</td>
                             <td>
                                 <a href="{{bzf_make_url controller='/Goods/Type/AttrItemEdit' meta_id=$goodsTypeAttr['meta_id']}}"
                                    class="btn btn-small">编辑</a>

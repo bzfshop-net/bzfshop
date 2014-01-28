@@ -41,6 +41,20 @@
                 </div>
 
                 <div class="control-group">
+                    <label class="control-label">排序</label>
+
+                    <div class="controls">
+                        <input class="span1" type="text" name="meta_sort_order"
+                               value="{{$meta_sort_order|default}}"
+                               pattern="[0-9]+"
+                               data-validation-pattern-message="排序非法"
+                               rel="tooltip" data-placement="top"
+                               data-title="数字越大排序越前"/>
+                    </div>
+
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">&nbsp; </label>
 
                     <div class="controls">

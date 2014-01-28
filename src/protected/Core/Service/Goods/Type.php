@@ -33,6 +33,13 @@ class Type extends MetaBasicService
     // 属性项
     const META_TYPE_GOODS_TYPE_ATTR_ITEM = 'goods_type_attr_item';
 
+    // attrItem 的类型说明
+    public static $attrItemTypeDesc = array(
+        'select' => '单选',
+        'input' => '手动输入-单行',
+        'textarea' => '手动输入-多行',
+    );
+
     /**
      * 加载一个 goods_type 数据
      *
