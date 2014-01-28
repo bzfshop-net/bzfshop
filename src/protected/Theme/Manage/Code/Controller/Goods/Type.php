@@ -312,9 +312,14 @@ class Type extends \Controller\AuthController
             $goodsAttrItem->parent_meta_id = $validator->required()->validate('typeId');
         }
 
+        // 属性组
         $goodsAttrItem->meta_key = $validator->digits()->validate('meta_key');
         $goodsAttrItem->meta_name = $validator->required()->validate('meta_name');
         $goodsAttrItem->meta_desc = $validator->required()->validate('meta_desc');
+        // 属性类型，单选、单行输入、多行输入
+        $goodsAttrItem->meta_ename = $validator->required()->validate('meta_ename');
+        // 选项列表，逗号分隔
+        $goodsAttrItem->meta_data = $validator->validate('meta_data');
 
         if (!$this->validate($validator)) {
             goto out_display;

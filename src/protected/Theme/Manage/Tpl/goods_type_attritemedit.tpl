@@ -57,29 +57,23 @@
                     <label class="control-label">属性类型</label>
 
                     <div class="controls">
-                        <label class="radio">
-                            <input type="radio" name="attr_type" value="select_single" checked="true"/>单选（从列表中选一个值）
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="attr_type" value="select_multiple"/>多选（从列表中选多个值）
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="attr_type" value="input"/>单行输入
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="attr_type" value="textarea"/>多行输入
-                        </label>
+                        <select class="span2 select2-simple" name="meta_ename"
+                                data-initValue="{{$meta_ename|default}}">
+                            <option value="select">单选（下面输入选择列表）</option>
+                            <option value="input">手动输入-单行</option>
+                            <option value="textarea">手动输入-多行</option>
+                        </select>
                     </div>
 
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label">属性值列表</label>
+                    <label class="control-label">选择列表</label>
 
                     <div class="controls">
-                        <!-- 商品发布到那些系统 -->
-                        <input type="hidden" class="span5 select2-simple" name="attr_value_list[]"
-                               value="中文测试,你说呢,250x290,黑色、红色"/>
+                        <!-- 自动生成 tag 列表 -->
+                        <input type="hidden" class="span5 select2-simple" name="meta_data"
+                               value="{{$meta_data|default}}"/>
                         <span class="comments">（不能出现逗号、空格，回车自动建立选项）</span>
                     </div>
 

@@ -6,6 +6,18 @@
  *
  * 商品类型管理，比如商品是书籍、手机、衣服、裤子 ... 我们采用 Meta 来保持数据
  *
+ * goods_type 数据说明：
+ *
+ * goods_group 数据说明：
+ *
+ *
+ * goods_type_attr_item 数据说明
+ *
+ * meta_key： 用于存储 goods_group 的 ID
+ * meta_ename： 用于存储属性类型，单选、单行输入、多行输入
+ * meta_data：用于存储选项列表，数值用逗号分隔
+ *
+ *
  * */
 
 namespace Core\Service\Goods;
