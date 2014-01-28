@@ -54,6 +54,38 @@
                 </div>
 
                 <div class="control-group">
+                    <label class="control-label">属性类型</label>
+
+                    <div class="controls">
+                        <label class="radio">
+                            <input type="radio" name="attr_type" value="select_single" checked="true"/>单选（从列表中选一个值）
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="attr_type" value="select_multiple"/>多选（从列表中选多个值）
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="attr_type" value="input"/>单行输入
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="attr_type" value="textarea"/>多行输入
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">属性值列表</label>
+
+                    <div class="controls">
+                        <!-- 商品发布到那些系统 -->
+                        <input type="hidden" class="span5 select2-simple" name="attr_value_list[]"
+                               value="中文测试,你说呢,250x290,黑色、红色"/>
+                        <span class="comments">（不能出现逗号、空格，回车自动建立选项）</span>
+                    </div>
+
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">&nbsp; </label>
 
                     <div class="controls">

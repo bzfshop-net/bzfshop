@@ -559,6 +559,13 @@ jQuery((function (window, $) {
 
         });
 
+        // input 用于 select2 的标签自动生成
+        $('input.select2-simple', node).each(function (index, elem) {
+            $(elem).select2({
+                tags: []
+            });
+        });
+
         /************ 初始化日历插件，可以显示日历的选择 ***************/
         $('div.datetimepicker', node).datetimepicker({
             format: 'yyyy-MM-dd hh:mm:ss',
