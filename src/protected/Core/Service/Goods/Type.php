@@ -23,7 +23,7 @@
 namespace Core\Service\Goods;
 
 use Core\Helper\Utility\Validator;
-use Core\Modal\SqlMapper as DataModal;
+use Core\Modal\SqlMapper as DataMapper;
 use Core\Service\Meta\Meta as MetaBasicService;
 
 class Type extends MetaBasicService
@@ -112,6 +112,18 @@ class Type extends MetaBasicService
         }
 
         return $meta;
+    }
+
+    /**
+     * 加载 goods_attr 记录
+     *
+     * @param $goods_attr_id
+     * @param int $ttl
+     * @return object
+     */
+    public function loadGoodsAttrById($goods_attr_id, $ttl = 0)
+    {
+        return $this->_loadById('goods_attr', 'goods_attr_id = ?', $goods_attr_id, $ttl);
     }
 
     /**
@@ -257,7 +269,7 @@ class Type extends MetaBasicService
         $typeId = $validator->required()->digits()->min(1)->validate('typeId');
         $this->validate($validator);
 
-        $tableJoin = DataModal::tableName('meta') . ' as m LEFT JOIN ' . DataModal::tableName('goods_attr')
+        $tableJoin = DataMapper::tableName('meta') . ' as m LEFT JOIN ' . DataMapper::tableName('goods_attr')
             . ' as ga on m.meta_id = ga.attr_item_id';
 
         return $this->_fetchArray(
@@ -332,7 +344,7 @@ class Type extends MetaBasicService
         $goods_id = $validator->required()->digits()->min(1)->validate('goods_id');
         $this->validate($validator);
 
-        $dataModal = new DataModal('goods_attr');
-        $dataModal->erase(array('goods_id = ?', $goods_id));
+        $DataMapper = new DataMapper('goods_attr');
+        $DataMapper->erase(array('goods_id = ?', $goods_id));
     }
 }

@@ -8,7 +8,8 @@
         });
         window.bz_set_breadcrumb_status.push({index: 2, text: '类型属性', link: window.location.href});
     </script>
-    <form class="form-horizontal form-horizontal-inline form-dirty-check" method="POST"
+    <form id="bzf_goods_edit_type_form"
+          class="form-horizontal form-horizontal-inline form-dirty-check" method="POST"
           style="margin: 0px 0px 0px 0px;">
 
         <!-- 左侧每个标签的具体内容 -->
@@ -47,9 +48,13 @@
 
             <!-- 提交按钮 -->
             <div class="row" style="text-align: center;">
-                <button type="submit" class="btn btn-success">确认提交</button>
+                <button type="button" class="btn btn-success" onclick="bZF.goods_edit_type.submit();">确认提交</button>
             </div>
             <!-- /提交按钮 -->
+
+            <!-- 隐藏的 DIV 用于写入 hidden 的值 -->
+            <div id="goods_edit_type_form_hidden_div" class="row" style="display: none;">
+            </div>
 
         </div>
         <!-- /左侧每个标签的具体内容 -->
@@ -142,7 +147,7 @@
                         // 把 elem 绑定
                         $renderComponent = $(renderComponent);
                         delete elem.meta_data; // 节省点内存
-                        $renderComponent.data('data-json', elem);
+                        $('select,input,textarea', $renderComponent).data('dataJson', elem);
                         // 加入到结果表中
                         $('#bzf_goods_attr_value_tree_table tbody').append($renderComponent);
                     });
@@ -153,12 +158,14 @@
             };
 
             // 商品类型选择发生变化的时候我们需要重新生成属性表
-            $('#bzf_goods_type_select').change(function () {
+            bZF.goods_edit_type.typeChange = function (typeId) {
                 // 清空属性表
                 $('#bzf_goods_attr_value_tree_table tbody').html('');
 
                 var goodsId = {{$goods['goods_id']}};
-                var typeId = $('#bzf_goods_type_select option:selected').val();
+                if (!typeId) {
+                    typeId = $('#bzf_goods_type_select option:selected').val();
+                }
 
                 if (isNaN(typeId) || typeId <= 0) {
                     // 用户选择商品不是任何类型
@@ -167,7 +174,58 @@
 
                 // 生成属性值表格
                 bZF.goods_edit_type.renderGoodsAttrTable(goodsId, typeId);
+            };
+
+            $('#bzf_goods_type_select').change(function () {
+                bZF.goods_edit_type.typeChange();
             });
+
+            // 第一次加载显示
+            if ($('#bzf_goods_type_select').attr('data-initValue') > 0) {
+                bZF.goods_edit_type.typeChange($('#bzf_goods_type_select').attr('data-initValue'));
+            }
+
+            bZF.goods_edit_type.clearHiddenValue = function () {
+                $('#goods_edit_type_form_hidden_div').html('');
+            };
+
+            bZF.goods_edit_type.writeHiddenValue = function (dataJson) {
+                $('#goods_edit_type_form_hidden_div').append("<input type='hidden' name='goodsAttrValueArray[]' value='" +
+                        JSON.stringify(dataJson) + "' />");
+            };
+
+            bZF.goods_edit_type.submit = function () {
+                // 清除之前的数据
+                bZF.goods_edit_type.clearHiddenValue();
+
+                // 收集所有数据
+                $('#bzf_goods_attr_value_tree_table select').each(function (index, elem) {
+                    // 取得绑定的数据
+                    var $elem = $(elem);
+                    var dataJson = $elem.data('dataJson');
+                    if (!dataJson) {
+                        // 不是我们生成的节点
+                        return;
+                    }
+                    dataJson.attr_item_value = $elem.find('option:selected').val();
+                    bZF.goods_edit_type.writeHiddenValue(dataJson);
+                });
+
+                $('#bzf_goods_attr_value_tree_table input[type="text"],#bzf_goods_attr_value_tree_table textarea').each(function (index, elem) {
+                    // 取得绑定的数据
+                    var $elem = $(elem);
+                    var dataJson = $elem.data('dataJson');
+                    if (!dataJson) {
+                        // 不是我们生成的节点
+                        return;
+                    }
+                    dataJson.attr_item_value = $elem.val();
+                    bZF.goods_edit_type.writeHiddenValue(dataJson);
+                });
+
+                // 提交表单
+                $('#bzf_goods_edit_type_form').submit();
+            };
 
         })(window, jQuery));
     </script>
