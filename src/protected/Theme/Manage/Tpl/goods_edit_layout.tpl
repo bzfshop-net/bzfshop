@@ -15,7 +15,8 @@
             <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/Edit' goods_id=$goods_id }}">商品信息</a></li>
             <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/Gallery' goods_id=$goods_id }}">商品相册</a></li>
             <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/Spec' goods_id=$goods_id }}">商品规格</a></li>
-            <!-- li class=""><a href="{{bzf_make_url controller='/Goods/Edit/Team' goods_id=$goods_id }}">团购信息</a></li -->
+            <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/Type' goods_id=$goods_id }}">类型属性</a></li>
+            <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/Team' goods_id=$goods_id }}">团购信息</a></li>
             <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/LinkGoods' goods_id=$goods_id }}">关联商品</a></li>
             <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/Promote' goods_id=$goods_id }}">推广渠道</a></li>
             <li class=""><a href="{{bzf_make_url controller='/Goods/Edit/Log' goods_id=$goods_id }}">编辑日志</a></li>

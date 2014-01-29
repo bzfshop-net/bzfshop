@@ -173,14 +173,16 @@ class Type extends \Controller\AuthController
 
         // 把树变成扁平结构利于显示
         $goodsAttrTreeTable = array();
-        foreach ($goodsTypeAttrTree as $attrItem) {
-            $goodsAttrTreeTable[] = $attrItem;
+        foreach ($goodsTypeAttrTree as &$attrItem) {
+            $goodsAttrTreeTable[] = & $attrItem;
             if (isset($attrItem['itemArray'])) {
                 foreach ($attrItem['itemArray'] as $subItem) {
                     $goodsAttrTreeTable[] = $subItem;
                 }
+                unset($attrItem['itemArray']);
             }
         }
+        unset($attrItem);
 
         // 属性的显示
         foreach ($goodsAttrTreeTable as &$goodsAttrTreeItem) {

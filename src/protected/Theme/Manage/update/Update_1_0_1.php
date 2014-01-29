@@ -69,6 +69,7 @@ ALTER TABLE `bzf_admin_log` ADD INDEX ( `operate_time` ) ;
 
 -- 修改价格表，增加价格说明
 ALTER TABLE `bzf_goods` ADD `shop_price_notice` VARCHAR( 32 ) NULL DEFAULT NULL COMMENT '价格说明' AFTER `shop_price`;
+ALTER TABLE `bzf_goods` ADD `type_id` SMALLINT( 5 ) NOT NULL DEFAULT '0' COMMENT '商品类型' AFTER `cat_id`;
 
 -- 修改 brand 表
 ALTER TABLE `bzf_brand` CHANGE `sort_order` `sort_order` TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT '0';
@@ -76,6 +77,17 @@ ALTER TABLE `bzf_brand` CHANGE `brand_logo` `brand_logo` VARCHAR( 128 ) NULL DEF
 ALTER TABLE `bzf_brand` CHANGE `brand_desc` `brand_desc` VARCHAR( 255 ) NULL DEFAULT NULL ;
 ALTER TABLE `bzf_brand` ADD `is_custom` int NULL DEFAULT 0 COMMENT '是否自定义页面';
 ALTER TABLE `bzf_brand` ADD `custom_page` TEXT NULL DEFAULT NULL COMMENT '品牌自定义页面';
+
+-- 增加 goods_attr 表记录商品的属性值
+CREATE TABLE IF NOT EXISTS `bzf_goods_attr` (
+  `goods_attr_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `goods_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `attr_item_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `attr_item_value` text NULL,
+  PRIMARY KEY (`goods_attr_id`),
+  KEY `goods_id` (`goods_id`),
+  KEY `attr_item_id` (`attr_item_id`)
+) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 SQL;
 

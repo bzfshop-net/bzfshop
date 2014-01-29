@@ -41,7 +41,7 @@
 
                     {{if 'goods_type_attr_group' == $goodsTypeAttr['meta_type']}}
                         <!-- 一个属性组 -->
-                        <tr data-tt-id="goods_type_tree_id_{{$goodsTypeAttr['meta_id']}}">
+                        <tr data-tt-id="goods_type_tree_id_{{$goodsTypeAttr['meta_id']}}" class="info">
                             <td>{{$goodsTypeAttr['meta_name']}}</td>
                             <td>组</td>
                             <td>{{$goodsTypeAttr['meta_desc']|nl2br}}</td>

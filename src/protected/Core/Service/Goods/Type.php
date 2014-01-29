@@ -22,6 +22,8 @@
 
 namespace Core\Service\Goods;
 
+use Core\Helper\Utility\Validator;
+use Core\Modal\SqlMapper as DataModal;
 use Core\Service\Meta\Meta as MetaBasicService;
 
 class Type extends MetaBasicService
@@ -217,6 +219,12 @@ class Type extends MetaBasicService
      */
     public function fetchGoodsTypeAttrItemArray($typeId, $groupId = 0, $ttl = 0)
     {
+        // 首先验证参数
+        $validator = new Validator(array('typeId' => $typeId, 'groupId' => $groupId));
+        $typeId = $validator->required()->digits()->min(1)->validate('typeId');
+        $groupId = $validator->digits()->validate('groupId');
+        $this->validate($validator);
+
         $condArray = array(array('meta_type = ? and parent_meta_id = ?', self::META_TYPE_GOODS_TYPE_ATTR_ITEM, $typeId));
         if ($groupId > 0) {
             // 我们采用了 meta_key 来保存 attr_group 的 ID
@@ -231,5 +239,100 @@ class Type extends MetaBasicService
             0,
             $ttl
         );
+    }
+
+    /**
+     * 取得商品的属性值列表
+     *
+     * @param int $goods_id 商品 ID
+     * @param int $typeId 商品类型 ID
+     * @param int $ttl 缓存时间
+     * @return array
+     */
+    public function fetchGoodsAttrItemValueArray($goods_id, $typeId, $ttl = 0)
+    {
+        // 首先验证参数
+        $validator = new Validator(array('goods_id' => $goods_id, 'typeId' => $typeId));
+        $goods_id = $validator->required()->digits()->min(1)->validate('goods_id');
+        $typeId = $validator->required()->digits()->min(1)->validate('typeId');
+        $this->validate($validator);
+
+        $tableJoin = DataModal::tableName('meta') . ' as m LEFT JOIN ' . DataModal::tableName('goods_attr')
+            . ' as ga on m.meta_id = ga.attr_item_id';
+
+        return $this->_fetchArray(
+            $tableJoin,
+            // table , fields
+            'm.meta_id, m.meta_type, m.meta_name, m.meta_key, m.meta_ename, m.meta_data, ga.goods_attr_id, ga.attr_item_value',
+            // 查询条件
+            array(
+                array('m.meta_type = ? and m.parent_meta_id = ? ', self::META_TYPE_GOODS_TYPE_ATTR_ITEM, $typeId),
+                array('ga.goods_id is null or ga.goods_id = ?', $goods_id)
+            ),
+            array('order' => 'm.meta_key asc, m.meta_sort_order desc, m.meta_id asc'),
+            0,
+            0,
+            $ttl
+        );
+    }
+
+    /**
+     * 返回商品属性值的树形结构，如下：
+     *
+     * array(
+     *    attrGroup['itemArray'] = array(..属性列表..),
+     *    attrGroup['itemArray'] = array(..属性列表..),
+     *    attrItem // 不属于任何属性组的属性
+     * )
+     *
+     * @param $goods_id
+     * @param $typeId
+     * @param int $ttl
+     * @return array
+     */
+    public function fetchGoodsAttrItemValueTree($goods_id, $typeId, $ttl = 0)
+    {
+        // 首先验证参数
+        $validator = new Validator(array('goods_id' => $goods_id, 'typeId' => $typeId));
+        $goods_id = $validator->required()->digits()->min(1)->validate('goods_id');
+        $typeId = $validator->required()->digits()->min(1)->validate('typeId');
+        $this->validate($validator);
+
+        // 取得分组
+        $attrGroupArray = $this->fetchGoodsTypeAttrGroupArray($typeId, $ttl);
+        $groupIdToItemList = array();
+        foreach ($attrGroupArray as &$attrGroup) {
+            $attrGroup['itemArray'] = array();
+            $groupIdToItemList[$attrGroup['meta_id']] = & $attrGroup['itemArray'];
+        }
+
+        // 取得属性值
+        $goodsAttrValueArray = $this->fetchGoodsAttrItemValueArray($goods_id, $typeId, $ttl);
+        // 把属性值放到对应的分组里面
+        foreach ($goodsAttrValueArray as $goodsAttrValue) {
+            if (isset($groupIdToItemList[intval($goodsAttrValue['meta_key'])])) {
+                $groupIdToItemList[intval($goodsAttrValue['meta_key'])][] = $goodsAttrValue;
+            } else {
+                $attrGroupArray[] = $goodsAttrValue;
+            }
+        }
+
+        return $attrGroupArray;
+    }
+
+    /**
+     * 删除商品的所有属性值
+     *
+     * @param int $goods_id 商品ID
+     */
+    public function removeAllGoodsAttrItemValue($goods_id)
+    {
+        // 首先验证参数
+        $validator = new Validator(array('goods_id' => $goods_id));
+        $goods_id = $validator->required()->digits()->min(1)->validate('goods_id');
+        $this->validate($validator);
+
+        $dataModal = new DataModal('goods_attr');
+        $dataModal->erase(array('goods_id = ?', $goods_id));
     }
 }
