@@ -467,7 +467,7 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#bzf_goods_view_goods_desc_pane" data-toggle="tab">商品详情</a></li>
                     <li><a href="#bzf_goods_view_goods_notice_pane" data-toggle="tab">商品提示</a></li>
-                    <li><a href="#bzf_goods_view_goods_attr_pane" data-toggle="tab">规格参数</a></li>
+                    <li><a href="#bzf_goods_view_goods_attr_pane" data-toggle="tab">商品参数</a></li>
                     <li><a href="#bzf_goods_view_goods_comments_pane" data-toggle="tab">用户评价</a></li>
                     <li><a href="#bzf_goods_view_goods_shouhou_pane" data-toggle="tab">售后服务</a></li>
                 </ul>
@@ -492,7 +492,33 @@
 
                 <!-- 商品规格参数 -->
                 <div id="bzf_goods_view_goods_attr_pane" class="tab-pane">
-                    商品规格参数 模块即将上线
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th width="20%">&nbsp;</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{if isset($goodsAttrTreeTable)}}
+                            {{foreach $goodsAttrTreeTable as $goodsAttrValue}}
+                                {{if 'goods_type_attr_group' == $goodsAttrValue['meta_type']}}
+                                    <!-- 属性分组 -->
+                                    <tr>
+                                        <td class="attrlabel" style="font-weight: bold;"
+                                            colspan="2">{{$goodsAttrValue['meta_name']}}</td>
+                                    </tr>
+                                {{else}}
+                                    <!-- 属性值 -->
+                                    <tr>
+                                        <td class="labelkey attrlabel">{{$goodsAttrValue['meta_name']}}</td>
+                                        <td class="labelvalue">{{$goodsAttrValue['attr_item_value']}}</td>
+                                    </tr>
+                                {{/if}}
+                            {{/foreach}}
+                        {{/if}}
+                        </tbody>
+                    </table>
                 </div>
                 <!-- /商品规格参数 -->
 

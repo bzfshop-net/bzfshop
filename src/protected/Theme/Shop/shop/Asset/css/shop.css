@@ -706,6 +706,16 @@ div.inline-divider label {
     padding-top: 10px;
 }
 
+#bzf_goods_view_goods_attr_pane table tbody td,
+#bzf_goods_view_goods_attr_pane table thead th {
+    padding: 3px 5px;
+}
+
+#bzf_goods_view_goods_attr_pane table tbody td.attrlabel {
+    background: none repeat scroll 0 0 #F5FAFE;
+    font-weight: normal;
+}
+
 /***************** goods_view.tpl 供货商信息面板 *********************/
 .bzf_supplier_pane .header {
     height: 30px;

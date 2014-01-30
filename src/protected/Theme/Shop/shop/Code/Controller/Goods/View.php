@@ -18,6 +18,7 @@ use Core\Service\Goods\Category as GoodsCategoryService;
 use Core\Service\Goods\Goods as GoodsBasicService;
 use Core\Service\Goods\Spec as GoodsSpecService;
 use Core\Service\Goods\Supplier as GoodsSupplierService;
+use Core\Service\Goods\Type as GoodsTypeService;
 
 class View extends \Controller\BaseController
 {
@@ -28,7 +29,7 @@ class View extends \Controller\BaseController
 
         // 首先做参数合法性验证
         $validator = new Validator($f3->get('GET'));
-        $goods_id  = $validator->required('商品id不能为空')->digits('商品id非法')->min(1, true, '商品id非法')->validate('goods_id');
+        $goods_id = $validator->required('商品id不能为空')->digits('商品id非法')->min(1, true, '商品id非法')->validate('goods_id');
 
         if (!$this->validate($validator)) {
             goto out_fail;
@@ -46,7 +47,7 @@ class View extends \Controller\BaseController
 
         // 查询商品信息
         $goodsBasicService = new GoodsBasicService();
-        $goodsInfo         = $goodsBasicService->loadGoodsById($goods_id);
+        $goodsInfo = $goodsBasicService->loadGoodsById($goods_id);
 
         // 商品不存在，退出
         if ($goodsInfo->isEmpty() || !Utils::isTagExist(PluginHelper::SYSTEM_SHOP, $goodsInfo['system_tag_list'])) {
@@ -56,9 +57,9 @@ class View extends \Controller\BaseController
 
         // 取得商品的分类层级
         $goodsCategoryLevelArray = array();
-        $goodsCategoryService    = new GoodsCategoryService();
-        $categoryLevel           = 5; // 最多取 5 层分类
-        $currentCategoryId       = $goodsInfo['cat_id'];
+        $goodsCategoryService = new GoodsCategoryService();
+        $categoryLevel = 5; // 最多取 5 层分类
+        $currentCategoryId = $goodsInfo['cat_id'];
         for (; $categoryLevel > 0; $categoryLevel--) {
             $category = $goodsCategoryService->loadCategoryById($currentCategoryId, 1800);
             if ($category->isEmpty()) {
@@ -78,8 +79,8 @@ class View extends \Controller\BaseController
         $goodsGalleryArray = GoodsGalleryCache::getGoodsGallery($goods_id);
         foreach ($goodsGalleryArray as &$galleryItem) {
             $galleryItem['img_original'] = RouteHelper::makeImageUrl($galleryItem['img_original']);
-            $galleryItem['img_url']      = RouteHelper::makeImageUrl($galleryItem['img_url']);
-            $galleryItem['thumb_url']    = RouteHelper::makeImageUrl($galleryItem['thumb_url']);
+            $galleryItem['img_url'] = RouteHelper::makeImageUrl($galleryItem['img_url']);
+            $galleryItem['thumb_url'] = RouteHelper::makeImageUrl($galleryItem['thumb_url']);
         }
         unset($galleryItem);
 
@@ -91,14 +92,14 @@ class View extends \Controller\BaseController
         // 取得供货商下面的商品总数，总数只缓存 10 分钟
         $supplierTotalGoodsCount = $goodsSupplierService->countSupplierGoodsArray($goodsInfo['suppliers_id'], 600);
         // 随机挑选 10 个商品
-        $supplierGoodsSize   = 10;
+        $supplierGoodsSize = 10;
         $supplierGoodsOffset = ($supplierTotalGoodsCount <= $supplierGoodsSize)
             ? 0
             : mt_rand(
                 0,
                 $supplierTotalGoodsCount - $supplierGoodsSize
             );
-        $supplierGoodsArray  =
+        $supplierGoodsArray =
             $goodsSupplierService->fetchSupplierGoodsArray(
                 $goodsInfo['suppliers_id'],
                 $supplierGoodsOffset,
@@ -135,6 +136,13 @@ class View extends \Controller\BaseController
             $goodsSpecData = $goodsSpecService->getBuyableData();
             $smarty->assign($goodsSpecData);
             $smarty->assign('goodsSpecJson', json_encode($goodsSpecData));
+        }
+
+        // 商品的类型属性
+        if ($goodsInfo['type_id'] > 0) {
+            $goodsTypeService = new GoodsTypeService();
+            $goodsAttrTreeTable = $goodsTypeService->fetchGoodsAttrItemValueTreeTable($goodsInfo['goods_id'], $goodsInfo['type_id']);
+            $smarty->assign('goodsAttrTreeTable', $goodsAttrTreeTable);
         }
 
         if (!empty($goodsCategoryLevelArray)) {
