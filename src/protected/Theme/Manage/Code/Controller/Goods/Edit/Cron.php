@@ -74,10 +74,11 @@ class Cron extends \Controller\AuthController
         $smarty->assign('pageNo', $pageNo);
         $smarty->assign('pageSize', $pageSize);
 
-        $smarty->assign('goods', $goods->toArray());
         $smarty->assign('cronTaskArray', $cronTaskArray);
 
         out_display:
+        $smarty->assign('goods', $goods->toArray());
+        
         $smarty->display('goods_edit_cron.tpl');
         return;
 

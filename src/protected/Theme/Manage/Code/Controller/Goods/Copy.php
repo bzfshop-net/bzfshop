@@ -18,6 +18,7 @@ use Core\Service\Goods\Gallery as GoodsGalleryService;
 use Core\Service\Goods\Goods as GoodsBasicService;
 use Core\Service\Goods\Log as GoodsLogService;
 use Core\Service\Goods\Spec as GoodsSpecService;
+use Core\Service\Goods\Type as GoodsTypeService;
 
 class Copy extends \Controller\AuthController
 {
@@ -29,7 +30,7 @@ class Copy extends \Controller\AuthController
 
         // 参数验证
         $validator = new Validator($f3->get('GET'));
-        $goods_id  = $validator->required('商品ID不能为空')->digits()->min(1)->validate('goods_id');
+        $goods_id = $validator->required('商品ID不能为空')->digits()->min(1)->validate('goods_id');
 
         if (!$this->validate($validator)) {
             goto out_fail;
@@ -37,7 +38,7 @@ class Copy extends \Controller\AuthController
 
         // 取得商品信息
         $goodsBasicService = new GoodsBasicService();
-        $goods             = $goodsBasicService->loadGoodsById($goods_id);
+        $goods = $goodsBasicService->loadGoodsById($goods_id);
         if ($goods->isEmpty()) {
             $this->addFlashMessage('非法商品ID');
             goto out_fail;
@@ -57,7 +58,7 @@ class Copy extends \Controller\AuthController
         $goodsArray['user_pay_number'] = 0;
 
         // 设置复制人
-        $goodsArray['admin_user_id']   = $authAdminUser['user_id'];
+        $goodsArray['admin_user_id'] = $authAdminUser['user_id'];
         $goodsArray['admin_user_name'] = $authAdminUser['user_name'];
 
         // 处理商品的规格
@@ -70,7 +71,7 @@ class Copy extends \Controller\AuthController
         }
 
         $goodsArray['add_time'] = Time::gmTime();
-        $newGoods               = $goodsBasicService->loadGoodsById(0);
+        $newGoods = $goodsBasicService->loadGoodsById(0);
         $newGoods->copyFrom($goodsArray);
         $newGoods->save();
 
@@ -79,13 +80,25 @@ class Copy extends \Controller\AuthController
         $newGoods->save();
         unset($goodsArray);
 
-
-        // 2. 复制 goods_attribute 信息
-
+        // 2. 复制 goods_attr 信息
+        if ($goods->type_id > 0) {
+            $goodsTypeService = new GoodsTypeService();
+            $goodsAttrValueArray = $goodsTypeService->fetchGoodsAttrItemValueArray($goods->goods_id, $goods->type_id);
+            foreach ($goodsAttrValueArray as $goodsAttrValue) {
+                $goodsAttr = $goodsTypeService->loadGoodsAttrById(0);
+                $goodsAttr->goods_id = $newGoods->goods_id;
+                $goodsAttr->attr_item_id = $goodsAttrValue['meta_id'];
+                $goodsAttr->attr_item_value = $goodsAttrValue['attr_item_value'];
+                $goodsAttr->save();
+                unset($goodsAttr);
+            }
+            unset($goodsAttrValueArray);
+            unset($goodsTypeService);
+        }
 
         // 3. 复制 goods_gallery 信息
         $goodsGalleryService = new GoodsGalleryService();
-        $goodsGalleryArray   = $goodsGalleryService->fetchGoodsGalleryArrayByGoodsId($goods_id);
+        $goodsGalleryArray = $goodsGalleryService->fetchGoodsGalleryArrayByGoodsId($goods_id);
         foreach ($goodsGalleryArray as $goodsGalleryItem) {
 
             // 新建一个 goods_gallery 记录
@@ -105,7 +118,7 @@ class Copy extends \Controller\AuthController
             $goodsTeamInfo = $goodsTeam->toArray();
             unset($goodsTeamInfo['team_id']);
             $goodsTeamInfo['goods_id'] = $newGoods['goods_id'];
-            $newGoodsTeam              = new DataMapper('goods_team');
+            $newGoodsTeam = new DataMapper('goods_team');
             $newGoodsTeam->copyFrom($goodsTeamInfo);
             $newGoodsTeam->save();
             unset($newGoodsTeam);
@@ -119,7 +132,7 @@ class Copy extends \Controller\AuthController
             unset($linkGoodsItem['link_id']);
             $linkGoodsItem['goods_id'] = $newGoods['goods_id'];
             $linkGoodsItem['admin_id'] = $authAdminUser['user_id'];
-            $linkGoods                 = new DataMapper('link_goods');
+            $linkGoods = new DataMapper('link_goods');
             $linkGoods->copyFrom($linkGoodsItem);
             $linkGoods->save();
             unset($linkGoods);
@@ -132,7 +145,7 @@ class Copy extends \Controller\AuthController
             $goodsPromoteInfo = $goodsPromote->toArray();
             unset($goodsPromoteInfo['promote_id']);
             $goodsPromoteInfo['goods_id'] = $newGoods['goods_id'];
-            $newGoodspromote              = new DataMapper('goods_promote');
+            $newGoodspromote = new DataMapper('goods_promote');
             $newGoodspromote->copyFrom($goodsPromoteInfo);
             $newGoodspromote->save();
             unset($newGoodspromote);
