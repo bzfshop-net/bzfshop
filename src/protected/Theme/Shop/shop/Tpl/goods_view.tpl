@@ -512,7 +512,11 @@
                                     <!-- 属性值 -->
                                     <tr>
                                         <td class="labelkey attrlabel">{{$goodsAttrValue['meta_name']}}</td>
-                                        <td class="labelvalue">{{$goodsAttrValue['attr_item_value']}}</td>
+                                        {{if 'textarea' == $goodsAttrValue['meta_ename']}}
+                                            <td class="labelvalue">{{$goodsAttrValue['attr_item_value']|nl2br nofilter}}</td>
+                                        {{else}}
+                                            <td class="labelvalue">{{$goodsAttrValue['attr_item_value']}}</td>
+                                        {{/if}}
                                     </tr>
                                 {{/if}}
                             {{/foreach}}
