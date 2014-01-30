@@ -259,6 +259,24 @@ class Type extends MetaBasicService
     }
 
     /**
+     * 删除一个属性组
+     *
+     * @param int $meta_id
+     */
+    public function removeGoodsTypeAttrGroup($meta_id)
+    {
+        $attrGroup = $this->loadGoodsTypeAttrGroupById($meta_id);
+
+        // 把 Group 下的 Item 都设置为 没有Group
+        $sql = 'update ' . DataMapper::tableName('meta') . ' set meta_key = "" where meta_type = ? and meta_key = ?';
+        $dbEngine = DataMapper::getDbEngine();
+        $dbEngine->exec($sql, array(1 => self::META_TYPE_GOODS_TYPE_ATTR_ITEM, strval($meta_id)));
+
+        // 删除 Group 自身
+        $attrGroup->erase();
+    }
+
+    /**
      * 取得 goods_type 下面的 attr_item 列表
      *
      * @param $typeId  goods_type 的 ID
@@ -288,6 +306,23 @@ class Type extends MetaBasicService
             0,
             $ttl
         );
+    }
+
+    /**
+     * 删除一个属性值，需要把所有商品设置的属性也一并删除
+     *
+     * @param $meta_id
+     */
+    public function removeGoodsTypeAttrItem($meta_id)
+    {
+        $attrItem = $this->loadGoodsTypeAttrItemById($meta_id);
+
+        // 把 商品设置了这个属性值全部删除
+        $dataMapper = new DataMapper('goods_attr');
+        $dataMapper->erase(array('attr_item_id = ?', $meta_id));
+
+        // 删除 Item 自身
+        $attrItem->erase();
     }
 
     /**

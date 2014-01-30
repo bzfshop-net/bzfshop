@@ -282,6 +282,23 @@ class Type extends \Controller\AuthController
         RouteHelper::reRoute($this, '/Goods/Type/ListType');
     }
 
+    public function AttrGroupRemove($f3)
+    {
+
+        // 权限检查
+        $this->requirePrivilege('manage_goods_type_listtype');
+
+        // 参数验证
+        $validator = new Validator($f3->get('GET'));
+        $meta_id = $validator->required()->digits()->min(1)->validate('meta_id');
+        $goodsTypeService = new GoodsTypeService();
+        $goodsTypeService->removeGoodsTypeAttrGroup($meta_id);
+
+        $this->addFlashMessage('成功删除属性组[' . $meta_id . ']');
+
+        RouteHelper::reRoute($this, RouteHelper::getRefer(), false);
+    }
+
     public function AttrItemEdit($f3)
     {
         // 权限检查
@@ -375,6 +392,23 @@ class Type extends \Controller\AuthController
 
         out_fail: // 失败从这里退出
         RouteHelper::reRoute($this, '/Goods/Type/ListType');
+    }
+
+    public function AttrItemRemove($f3)
+    {
+
+        // 权限检查
+        $this->requirePrivilege('manage_goods_type_listtype');
+
+        // 参数验证
+        $validator = new Validator($f3->get('GET'));
+        $meta_id = $validator->required()->digits()->min(1)->validate('meta_id');
+        $goodsTypeService = new GoodsTypeService();
+        $goodsTypeService->removeGoodsTypeAttrItem($meta_id);
+
+        $this->addFlashMessage('成功删除属性[' . $meta_id . ']');
+
+        RouteHelper::reRoute($this, RouteHelper::getRefer(), false);
     }
 
 }

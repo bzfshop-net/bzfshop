@@ -51,23 +51,33 @@
                             <td>
                                 <a href="{{bzf_make_url controller='/Goods/Type/AttrGroupEdit' meta_id=$goodsTypeAttr['meta_id']}}"
                                    class="btn btn-small">编辑</a>
+                                <a href="{{bzf_make_url controller='/Goods/Type/AttrGroupRemove' meta_id=$goodsTypeAttr['meta_id']}}"
+                                   onclick="return confirm('你确定要删除？');"
+                                   class="btn btn-small btn-danger">删除</a>
                             </td>
                         </tr>
                         <!-- /一个属性组 -->
                     {{else}}
                         <!-- 一个属性 -->
-                        <tr data-tt-parent-id="goods_type_tree_id_{{$goodsTypeAttr['meta_key']}}"
-                            data-tt-id="goods_type_tree_id_{{$goodsTypeAttr['meta_id']}}">
-                            <td>{{$goodsTypeAttr['meta_name']}}</td>
-                            <td>&nbsp;</td>
-                            <td>{{$goodsTypeAttr['meta_desc']|nl2br}}</td>
-                            <td>{{$goodsTypeAttr['meta_sort_order']}}</td>
-                            <td>{{$goodsTypeAttr['attr_type_desc']|default}}</td>
-                            <td>{{$goodsTypeAttr['meta_data']|nl2br nofilter}}</td>
-                            <td>
-                                <a href="{{bzf_make_url controller='/Goods/Type/AttrItemEdit' meta_id=$goodsTypeAttr['meta_id']}}"
-                                   class="btn btn-small">编辑</a>
-                            </td>
+                        {{if {{$goodsTypeAttr['meta_key']}} > 0}}
+                            <tr data-tt-parent-id="goods_type_tree_id_{{$goodsTypeAttr['meta_key']}}"
+                                data-tt-id="goods_type_tree_id_{{$goodsTypeAttr['meta_id']}}">
+                                {{else}}
+                            <tr data-tt-id="goods_type_tree_id_{{$goodsTypeAttr['meta_id']}}">
+                        {{/if}}
+                        <td>{{$goodsTypeAttr['meta_name']}}</td>
+                        <td>&nbsp;</td>
+                        <td>{{$goodsTypeAttr['meta_desc']|nl2br}}</td>
+                        <td>{{$goodsTypeAttr['meta_sort_order']}}</td>
+                        <td>{{$goodsTypeAttr['attr_type_desc']|default}}</td>
+                        <td>{{$goodsTypeAttr['meta_data']|nl2br nofilter}}</td>
+                        <td>
+                            <a href="{{bzf_make_url controller='/Goods/Type/AttrItemEdit' meta_id=$goodsTypeAttr['meta_id']}}"
+                               class="btn btn-small">编辑</a>
+                            <a href="{{bzf_make_url controller='/Goods/Type/AttrItemRemove' meta_id=$goodsTypeAttr['meta_id']}}"
+                               onclick="return confirm('你确定要删除？');"
+                               class="btn btn-small btn-danger">删除</a>
+                        </td>
                         </tr>
                         <!-- /一个属性 -->
                     {{/if}}
