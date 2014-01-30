@@ -291,11 +291,17 @@ class Type extends \Controller\AuthController
         // 参数验证
         $validator = new Validator($f3->get('GET'));
         $meta_id = $validator->required()->digits()->min(1)->validate('meta_id');
+
+        if (!$this->validate($validator)) {
+            goto out;
+        }
+
         $goodsTypeService = new GoodsTypeService();
         $goodsTypeService->removeGoodsTypeAttrGroup($meta_id);
 
         $this->addFlashMessage('成功删除属性组[' . $meta_id . ']');
 
+        out:
         RouteHelper::reRoute($this, RouteHelper::getRefer(), false);
     }
 
@@ -403,11 +409,17 @@ class Type extends \Controller\AuthController
         // 参数验证
         $validator = new Validator($f3->get('GET'));
         $meta_id = $validator->required()->digits()->min(1)->validate('meta_id');
+
+        if (!$this->validate($validator)) {
+            goto out;
+        }
+
         $goodsTypeService = new GoodsTypeService();
         $goodsTypeService->removeGoodsTypeAttrItem($meta_id);
 
         $this->addFlashMessage('成功删除属性[' . $meta_id . ']');
 
+        out:
         RouteHelper::reRoute($this, RouteHelper::getRefer(), false);
     }
 
