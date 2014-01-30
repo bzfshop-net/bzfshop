@@ -72,6 +72,13 @@
             //  自己独立的命名空间
             bZF.goods_edit_type = {};
 
+            bZF.goods_edit_type.strValue = function (str) {
+                if (str) {
+                    return str;
+                }
+                return '';
+            };
+
             // 生成属性组
             bZF.goods_edit_type.renderAttrGroup = function (elem) {
                 return '<tr class="info"><td colspan="2">' + elem.meta_name + '</td></tr>';
@@ -82,7 +89,7 @@
                 var optionValueList = elem.meta_data.split(",");
                 var component = '<select class="span2 select2-simple" ' +
                         ' data-placeholder="请选择" data-no-validation="true" data-initValue="'
-                        + elem.goods_attr_item_value + '" >';
+                        + bZF.goods_edit_type.strValue(elem.attr_item_value) + '" >';
                 component += '<option value=""></option>';
                 $.each(optionValueList, function (index, optionValue) {
                     component += '<option value="' + optionValue + '">' + optionValue + '</option>';
@@ -98,7 +105,7 @@
             bZF.goods_edit_type.renderInput = function (elem) {
 
                 var component = '<input type="text" class="span2" data-no-validation="true" '
-                        + ' value="' + elem.meta_data + '" />';
+                        + ' value="' + bZF.goods_edit_type.strValue(elem.attr_item_value) + '" />';
 
                 return '<tr>' +
                         '<td style="text-align: right;">' + elem.meta_name + '</td>' +
@@ -108,7 +115,7 @@
             // 生成手动输入-多行
             bZF.goods_edit_type.renderTextarea = function (elem) {
                 var component = '<textarea class="span2" data-no-validation="true">'
-                        + elem.meta_data + '</textarea>';
+                        + bZF.goods_edit_type.strValue(elem.attr_item_value) + '</textarea>';
 
                 return '<tr>' +
                         '<td style="text-align: right;">' + elem.meta_name + '</td>' +
@@ -207,11 +214,12 @@
                         // 不是我们生成的节点
                         return;
                     }
-                    dataJson.attr_item_value = $elem.find('option:selected').val();
+                    // 不允许有引号
+                    dataJson.attr_item_value = $elem.find('option:selected').val().replace("'", '').replace('"', '');
                     bZF.goods_edit_type.writeHiddenValue(dataJson);
                 });
 
-                $('#bzf_goods_attr_value_tree_table input[type="text"],#bzf_goods_attr_value_tree_table textarea').each(function (index, elem) {
+                $('#bzf_goods_attr_value_tree_table input[type="text"], #bzf_goods_attr_value_tree_table textarea').each(function (index, elem) {
                     // 取得绑定的数据
                     var $elem = $(elem);
                     var dataJson = $elem.data('dataJson');
@@ -219,7 +227,8 @@
                         // 不是我们生成的节点
                         return;
                     }
-                    dataJson.attr_item_value = $elem.val();
+                    // 不允许有引号
+                    dataJson.attr_item_value = $elem.val().replace("'", '').replace('"', '');
                     bZF.goods_edit_type.writeHiddenValue(dataJson);
                 });
 

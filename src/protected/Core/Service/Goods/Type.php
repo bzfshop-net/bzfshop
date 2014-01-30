@@ -174,10 +174,10 @@ class Type extends MetaBasicService
      * @param int $meta_id 商品类型 ID
      * @return array
      */
-    public function getGoodsTypeAttrTree($meta_id)
+    public function fetchGoodsTypeAttrTree($meta_id, $ttl = 0)
     {
         // 取属性组
-        $attrGroupArray = $this->fetchGoodsTypeAttrGroupArray($meta_id);
+        $attrGroupArray = $this->fetchGoodsTypeAttrGroupArray($meta_id, $ttl);
 
         // 建立映射表
         $groupIdToItemArraymap = array();
@@ -187,7 +187,7 @@ class Type extends MetaBasicService
         }
         unset($attrGroup);
 
-        $attrItemArray = $this->fetchGoodsTypeAttrItemArray($meta_id);
+        $attrItemArray = $this->fetchGoodsTypeAttrItemArray($meta_id, $ttl);
         foreach ($attrItemArray as $attrItemArray) {
 
             // 商品有属性组就放到属性组里，没有就作为独立商品
@@ -199,6 +199,43 @@ class Type extends MetaBasicService
         }
 
         return $attrGroupArray;
+    }
+
+    /**
+     * 获得扁平的树形结构利于显示
+     *
+     * array(
+     *      attrGroup,
+     *      attrItemOfThisGroup,
+     *      attrItemOfThisGroup,
+     *      attrGroup,
+     *      attrItemOfThisGroup,
+     *      ....
+     * )
+     *
+     * @param $meta_id
+     * @param int $ttl
+     * @return array
+     */
+    public function fetchGoodsTypeAttrTreeTable($meta_id, $ttl = 0)
+    {
+
+        $goodsTypeAttrTree = $this->fetchGoodsTypeAttrTree($meta_id, $ttl);
+
+        // 把树变成扁平结构利于显示
+        $goodsAttrTreeTable = array();
+        foreach ($goodsTypeAttrTree as &$attrItem) {
+            $goodsAttrTreeTable[] = & $attrItem;
+            if (isset($attrItem['itemArray'])) {
+                foreach ($attrItem['itemArray'] as $subItem) {
+                    $goodsAttrTreeTable[] = $subItem;
+                }
+                unset($attrItem['itemArray']);
+            }
+        }
+        unset($attrItem);
+
+        return $goodsAttrTreeTable;
     }
 
     /**
@@ -330,6 +367,42 @@ class Type extends MetaBasicService
         }
 
         return $attrGroupArray;
+    }
+
+    /**
+     * 获得扁平的树形结构利于显示
+     *
+     * array(
+     *      attrGroup,
+     *      attrItemOfThisGroup,
+     *      attrItemOfThisGroup,
+     *      attrGroup,
+     *      attrItemOfThisGroup,
+     *      ....
+     * )
+     *
+     * @param $goods_id
+     * @param $typeId
+     * @param int $ttl
+     * @return array
+     */
+    public function fetchGoodsAttrItemValueTreeTable($goods_id, $typeId, $ttl = 0)
+    {
+        $goodsAttrValueTree = $this->fetchGoodsAttrItemValueTree($goods_id, $typeId, $ttl);
+
+        // 把树变成扁平结构利于显示
+        $goodsAttrValueTreeTable = array();
+        foreach ($goodsAttrValueTree as &$attrItem) {
+            $goodsAttrValueTreeTable[] = & $attrItem;
+            if (isset($attrItem['itemArray'])) {
+                foreach ($attrItem['itemArray'] as $subItem) {
+                    $goodsAttrValueTreeTable[] = $subItem;
+                }
+                unset($attrItem['itemArray']);
+            }
+        }
+
+        return $goodsAttrValueTreeTable;
     }
 
     /**

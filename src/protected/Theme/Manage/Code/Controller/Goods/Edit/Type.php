@@ -71,20 +71,7 @@ class Type extends \Controller\AuthController
 
         $goodsTypeService = new GoodsTypeService();
         // 取得属性值的树形结构
-        $goodsAttrValueTree = $goodsTypeService->fetchGoodsAttrItemValueTree($goods_id, $typeId);
-
-        // 把树变成扁平结构利于显示
-        $goodsAttrValueTreeTable = array();
-        foreach ($goodsAttrValueTree as &$attrItem) {
-            $goodsAttrValueTreeTable[] = & $attrItem;
-            if (isset($attrItem['itemArray'])) {
-                foreach ($attrItem['itemArray'] as $subItem) {
-                    $goodsAttrValueTreeTable[] = $subItem;
-                }
-                unset($attrItem['itemArray']);
-            }
-        }
-        unset($attrItem);
+        $goodsAttrValueTreeTable = $goodsTypeService->fetchGoodsAttrItemValueTreeTable($goods_id, $typeId);
 
         out:
         Ajax::header();
@@ -129,8 +116,9 @@ class Type extends \Controller\AuthController
             goto out_fail;
         }
 
-        // 商品类型发生了变化，清除所有旧的属性
         $goodsTypeService = new GoodsTypeService();
+
+        // 商品类型发生了变化，清除所有旧的属性
         if ($goods['type_id'] != $type_id) {
             $goodsTypeService->removeAllGoodsAttrItemValue($goods_id);
             $goods->type_id = $type_id;
@@ -139,17 +127,19 @@ class Type extends \Controller\AuthController
 
         // 获得属性值列表
         $goodsAttrValueArray = $f3->get('POST[goodsAttrValueArray]');
-        foreach ($goodsAttrValueArray as $goodsAttrValueInfo) {
-            $goodsAttrValueInfo = @json_decode($goodsAttrValueInfo, true);
-            if (empty($goodsAttrValueInfo)) {
-                continue;
+        if (!empty($goodsAttrValueArray)) {
+            foreach ($goodsAttrValueArray as $goodsAttrValueInfo) {
+                $goodsAttrValueInfo = @json_decode($goodsAttrValueInfo, true);
+                if (empty($goodsAttrValueInfo)) {
+                    continue;
+                }
+                // 更新属性值
+                $goodsAttrValue = $goodsTypeService->loadGoodsAttrById(intval($goodsAttrValueInfo['goods_attr_id']));
+                $goodsAttrValue->goods_id = $goods_id;
+                $goodsAttrValue->attr_item_id = $goodsAttrValueInfo['meta_id'];
+                $goodsAttrValue->attr_item_value = $goodsAttrValueInfo['attr_item_value'];
+                $goodsAttrValue->save();
             }
-            // 更新属性值
-            $goodsAttrValue = $goodsTypeService->loadGoodsAttrById(intval($goodsAttrValueInfo['goods_attr_id']));
-            $goodsAttrValue->goods_id = $goods_id;
-            $goodsAttrValue->attr_item_id = $goodsAttrValueInfo['meta_id'];
-            $goodsAttrValue->attr_item_value = $goodsAttrValueInfo['attr_item_value'];
-            $goodsAttrValue->save();
         }
 
         // 成功，显示商品详情

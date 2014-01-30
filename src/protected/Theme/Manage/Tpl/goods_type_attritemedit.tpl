@@ -88,7 +88,7 @@
                         <!-- 自动生成 tag 列表 -->
                         <input type="hidden" class="span5 select2-simple" name="meta_data"
                                value="{{$meta_data|default}}"/>
-                        <span class="comments">（不能出现逗号、空格，回车自动建立选项）</span>
+                        <span class="comments">（不能出现 单引号、双引号、逗号、空格，回车自动建立选项）</span>
                     </div>
 
                 </div>

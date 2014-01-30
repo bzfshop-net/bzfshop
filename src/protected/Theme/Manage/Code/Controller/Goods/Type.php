@@ -169,20 +169,7 @@ class Type extends \Controller\AuthController
         }
 
         // 取得属性树形结构
-        $goodsTypeAttrTree = $goodsTypeService->getGoodsTypeAttrTree($meta_id);
-
-        // 把树变成扁平结构利于显示
-        $goodsAttrTreeTable = array();
-        foreach ($goodsTypeAttrTree as &$attrItem) {
-            $goodsAttrTreeTable[] = & $attrItem;
-            if (isset($attrItem['itemArray'])) {
-                foreach ($attrItem['itemArray'] as $subItem) {
-                    $goodsAttrTreeTable[] = $subItem;
-                }
-                unset($attrItem['itemArray']);
-            }
-        }
-        unset($attrItem);
+        $goodsAttrTreeTable = $goodsTypeService->fetchGoodsTypeAttrTreeTable($meta_id);
 
         // 属性的显示
         foreach ($goodsAttrTreeTable as &$goodsAttrTreeItem) {
