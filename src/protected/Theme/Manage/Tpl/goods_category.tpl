@@ -9,7 +9,7 @@
         window.bz_set_breadcrumb_status.push({index: 1, text: '商品分类', link: window.location.href});
     </script>
     <!-- 页面主体内容 -->
-    <div class="row">
+    <div class="row" id="bzf_goods_category_tree_table_panel">
         <h4>商品分类</h4>
 
         <!-- 这里是条件筛选区 -->
@@ -195,10 +195,12 @@
         jQuery((function (window, $) {
 
             /************* goods_category.tpl 页面，商品分类树形结构 *************/
-            $("#bzf_goods_category_tree_table").treetable({ expandable: true, clickableNodeNames: true, initialState: 'collapsed' });
+            $("#bzf_goods_category_tree_table").detach().treetable({ expandable: true, clickableNodeNames: true, initialState: 'collapsed' }).appendTo('#bzf_goods_category_tree_table_panel');
+
             $('#bzf_goods_category_tree_table_button_expand').click(function () {
                 $("#bzf_goods_category_tree_table").treetable('expandAll');
             });
+
             $('#bzf_goods_category_tree_table_button_collapse').click(function () {
                 $("#bzf_goods_category_tree_table").treetable('collapseAll');
             });
