@@ -12,7 +12,6 @@ namespace Controller\Goods;
 use Core\Helper\Utility\Money;
 use Core\Helper\Utility\QueryBuilder;
 use Core\Helper\Utility\Route as RouteHelper;
-use Core\Helper\Utility\Utils;
 use Core\Helper\Utility\Validator;
 use Core\Plugin\ThemeHelper;
 use Core\Search\SearchHelper;
@@ -50,7 +49,7 @@ class Category extends \Controller\BaseController
         $pageNo = $validator->digits('pageNo 参数非法')->min(0, true, 'pageNo 参数非法')->validate('pageNo');
 
         // 搜索参数数组
-        $searchFormQuery                = array();
+        $searchFormQuery = array();
         $searchFormQuery['category_id'] =
             $validator->required('商品分类不能为空')->digits('分类id非法')->min(1, true, '分类id非法')->filter('ValidatorIntValue')
                 ->validate('category_id');
@@ -64,8 +63,8 @@ class Category extends \Controller\BaseController
         $searchFormQuery['shop_price'] = array($shopPriceMin, $shopPriceMax);
 
         // 排序
-        $orderBy      = $validator->oneOf(array('', 'total_buy_number', 'shop_price', 'add_time'))->validate('orderBy');
-        $orderDir     = $validator->oneOf(array('', 'asc', 'desc'))->validate('orderDir');
+        $orderBy = $validator->oneOf(array('', 'total_buy_number', 'shop_price', 'add_time'))->validate('orderBy');
+        $orderDir = $validator->oneOf(array('', 'asc', 'desc'))->validate('orderDir');
         $orderByParam = array();
         if (!empty($orderBy)) {
             $orderByParam = array(array($orderBy, $orderDir));
@@ -79,7 +78,7 @@ class Category extends \Controller\BaseController
             goto out_fail;
         }
 
-        $pageNo   = (isset($pageNo) && $pageNo > 0) ? $pageNo : 0;
+        $pageNo = (isset($pageNo) && $pageNo > 0) ? $pageNo : 0;
         $pageSize = 45; // 每页固定显示 45 个商品
 
         // 生成 smarty 的缓存 id
@@ -96,50 +95,15 @@ class Category extends \Controller\BaseController
         }
 
         $goodsCategoryService = new GoodsCategoryService();
-        $category             = $goodsCategoryService->loadCategoryById($searchFormQuery['category_id'], 1800);
+        $category = $goodsCategoryService->loadCategoryById($searchFormQuery['category_id'], 1800);
         if ($category->isEmpty()) {
-            goto out_display;
+            $this->addFlashMessage('分类[' . $searchFormQuery['category_id'] . ']不存在');
+            goto out_fail;
         }
 
-        // 我们需要显示当前分类的 上一级分类列表，当前分类列表，子分类列表
-
-        // 分类列表
-        $categoryLevelList = array();
-
-        // 当前分类的列表
-        $currentLevelCategoryList = $goodsCategoryService->fetchCategoryArray($category['parent_meta_id'], false, 1800);
-        $categoryLevelList[]      =
-            array('category_active_id' => $category['meta_id'], 'category_list' => $currentLevelCategoryList);
-
-        // 子分类的列表
-        $nextLevelCategoryList = $goodsCategoryService->fetchCategoryArray($category['meta_id'], false, 1800);
-        if (!empty($nextLevelCategoryList)) {
-            $categoryLevelList[] =
-                array('category_active_id' => '', 'category_list' => $nextLevelCategoryList);
-        }
-
-        // 父分类的列表
-        if ($category['parent_meta_id'] > 0) {
-            $parentCategory         = $goodsCategoryService->loadCategoryById($category['parent_meta_id'], 1800);
-            $priorLevelCategoryList =
-                $goodsCategoryService->fetchCategoryArray($parentCategory['parent_meta_id'], false, 1800);
-            array_unshift(
-                $categoryLevelList,
-                array('category_active_id' => $parentCategory['meta_id'], 'category_list' => $priorLevelCategoryList)
-            );
-        }
-
-        // 最多往上到 爷爷 一级
-        // 爷爷 分类的列表
-        if (isset($parentCategory) && $parentCategory['parent_meta_id'] > 0) {
-            $parentCategory         = $goodsCategoryService->loadCategoryById($parentCategory['parent_meta_id'], 1800);
-            $priorLevelCategoryList =
-                $goodsCategoryService->fetchCategoryArray($parentCategory['parent_meta_id'], false, 1800);
-            array_unshift(
-                $categoryLevelList,
-                array('category_active_id' => $parentCategory['meta_id'], 'category_list' => $priorLevelCategoryList)
-            );
-        }
+        // 我们需要在左侧显示分类层级结构
+        $goodsCategoryTreeArray = $goodsCategoryService->fetchCategoryTreeArray($category['parent_meta_id'], false, 1800);
+        $smarty->assign('goodsCategoryTreeArray', $goodsCategoryTreeArray);
 
         // 合并查询参数
         $searchParamArray =
@@ -179,11 +143,6 @@ class Category extends \Controller\BaseController
         $smarty->assign('seo_title', $category['meta_name'] . ',' . $smarty->getTemplateVars('seo_title'));
 
         out_display:
-
-        // 上一级分类
-        if (!empty($categoryLevelList)) {
-            $smarty->assign('categoryLevelList', $categoryLevelList);
-        }
 
         // 滑动图片广告
         $goods_search_adv_slider = json_decode(bzf_get_option_value('goods_search_adv_slider'), true);

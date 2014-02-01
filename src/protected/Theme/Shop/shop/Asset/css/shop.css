@@ -552,6 +552,22 @@ div.inline-divider label {
     padding-top: 10px;
 }
 
+/*******************  商品分类页面，左侧分类面板  *********************/
+#bzf_goods_category_tree_table_panel table tbody tr td {
+    text-align: left;
+    padding-left: 10px;
+}
+
+#bzf_goods_category_tree_table_panel table tbody tr.bzf_parent td {
+    background-color: #F7F7F7;
+    border-top: 1px solid #ddd;
+}
+
+#bzf_goods_category_tree_table_panel table tbody tr.bzf_parent td a {
+    font-size: 15px;
+    color: #FF6600;
+}
+
 /*******************  商品分类页面，上面分类选择面板  *********************/
 .bzf_goods_category_panel {
     padding: 2px 0px;
@@ -972,15 +988,15 @@ div.inline-divider label {
 
 /*********** goods_search 搜索结果展示 *************/
 .bzf_goods_search_goods_item {
-    width: 310px;
-    margin-left: 15px;
+    width: 260px;
+    margin-left: 5px;
     margin-right: 0px;
     margin-bottom: 10px;
 }
 
 .bzf_goods_search_goods_item .bzf_goods_image {
-    width: 300px;
-    height: 342px;
+    width: 250px;
+    height: 292px;
     overflow: hidden;
     border: 5px solid #ffffff;
     border-radius: 3px 3px 3px 3px;
@@ -994,13 +1010,13 @@ div.inline-divider label {
 
 .bzf_goods_search_goods_item .bzf_goods_image a {
     display: inline-block;
-    width: 300px;
-    height: 300px;
+    width: 250px;
+    height: 250px;
     overflow: hidden;
 }
 
 .bzf_goods_search_goods_item .bzf_goods_image a img {
-    width: 300px;
+    width: 250px;
     height: auto;
     padding: 0px;
 }
@@ -1026,9 +1042,9 @@ div.inline-divider label {
 }
 
 .bzf_goods_search_goods_item .bzf_goods_price .price {
-    font-size: 24px;
+    font-size: 20px;
     color: #E4006E;
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 .bzf_goods_search_goods_item .bzf_goods_price .price i {
@@ -1037,13 +1053,13 @@ div.inline-divider label {
 }
 
 .bzf_goods_search_goods_item .bzf_goods_price .price em {
-    font-size: 35px;
+    font-size: 28px;
     font-style: normal;
 }
 
 .bzf_goods_search_goods_item .bzf_goods_price .dock {
     display: inline-block;
-    margin-left: 15px;
+    margin-left: 5px;
     margin-top: 10px;
     text-align: center;
 }
@@ -1073,15 +1089,14 @@ div.inline-divider label {
 
 .bzf_goods_search_goods_item .bzf_goods_price .sold-num {
     position: absolute;
-    right: 7px;
+    right: 5px;
     bottom: 5px;
 }
 
 .bzf_goods_search_goods_item .bzf_goods_price .sold-num em {
     color: #390;
-    font-size: 16px;
     font-weight: bold;
-    margin-right: 5px;
+    margin-right: 3px;
     font-style: normal;
 }
 

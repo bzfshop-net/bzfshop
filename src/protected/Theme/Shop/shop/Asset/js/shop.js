@@ -572,15 +572,15 @@ jQuery((function (window, $) {
                     }
                 }
             }).bind("mouseout", function () {
-                    if (flag) {
-                        timer2 = setTimeout(function () {
-                            $('.allsort').removeClass('allsorthover');
-                            flag = false;
-                        }, 200);
-                    } else {
-                        clearTimeout(timer1);
-                    }
-                })
+                if (flag) {
+                    timer2 = setTimeout(function () {
+                        $('.allsort').removeClass('allsorthover');
+                        flag = false;
+                    }, 200);
+                } else {
+                    clearTimeout(timer1);
+                }
+            })
         });
 
         // 动态调整 shop_index 的高度
@@ -639,12 +639,12 @@ jQuery((function (window, $) {
         }, 200);
 
     }).mouseleave(function (e) {
-            clearTimeout(bZF.themeShop.popoverShowTimer);
-            var ref = $(this);
-            bZF.themeShop.popoverCloseTimer = setTimeout(function () {
-                ref.popover('destroy');
-            }, 100);
-        });
+        clearTimeout(bZF.themeShop.popoverShowTimer);
+        var ref = $(this);
+        bZF.themeShop.popoverCloseTimer = setTimeout(function () {
+            ref.popover('destroy');
+        }, 100);
+    });
 
     /************** layout.tpl  悬浮在我的购物车上，显示购物车里面的内容 ******************/
     $('#bzf_header_cart_block, #bzf_right_float_cart_block').mouseenter(function (e) {
@@ -694,12 +694,12 @@ jQuery((function (window, $) {
         }, 200);
 
     }).mouseleave(function (e) {
-            clearTimeout(bZF.themeShop.popoverShowTimer);
-            var ref = $(this);
-            bZF.themeShop.popoverCloseTimer = setTimeout(function () {
-                ref.popover('destroy');
-            }, 100);
-        });
+        clearTimeout(bZF.themeShop.popoverShowTimer);
+        var ref = $(this);
+        bZF.themeShop.popoverCloseTimer = setTimeout(function () {
+            ref.popover('destroy');
+        }, 100);
+    });
 
     /**
      * goods_view.tpl 页面，用户选择商品的不同属性
@@ -1036,7 +1036,7 @@ jQuery((function (window, $) {
                 }
             };
         }
-        $('#bzf_supplier_pane, #bzf_goods_view_goods_detail_tabbar, #goods_category_filter_panel').stickyPanel(stickyPanelOptions);
+        $('#bzf_supplier_pane, #bzf_goods_view_goods_detail_tabbar').stickyPanel(stickyPanelOptions);
     })(jQuery);
 
     /**

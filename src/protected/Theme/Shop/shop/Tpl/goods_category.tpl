@@ -10,25 +10,63 @@
     <!-- 主体内容 row -->
     <div class="row" style="padding-bottom: 10px;">
 
-        <!--------------------------------------------  网页主体内容  --------------------------------------------------------->
+    <!----------------------  网页主体内容  ---------------------->
 
-        {{if isset($goods_search_adv_slider)}}
-            <!-- 广告图片轮播 -->
-            <div class="row bzf_goods_view_head_slide_image_panel" style="margin-bottom: 10px;">
+    {{if isset($goods_search_adv_slider)}}
+        <!-- 广告图片轮播 -->
+        <div class="row bzf_goods_view_head_slide_image_panel" style="margin-bottom: 10px;">
 
-                <div class="quake-slider">
-                    <div class="quake-slider-images">
-                        {{foreach $goods_search_adv_slider as $sliderItem}}
-                            <a target="{{$sliderItem['target']}}" href="{{$sliderItem['url']}}">
-                                <img src="{{$sliderItem['image']}}"/>
-                            </a>
-                        {{/foreach}}
-                    </div>
+            <div class="quake-slider">
+                <div class="quake-slider-images">
+                    {{foreach $goods_search_adv_slider as $sliderItem}}
+                        <a target="{{$sliderItem['target']}}" href="{{$sliderItem['url']}}">
+                            <img src="{{$sliderItem['image']}}"/>
+                        </a>
+                    {{/foreach}}
                 </div>
-
             </div>
-            <!-- /广告图片轮播 -->
+
+        </div>
+        <!-- /广告图片轮播 -->
+    {{/if}}
+
+    <!-- 左侧栏 -->
+    <div class="span2" style="width:192px;">
+
+        {{if isset($goodsCategoryTreeArray)}}
+            <!-- 商品分类 -->
+            <div id="bzf_goods_category_tree_table_panel" class="row bzf_basic_content_block">
+                <table class="table table-bordered table-hover" style="margin-bottom: 0px;">
+                    <tbody>
+                    {{foreach $goodsCategoryTreeArray as $goodsCategoryItem}}
+                        <tr class="bzf_parent" data-tt-id="bzf_goods_category_{{$goodsCategoryItem['meta_id']}}">
+                            <td>
+                                <a href="{{bzf_make_url controller='/Goods/Category' category_id=$goodsCategoryItem['meta_id']}}">{{$goodsCategoryItem['meta_name']}}</a>
+                            </td>
+                        </tr>
+                        {{if isset($goodsCategoryItem['child_list'])}}
+                            {{foreach $goodsCategoryItem['child_list'] as $childCategory}}
+                                <tr data-tt-id="bzf_goods_category_{{$childCategory['meta_id']}}"
+                                    data-tt-parent-id="bzf_goods_category_{{$childCategory['parent_meta_id']}}">
+                                    <td>
+                                        <a href="{{bzf_make_url controller='/Goods/Category' category_id=$childCategory['meta_id']}}">{{$childCategory['meta_name']}}</a>
+                                    </td>
+                                </tr>
+                            {{/foreach}}
+                        {{/if}}
+                    {{/foreach}}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /商品分类 -->
         {{/if}}
+
+    </div>
+    <!-- /左侧栏 -->
+
+
+    <!-- 右侧栏 -->
+    <div class="span10" style="margin-left: 6px; width:804px;">
 
         <div id="goods_category_filter_panel" class="row bzf_basic_content_block" style="margin-bottom: 10px;">
 
@@ -91,14 +129,16 @@
                                         </div>
                                         <div class="input-prepend">
                                             <span class="add-on">￥</span>
-                                            <input type="text" name="shop_price_min" value="{{$shop_price_min|default}}"
+                                            <input type="text" name="shop_price_min"
+                                                   value="{{$shop_price_min|default}}"
                                                    pattern="^\d+(\.\d+)?$" data-validation-pattern-message="价格非法"/>
                                         </div>
                                         <span class="bzf_text">--</span>
 
                                         <div class="input-prepend">
                                             <span class="add-on">￥</span>
-                                            <input type="text" name="shop_price_max" value="{{$shop_price_max|default}}"
+                                            <input type="text" name="shop_price_max"
+                                                   value="{{$shop_price_max|default}}"
                                                    pattern="^\d+(\.\d+)?$" data-validation-pattern-message="价格非法"/>
                                         </div>
 
@@ -171,9 +211,30 @@
         </div>
         <!-- 分页 -->
 
-        <!--------------------------------------------  /网页主体内容  -------------------------------------------------->
+    </div>
+    <!-- /右侧栏 -->
+
+    <!--------------------------------------------  /网页主体内容  -------------------------------------------------->
 
     </div>
     <!-- /主题内容 row -->
 
+{{/block}}
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+
+            //左侧分类树形结构显示
+            $('#bzf_goods_category_tree_table_panel table').detach().treetable({ expandable: true, clickableNodeNames: true, initialState: 'collapsed' }).appendTo($('#bzf_goods_category_tree_table_panel'));
+
+            // 让当前分类自动展开
+            var categoryId = {{$category_id}};
+            $('#bzf_goods_category_tree_table_panel table tbody tr[data-tt-id="bzf_goods_category_'
+                    + categoryId + '"] td').trigger('click');
+
+        })(window, jQuery));
+    </script>
 {{/block}}

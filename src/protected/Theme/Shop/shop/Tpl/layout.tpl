@@ -42,9 +42,11 @@
     bootstrap-custom/plugin/pnotify/jquery.pnotify.default.css,
     bootstrap-custom/plugin/quake-slider/css/quake.slider.css,
     bootstrap-custom/plugin/popover-extra/popover-extra-placements.css,
+    bootstrap-custom/plugin/treetable/css/jquery.treetable.css,
     css/dropdown_category.css,
     css/jcarousel.css,
     css/quake-slider/quake.skin.css,
+    css/jquery.treetable.theme.bzfshop.css,
     css/shop.css,
     css/advblock.css
     '}}
@@ -324,6 +326,7 @@
        bootstrap-custom/plugin/jrumble/jquery.jrumble.1.3.min.js,
        bootstrap-custom/plugin/purl/purl.js,
        bootstrap-custom/plugin/raty/jquery.raty.min.js,
+       bootstrap-custom/plugin/treetable/js/jquery.treetable.js,
        bootstrap-custom/js/jquery.lazyload.js,
        js/dropdown_category.js,
        js/shop.js
