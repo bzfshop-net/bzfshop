@@ -470,7 +470,7 @@ jQuery((function (window, $) {
      * 取得 clientData
      */
     bZF.clientData.getClientData = function () {
-        return eval('(' + $.jStorage.get(bZF.clientData.clientDataStorageKey) + ')');
+        return $.parseJSON($.jStorage.get(bZF.clientData.clientDataStorageKey));
     };
 
     /**
@@ -723,7 +723,7 @@ jQuery((function (window, $) {
         // 解析 goods_spec 数据
         if (!bZF.goods_view_choose_spec.goods_view_goods_spec_array) {
 
-            bZF.goods_view_choose_spec.goods_view_goods_spec_array = eval('(' + goods_view_goods_spec_json + ')');
+            bZF.goods_view_choose_spec.goods_view_goods_spec_array = $.parseJSON(goods_view_goods_spec_json);
 
             bZF.goods_view_choose_spec.goods_view_goods_spec_array.goods_number_dict = {};
             bZF.goods_view_choose_spec.goods_view_goods_spec_array.goods_spec_add_price_dict = {};
@@ -1250,7 +1250,7 @@ jQuery((function (window, $) {
         /******************** 显示网页头部 QQ彩贝登陆提示 ********************/
         (function ($) {
             // 解析彩贝信息，json 结构
-            var qqcaibeiViewInfoArray = eval('(' + bZF.clientData.getClientDataValue("qqcaibei_viewinfoarray") + ')');
+            var qqcaibeiViewInfoArray = $.parseJSON(bZF.clientData.getClientDataValue("qqcaibei_viewinfoarray"));
             if (!qqcaibeiViewInfoArray) {
                 return;
             }
