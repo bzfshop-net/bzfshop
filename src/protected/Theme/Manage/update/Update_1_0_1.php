@@ -83,10 +83,11 @@ CREATE TABLE IF NOT EXISTS `bzf_goods_attr` (
   `goods_attr_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `goods_id` int(10) unsigned NOT NULL DEFAULT '0',
   `attr_item_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `attr_item_value` text NULL,
+  `attr_item_value` varchar(128) NULL,
   PRIMARY KEY (`goods_attr_id`),
   KEY `goods_id` (`goods_id`),
-  KEY `attr_item_id` (`attr_item_id`)
+  KEY `attr_item_id` (`attr_item_id`),
+  KEY `attr_item_value` (`attr_item_value`)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 SQL;
