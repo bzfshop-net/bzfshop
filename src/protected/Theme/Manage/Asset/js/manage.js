@@ -446,6 +446,90 @@ jQuery((function (window, $) {
         'message': '内容发生修改，你确定不保存就离开？'
     });
 
+    /************ 为 select2 控件加载 ajax 调用并且取得数据 **************/
+    bZF.select2AjaxLoad = function ($elem) {
+
+        var callUrl = $elem.attr('data-ajaxCallUrl');
+        var valueKey = $elem.attr('data-option-value-key');
+        var textKey = $elem.attr('data-option-text-key');
+
+        bZF.ajaxCallGet(callUrl, function (data) {
+            // 没有数据
+            if (!data) {
+                // 初始化，并且设置初始值
+                $elem.select2({
+                    minimumResultsForSearch: 10, // 10 个选项以上才执行搜索功能
+                    allowClear: true
+                }).select2('val', $elem.attr('data-initValue'));
+                return;
+            }
+
+            // 清空 select2 里面已有的 html内容
+            $elem.html('');
+
+            // 有 placeholder 需要在一开始加入一个空的 option
+            if ($elem.attr('data-placeholder')) {
+                $elem.append('<option value=""></option>');
+            }
+
+            // 加入各个数据
+            $.each(data, function (index, dataItem) {
+                $elem.append($('<option value="' + dataItem[valueKey] + '">' + dataItem[textKey] + '</option>'));
+            });
+
+            // 获取初始值
+            var dataInitValue = $elem.attr('data-initValue');
+
+            // 如果是多项选择，必然是 tag 显示
+            if (dataInitValue && '' != $.trim(dataInitValue) && $elem.attr('multiple')) {
+                var length = dataInitValue.length;
+
+                // 去掉尾部的 ','
+                if (',' == dataInitValue[length - 1]) {
+                    length--;
+                }
+                // 去除头尾的 ','
+                var startIndex = (',' == dataInitValue[0]) ? 1 : 0;
+                if (startIndex > 0) {
+                    length--;
+                }
+
+                // 截取子串
+                dataInitValue = dataInitValue.substr(startIndex, length);
+                dataInitValue = dataInitValue.split(',');
+            }
+
+            // 缺省格式化只是普通文本
+            var formatResultFunc = function (item) {
+                return item.text;
+            };
+            var formatSelectionFunc = formatResultFunc;
+
+            if ($elem.attr('data-option-value-image')) {
+                formatResultFunc = function (item) {
+                    return '<img src="' + item.text + '"/>';
+                };
+                formatSelectionFunc = function (item) {
+                    return '图片 ' + item.id;
+                };
+            }
+
+            // 初始化 select2 控件
+            $elem.select2({
+                minimumResultsForSearch: 10, // 10 个选项以上才执行搜索功能
+                allowClear: true,
+                formatResult: formatResultFunc,
+                formatSelection: formatSelectionFunc
+            });
+
+            // 设置控件的初始值
+            if (dataInitValue && '' != $.trim(dataInitValue)) {
+                $elem.select2('val', dataInitValue);
+            }
+
+        });
+    }
+
     /**
      *  增强 html 的显示效果，包括增强一些 JavaScript 的验证
      *
@@ -475,86 +559,19 @@ jQuery((function (window, $) {
             // context 是上下文环境，比如你用 ajax load 了一个网页进来，然后你希望使用里面的 select 元素，
             // 这里你就可以指定 context 来执行
         $('select.select2-simple', node).each(function (index, elem) {
+            var $elem = $(elem);
 
             // 自动做 ajax 调用加载数据
-            if ($(elem).attr('data-ajaxCallUrl')) {
-                var callUrl = $(elem).attr('data-ajaxCallUrl');
-                var valueKey = $(elem).attr('data-option-value-key');
-                var textKey = $(elem).attr('data-option-text-key');
+            if ($elem.attr('data-ajaxCallUrl')) {
 
-                bZF.ajaxCallGet(callUrl, function (data) {
-                    // 没有数据
-                    if (!data) {
-                        // 初始化，并且设置初始值
-                        $(elem).select2({
-                            minimumResultsForSearch: 10, // 10 个选项以上才执行搜索功能
-                            allowClear: true
-                        }).select2('val', $(elem).attr('data-initValue'));
-                        return;
-                    }
+                bZF.select2AjaxLoad($elem);
 
-                    // 加入各个数据
-                    $.each(data, function (index, dataItem) {
-                        $(elem).append($('<option value="' + dataItem[valueKey] + '">' + dataItem[textKey] + '</option>'));
-                    });
-
-                    // 获取初始值
-                    var dataInitValue = $(elem).attr('data-initValue');
-
-                    // 如果是多项选择，必然是 tag 显示
-                    if (dataInitValue && '' != $.trim(dataInitValue) && $(elem).attr('multiple')) {
-                        var length = dataInitValue.length;
-
-                        // 去掉尾部的 ','
-                        if (',' == dataInitValue[length - 1]) {
-                            length--;
-                        }
-                        // 去除头尾的 ','
-                        var startIndex = (',' == dataInitValue[0]) ? 1 : 0;
-                        if (startIndex > 0) {
-                            length--;
-                        }
-
-                        // 截取子串
-                        dataInitValue = dataInitValue.substr(startIndex, length);
-                        dataInitValue = dataInitValue.split(',');
-                    }
-
-                    // 缺省格式化只是普通文本
-                    var formatResultFunc = function (item) {
-                        return item.text;
-                    };
-                    var formatSelectionFunc = formatResultFunc;
-
-                    if ($(elem).attr('data-option-value-image')) {
-                        formatResultFunc = function (item) {
-                            return '<img src="' + item.text + '"/>';
-                        };
-                        formatSelectionFunc = function (item) {
-                            return '图片 ' + item.id;
-                        };
-                    }
-
-                    // 初始化 select2 控件
-                    $(elem).select2({
-                        minimumResultsForSearch: 10, // 10 个选项以上才执行搜索功能
-                        allowClear: true,
-                        formatResult: formatResultFunc,
-                        formatSelection: formatSelectionFunc
-                    });
-
-                    // 设置控件的初始值
-                    if (dataInitValue && '' != $.trim(dataInitValue)) {
-                        $(elem).select2('val', dataInitValue);
-                    }
-
-                });
             } else {
                 // 初始化，并且设置初始值
-                $(elem).select2({
+                $elem.select2({
                     minimumResultsForSearch: 10, // 10 个选项以上才执行搜索功能
                     allowClear: true
-                }).select2('val', $(elem).attr('data-initValue'));
+                }).select2('val', $elem.attr('data-initValue'));
             }
 
         });

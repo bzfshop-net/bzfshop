@@ -25,7 +25,7 @@ class Category extends MetaBasicService
      * @return object 分类的信息
      *
      * @param int $categoryId 分类的 ID
-     * @param int $ttl        缓存时间
+     * @param int $ttl 缓存时间
      */
     public function loadCategoryById($categoryId, $ttl = 0)
     {
@@ -33,7 +33,7 @@ class Category extends MetaBasicService
 
         // 检查 category 是否合法
         if (!$meta->isEmpty()) {
-            if (Category::META_TYPE != $meta['meta_type']) {
+            if (self::META_TYPE != $meta['meta_type']) {
                 throw new \InvalidArgumentException('categoryId[' . $categoryId . '] is illegal');
             }
         }
@@ -44,13 +44,13 @@ class Category extends MetaBasicService
     /**
      * 新建或者更新一个商品分类，categoryId 为 0 则新建
      *
-     * @param  int    $categoryId
-     * @param  int    $parentId
+     * @param  int $categoryId
+     * @param  int $parentId
      * @param  string $name
-     * @param string  $desc
-     * @param string  $data
-     * @param int     $sortOrder
-     * @param int     $status
+     * @param string $desc
+     * @param string $data
+     * @param int $sortOrder
+     * @param int $status
      *
      * @return object
      */
@@ -62,15 +62,16 @@ class Category extends MetaBasicService
         $data = null,
         $sortOrder = 0,
         $status = 1
-    ) {
-        $meta                  = $this->loadCategoryById($categoryId);
-        $meta->meta_type       = Category::META_TYPE;
-        $meta->parent_meta_id  = $parentId;
-        $meta->meta_name       = $name;
-        $meta->meta_desc       = $desc;
-        $meta->meta_data       = $data;
+    )
+    {
+        $meta = $this->loadCategoryById($categoryId);
+        $meta->meta_type = self::META_TYPE;
+        $meta->parent_meta_id = $parentId;
+        $meta->meta_name = $name;
+        $meta->meta_desc = $desc;
+        $meta->meta_data = $data;
         $meta->meta_sort_order = $sortOrder;
-        $meta->meta_status     = $status;
+        $meta->meta_status = $status;
         $meta->save();
         return $meta;
     }
@@ -80,26 +81,26 @@ class Category extends MetaBasicService
      *
      * @return array 分类列表，格式 array(array(列表详情), array(列表详情) ...)
      *
-     * @param int  $parentId 父类的 ID，用 0 表示取得顶级分类
-     * @param bool $showAll  是否把不允许显示的分类也去取出来
-     * @param int  $ttl      缓存时间
+     * @param int $parentId 父类的 ID，用 0 表示取得顶级分类
+     * @param bool $showAll 是否把不允许显示的分类也去取出来
+     * @param int $ttl 缓存时间
      */
     public function fetchCategoryArray($parentId, $showAll = false, $ttl = 0)
     {
         // 参数验证
         $validator = new Validator(array('parentId' => $parentId));
-        $parentId  = $validator->digits()->min(0)->validate('parentId');
+        $parentId = $validator->digits()->min(0)->validate('parentId');
         $this->validate($validator);
 
         return $this->_fetchArray(
             'meta',
             '*',
             array(
-                 array(
-                     'meta_type = ? and parent_meta_id = ? ' . ($showAll ? '' : 'and meta_status = 1'),
-                     Category::META_TYPE,
-                     $parentId
-                 )
+                array(
+                    'meta_type = ? and parent_meta_id = ? ' . ($showAll ? '' : 'and meta_status = 1'),
+                    self::META_TYPE,
+                    $parentId
+                )
             ),
             array('order' => 'meta_sort_order desc, meta_id desc'),
             0,
@@ -126,9 +127,9 @@ class Category extends MetaBasicService
     /**
      * 取得父节点以下整个树形结构
      *
-     * @param int  $parentId
-     * @param bool $showAll  是否取得所有节点？ 如果否，则只取允许显示的节点
-     * @param int  $ttl
+     * @param int $parentId
+     * @param bool $showAll 是否取得所有节点？ 如果否，则只取允许显示的节点
+     * @param int $ttl
      *
      * @return array
      */
@@ -146,10 +147,10 @@ class Category extends MetaBasicService
             'meta',
             '*',
             array(
-                 array(
-                     'meta_type = ? ' . ($showAll ? '' : 'and meta_status = 1'),
-                     Category::META_TYPE
-                 )
+                array(
+                    'meta_type = ? ' . ($showAll ? '' : 'and meta_status = 1'),
+                    self::META_TYPE
+                )
             ),
             array('order' => 'meta_sort_order desc, meta_id desc'),
             0,
@@ -203,21 +204,21 @@ class Category extends MetaBasicService
      * @return array 子分类 ID 列表，格式 array(10,13,15,...)
      *
      * @param int $parentId 父类的 ID，用 0 表示取得顶级分类
-     * @param int $level    取得多少层，子分类有可能很深，我们只取有限层次
-     * @param int $ttl      缓存时间
+     * @param int $level 取得多少层，子分类有可能很深，我们只取有限层次
+     * @param int $ttl 缓存时间
      */
     public function fetchCategoryChildrenIdArray($parentId, $level = 1, $ttl = 0)
     {
         // 参数验证
         $validator = new Validator(array('parentId' => $parentId, 'level' => $level, 'ttl' => $ttl));
-        $parentId  = $validator->digits()->min(0)->validate('parentId');
-        $level     = $validator->digits()->min(1)->validate('level');
-        $ttl       = $validator->digits()->min(0)->validate('ttl');
+        $parentId = $validator->digits()->min(0)->validate('parentId');
+        $level = $validator->digits()->min(1)->validate('level');
+        $ttl = $validator->digits()->min(0)->validate('ttl');
         $this->validate($validator);
 
         // 取得树形结构
         $categoryTreeArray = $this->fetchCategoryTreeArray($parentId, false, $ttl);
-        $categoryIdArray   = array();
+        $categoryIdArray = array();
 
         // 递归取数据
         $this->getCategoryId($categoryIdArray, $categoryTreeArray, $level, 0);
@@ -230,7 +231,7 @@ class Category extends MetaBasicService
      * 根据一组 category 的 id 值取得分类信息
      *
      * @param  array $categoryIdArray
-     * @param int    $ttl
+     * @param int $ttl
      *
      * @return array
      */
@@ -241,8 +242,8 @@ class Category extends MetaBasicService
             'meta',
             '*',
             array(
-                 array('meta_type = ? and meta_status = 1', Category::META_TYPE),
-                 array(QueryBuilder::buildInCondition('meta_id', $categoryIdArray))
+                array('meta_type = ? and meta_status = 1', self::META_TYPE),
+                array(QueryBuilder::buildInCondition('meta_id', $categoryIdArray))
             ),
             null,
             0,
@@ -258,36 +259,36 @@ class Category extends MetaBasicService
      *
      * @return array 商品列表，格式 array(array(商品详情), array(商品详情) ...)
      *
-     * @param int    $categoryId 分类的ID
-     * @param int    $level      取得多少层，子分类有可能很深，我们只取有限层次
-     * @param int    $offset     从什么地方开始取商品
-     * @param string $systemTag  系统标记
-     * @param int    $limit      限制一次取得多少个商品
-     * @param int    $ttl        缓存时间
+     * @param int $categoryId 分类的ID
+     * @param int $level 取得多少层，子分类有可能很深，我们只取有限层次
+     * @param int $offset 从什么地方开始取商品
+     * @param string $systemTag 系统标记
+     * @param int $limit 限制一次取得多少个商品
+     * @param int $ttl 缓存时间
      */
     public function fetchGoodsArray($categoryId, $level, $systemTag, $offset = 0, $limit = 10, $ttl = 0)
     {
         // 参数验证
-        $validator  = new Validator(array(
-                                         'categoryId' => $categoryId,
-                                         'level'      => $level,
-                                         'systemTag'  => $systemTag,
-                                         'offset'     => $offset,
-                                         'limit'      => $limit,
-                                         'ttl'        => $ttl
-                                    ));
+        $validator = new Validator(array(
+            'categoryId' => $categoryId,
+            'level' => $level,
+            'systemTag' => $systemTag,
+            'offset' => $offset,
+            'limit' => $limit,
+            'ttl' => $ttl
+        ));
         $categoryId = $validator->digits()->min(0)->validate('categoryId');
-        $level      = $validator->required()->digits()->min(1)->validate('level');
-        $systemTag  = $validator->validate('systemTag');
-        $offset     = $validator->digits()->min(0)->validate('offset');
-        $limit      = $validator->digits()->min(1)->validate('limit');
-        $ttl        = $validator->digits()->min(0)->validate('ttl');
+        $level = $validator->required()->digits()->min(1)->validate('level');
+        $systemTag = $validator->validate('systemTag');
+        $offset = $validator->digits()->min(0)->validate('offset');
+        $limit = $validator->digits()->min(1)->validate('limit');
+        $ttl = $validator->digits()->min(0)->validate('ttl');
         $this->validate($validator);
 
-        $childrenIdArray   = $this->fetchCategoryChildrenIdArray($categoryId, $level, $ttl);
+        $childrenIdArray = $this->fetchCategoryChildrenIdArray($categoryId, $level, $ttl);
         $childrenIdArray[] = $categoryId; // 加入父节点
 
-        $queryCondArray   = array();
+        $queryCondArray = array();
         $queryCondArray[] = array('is_delete = 0 AND is_on_sale = 1 AND is_alone_sale = 1');
         // 构建 SQL 的 in 语句， cat_id in (100,20,30)
         $queryCondArray[] = array(QueryBuilder::buildInCondition('cat_id', $childrenIdArray, \PDO::PARAM_INT));
@@ -303,9 +304,9 @@ class Category extends MetaBasicService
             // fields
             QueryBuilder::buildFilter($queryCondArray), // filter
             array(
-                 'order'  => 'sort_order desc, goods_id desc',
-                 'offset' => $offset,
-                 'limit'  => $limit
+                'order' => 'sort_order desc, goods_id desc',
+                'offset' => $offset,
+                'limit' => $limit
             ), // options
             $ttl
         );
@@ -316,30 +317,30 @@ class Category extends MetaBasicService
      *
      * @return int 商品总数
      *
-     * @param int    $categoryId 分类的ID
-     * @param int    $level      取得多少层，子分类有可能很深，我们只取有限层次
-     * @param string $systemTag  系统标记
-     * @param int    $ttl        缓存时间
+     * @param int $categoryId 分类的ID
+     * @param int $level 取得多少层，子分类有可能很深，我们只取有限层次
+     * @param string $systemTag 系统标记
+     * @param int $ttl 缓存时间
      */
     public function countGoodsArray($categoryId, $level, $systemTag, $ttl = 0)
     {
         // 参数验证
-        $validator  = new Validator(array(
-                                         'categoryId' => $categoryId,
-                                         'level'      => $level,
-                                         'systemTag'  => $systemTag,
-                                         'ttl'        => $ttl
-                                    ));
+        $validator = new Validator(array(
+            'categoryId' => $categoryId,
+            'level' => $level,
+            'systemTag' => $systemTag,
+            'ttl' => $ttl
+        ));
         $categoryId = $validator->digits()->min(0)->validate('categoryId');
-        $level      = $validator->required()->digits()->min(1)->validate('level');
-        $systemTag  = $validator->validate('systemTag');
-        $ttl        = $validator->digits()->min(0)->validate('ttl');
+        $level = $validator->required()->digits()->min(1)->validate('level');
+        $systemTag = $validator->validate('systemTag');
+        $ttl = $validator->digits()->min(0)->validate('ttl');
         $this->validate($validator);
 
-        $childrenIdArray   = $this->fetchCategoryChildrenIdArray($categoryId, $level, $ttl);
+        $childrenIdArray = $this->fetchCategoryChildrenIdArray($categoryId, $level, $ttl);
         $childrenIdArray[] = $categoryId; // 加入父节点
 
-        $queryCondArray   = array();
+        $queryCondArray = array();
         $queryCondArray[] = array('is_delete = 0 AND is_on_sale = 1 AND is_alone_sale = 1');
         // 构建 SQL 的 in 语句， cat_id in (100,20,30)
         $queryCondArray[] = array(QueryBuilder::buildInCondition('cat_id', $childrenIdArray, \PDO::PARAM_INT));
@@ -364,7 +365,7 @@ class Category extends MetaBasicService
     public function transferGoodsToNewCategory($oldCategoryId, $newCategoryId)
     {
         // 参数验证
-        $validator     = new Validator(array('oldCategoryId' => $oldCategoryId, 'newCategoryId' => $newCategoryId));
+        $validator = new Validator(array('oldCategoryId' => $oldCategoryId, 'newCategoryId' => $newCategoryId));
         $oldCategoryId = $validator->digits()->min(1)->validate('oldCategoryId');
         $newCategoryId = $validator->digits()->min(1)->validate('newCategoryId');
 

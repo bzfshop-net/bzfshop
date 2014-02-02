@@ -75,4 +75,38 @@ class GoodsType extends \Controller\AuthController
         echo Ajax::buildResult(-1, $errorMessage, null);
     }
 
+    public function ListAttrItem($f3)
+    {
+        // 参数验证
+        $validator = new Validator($f3->get('GET'));
+        $meta_id = $validator->required()->digits()->min(1)->validate('typeId');
+        $errorMessage = '';
+
+        if (!$this->validate($validator)) {
+            $errorMessage = implode('|', $this->flashMessageArray);
+            goto out_fail;
+        }
+
+        // 检查缓存
+        $cacheKey = md5(__FILE__ . '\\' . __METHOD__ . '\\' . $meta_id);
+        $attrItemArray = $f3->get($cacheKey);
+        if (!empty($attrItemArray)) {
+            goto out;
+        }
+
+        $goodsTypeService = new GoodsTypeService();
+        $attrItemArray = $goodsTypeService->fetchGoodsTypeAttrItemArray($meta_id);
+
+        $f3->set($cacheKey, $attrItemArray, 300); //缓存 5 分钟
+
+        out:
+        $f3->expire(60); // 客户端缓存 1 分钟
+        Ajax::header();
+        echo Ajax::buildResult(null, null, $attrItemArray);
+        return;
+
+        out_fail:
+        Ajax::header();
+        echo Ajax::buildResult(-1, $errorMessage, null);
+    }
 }

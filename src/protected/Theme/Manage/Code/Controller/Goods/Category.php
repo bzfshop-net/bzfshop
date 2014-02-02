@@ -19,11 +19,12 @@ class Category extends \Controller\AuthController
     private function getCategoryFlatArray($goodsCategoryTreeArray, &$goodsCategoryFlatArray)
     {
 
-        foreach ($goodsCategoryTreeArray as $goodsCategoryItem) {
-            $goodsCategoryFlatArray[] = $goodsCategoryItem;
+        foreach ($goodsCategoryTreeArray as & $goodsCategoryItem) {
+            $goodsCategoryFlatArray[] = & $goodsCategoryItem;
             if (!empty($goodsCategoryItem['child_list'])) {
                 $this->getCategoryFlatArray($goodsCategoryItem['child_list'], $goodsCategoryFlatArray);
             }
+            unset($goodsCategoryItem['child_list']);
         }
     }
 
@@ -43,7 +44,7 @@ class Category extends \Controller\AuthController
         $this->getCategoryFlatArray($goodsCategoryTreeArray, $goodsCategoryFlatArray);
         $smarty->assign('goodsCategoryFlatArray', $goodsCategoryFlatArray);
 
-        $categoryGoodsCountArray     = $goodsCategoryService->calcCategoryGoodsCount();
+        $categoryGoodsCountArray = $goodsCategoryService->calcCategoryGoodsCount();
         $categoryIdToGoodsCountArray = array();
         foreach ($categoryGoodsCountArray as $categoryItem) {
             $categoryIdToGoodsCountArray[$categoryItem['cat_id']] = $categoryItem['goods_count'];
@@ -66,13 +67,16 @@ class Category extends \Controller\AuthController
 
         // 参数验证
         $validator = new Validator($f3->get('POST'));
-        $meta_id   = $validator->digits()->validate('meta_id');
-        $meta_id   = $meta_id ? : 0;
+        $meta_id = $validator->digits()->validate('meta_id');
+        $meta_id = $meta_id ? : 0;
 
-        $meta_name       = $validator->validate('meta_name');
-        $parent_meta_id  = $validator->digits()->validate('parent_meta_id');
+        $meta_name = $validator->validate('meta_name');
+        $parent_meta_id = $validator->digits()->validate('parent_meta_id');
         $meta_sort_order = $validator->digits()->validate('meta_sort_order');
-        $meta_status     = $validator->digits()->validate('meta_status');
+        $meta_status = $validator->digits()->validate('meta_status');
+        // 筛选属性
+        $filterTypeIdArray = $validator->validate('filterTypeIdArray');
+        $filterAttrItemIdArray = $validator->validate('filterAttrItemIdArray');
 
         if (!$this->validate($validator)) {
             goto out;
@@ -83,13 +87,28 @@ class Category extends \Controller\AuthController
             goto out;
         }
 
+        // 构造筛选属性结构
+        $filterArray = array();
+        $count = min(count($filterTypeIdArray), count($filterAttrItemIdArray));
+        for ($index = 0; $index < $count; $index++) {
+            $typeId = abs(intval($filterTypeIdArray[$index]));
+            $attrItemId = abs(intval($filterAttrItemIdArray[$index]));
+            if ($typeId <= 0 || $attrItemId <= 0) {
+                // 非法值跳过
+                continue;
+            }
+            $filterArray[] = array('typeId' => $typeId, 'attrItemId' => $attrItemId);
+        }
+
+        $meta_data = array('filterArray' => $filterArray);
+
         $goodsCategoryService = new GoodsCategoryService();
         $goodsCategoryService->saveCategoryById(
             $meta_id,
             $parent_meta_id,
             $meta_name,
             null,
-            null,
+            json_encode($meta_data),
             $meta_sort_order,
             $meta_status
         );
@@ -115,14 +134,14 @@ class Category extends \Controller\AuthController
 
         // 参数验证
         $validator = new Validator($f3->get('GET'));
-        $meta_id   = $validator->required()->digits()->min(1)->validate('meta_id');
+        $meta_id = $validator->required()->digits()->min(1)->validate('meta_id');
 
         if (!$this->validate($validator)) {
             goto out;
         }
 
         $goodsCategoryService = new GoodsCategoryService();
-        $category             = $goodsCategoryService->loadCategoryById($meta_id);
+        $category = $goodsCategoryService->loadCategoryById($meta_id);
         if ($category->isEmpty()) {
             $this->addFlashMessage('分类不存在');
             goto out;
@@ -166,8 +185,8 @@ class Category extends \Controller\AuthController
         $this->requirePrivilege('manage_goods_category_edit');
 
         // 参数验证
-        $validator      = new Validator($f3->get('POST'));
-        $meta_id        = $validator->required()->digits()->min(1)->validate('meta_id');
+        $validator = new Validator($f3->get('POST'));
+        $meta_id = $validator->required()->digits()->min(1)->validate('meta_id');
         $target_meta_id = $validator->required('必须选择一个目标分类')->digits()->min(1)->validate('target_meta_id');
 
         if (!$this->validate($validator)) {
