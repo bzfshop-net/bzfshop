@@ -1113,6 +1113,16 @@ jQuery((function (window, $) {
         $('a[category_id=' + category_active_id + ']', elem).addClass('active');
     });
 
+    /************************ goods_category.tpl 页面，左侧商品分类树形结构 ****************************/
+    if ($('#bzf_goods_category_tree_table_panel').size() > 0) {
+        $('#bzf_goods_category_tree_table_panel table').detach().treetable({ expandable: true, clickableNodeNames: true, initialState: 'collapsed' }).appendTo($('#bzf_goods_category_tree_table_panel'));
+
+        // 让当前分类自动展开
+        var categoryId = $('input[name="category_id"]').val();
+        $('#bzf_goods_category_tree_table_panel table tbody tr[data-tt-id="bzf_goods_category_'
+            + categoryId + '"] td').trigger('click');
+    }
+
     /******************* goods_search.tpl 页面，用户 hover 某个商品，显示标题 ***********************/
     $('.bzf_goods_search_goods_item .bzf_goods_image').hover(function () {
         $(this).addClass('bzf_hover');

@@ -220,21 +220,3 @@
     <!-- /主题内容 row -->
 
 {{/block}}
-{{block name=page_js_block append}}
-    <script type="text/javascript">
-        /**
-         * 这里的代码等 document.ready 才执行
-         */
-        jQuery((function (window, $) {
-
-            //左侧分类树形结构显示
-            $('#bzf_goods_category_tree_table_panel table').detach().treetable({ expandable: true, clickableNodeNames: true, initialState: 'collapsed' }).appendTo($('#bzf_goods_category_tree_table_panel'));
-
-            // 让当前分类自动展开
-            var categoryId = {{$category_id}};
-            $('#bzf_goods_category_tree_table_panel table tbody tr[data-tt-id="bzf_goods_category_'
-                    + categoryId + '"] td').trigger('click');
-
-        })(window, jQuery));
-    </script>
-{{/block}}
