@@ -341,8 +341,7 @@ class Type extends MetaBasicService
         $typeId = $validator->required()->digits()->min(1)->validate('typeId');
         $this->validate($validator);
 
-        $tableJoin = DataMapper::tableName('meta') . ' as m LEFT JOIN ' . DataMapper::tableName('goods_attr')
-            . ' as ga on m.meta_id = ga.attr_item_id';
+        $tableJoin = DataMapper::tableName('meta') . ' as m LEFT JOIN (select * from ' . DataMapper::tableName('goods_attr') . ' where goods_id = ' . $goods_id . ')' . ' as ga on m.meta_id = ga.attr_item_id';
 
         return $this->_fetchArray(
             $tableJoin,
@@ -350,8 +349,7 @@ class Type extends MetaBasicService
             'm.meta_id, m.meta_type, m.meta_name, m.meta_key, m.meta_ename, m.meta_data, ga.goods_attr_id, ga.attr_item_value',
             // 查询条件
             array(
-                array('m.meta_type = ? and m.parent_meta_id = ? ', self::META_TYPE_GOODS_TYPE_ATTR_ITEM, $typeId),
-                array('ga.goods_id is null or ga.goods_id = ?', $goods_id)
+                array('m.meta_type = ? and m.parent_meta_id = ? ', self::META_TYPE_GOODS_TYPE_ATTR_ITEM, $typeId)
             ),
             array('order' => 'm.meta_key asc, m.meta_sort_order desc, m.meta_id asc'),
             0,
