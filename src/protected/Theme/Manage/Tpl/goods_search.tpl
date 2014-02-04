@@ -39,7 +39,6 @@
                             <option value="1">销售中</option>
                             <option value="0">已下线</option>
                         </select>
-
                     </div>
                 </div>
 
@@ -63,6 +62,14 @@
                                 data-option-value-key="system_tag" data-option-text-key="system_name">
                             <option value=""></option>
                         </select>
+                        <span class="input-label">商品类型</span>
+                        <select class="span2 select2-simple"
+                                name="type_id" data-placeholder="商品类型列表"
+                                data-ajaxCallUrl="{{bzf_make_url controller='/Ajax/GoodsType/ListType'}}"
+                                data-option-value-key="meta_id" data-option-text-key="meta_name"
+                                data-initValue="{{$type_id|default}}">
+                            <option value=""></option>
+                        </select>
                     </div>
                 </div>
 
@@ -80,6 +87,18 @@
                         <input class="span2" type="text" name="warehouse" value="{{$warehouse|default}}"/>
                         <span class="input-label">货架</span>
                         <input class="span2" type="text" name="shelf" value="{{$shelf|default}}"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="input-label">推广渠道</span>
+                        <select class="span2 select2-simple" name="goods_promote"
+                                data-placeholder="选择推广渠道" data-initValue="{{$goods_promote|default}}">
+                            <option value=""></option>
+                            <option value="360tequan">360特权</option>
+                            <option value="360tegong">360特供</option>
+                        </select>
                     </div>
                 </div>
 
@@ -135,7 +154,7 @@
                             {{$goodsItem['warehouse']}}&nbsp;|&nbsp;{{$goodsItem['shelf']}}
                         {{/if}}
                     </td>
-                    <td>{{$goodsItem['cat_name']|default}}</td>
+                    <td>{{$goodsItem['cat_name']|default}}<br/><br/>[{{$goodsItem['type_name']|default}}]</td>
                     <td>{{$goodsItem['suppliers_name']|default}}</td>
                     <td>
                         销售价：{{$goodsItem['shop_price']|bzf_money_display}} 元<br/>

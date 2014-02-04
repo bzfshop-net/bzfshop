@@ -16,23 +16,12 @@ use Core\Helper\Utility\Validator;
 use Core\Search\SearchHelper;
 use Core\Service\Goods\Category as CategoryBasicService;
 use Core\Service\Goods\Spec as GoodsSpecService;
+use Core\Service\Goods\Type as GoodsTypeService;
 use Core\Service\User\Supplier as UserSupplierService;
 use Theme\Manage\ManageThemePlugin;
 
 class Search extends \Controller\AuthController
 {
-
-    // 我们只取出 goods 表的部分信息
-    private $searchFieldSelector = null;
-
-    public function __construct()
-    {
-        // 选择我们需要的字段
-        $this->searchFieldSelector =
-            'g.goods_id, g.system_tag_list, g.cat_id, g.admin_user_name, g.goods_name, g.goods_number, g.goods_spec, g.is_on_sale'
-            . ', g.market_price, g.shop_price, g.shipping_fee, g.shipping_free_number'
-            . ', g.suppliers_id, g.suppliers_price, g.suppliers_shipping_fee, g.warehouse, g.shelf';
-    }
 
     public function get($f3)
     {
@@ -60,12 +49,14 @@ class Search extends \Controller\AuthController
             $validator->digits()->min(1)->filter('ValidatorIntValue')->validate('suppliers_id');
         $searchFormQuery['g.goods_name']    = $validator->validate('goods_name');
         $searchFormQuery['g.cat_id']        =
-            $validator->digits()->min(0)->filter('ValidatorIntValue')->validate('cat_id');
+            $validator->digits()->min(1)->filter('ValidatorIntValue')->validate('cat_id');
+        $searchFormQuery['g.type_id']       =
+            $validator->digits()->min(1)->filter('ValidatorIntValue')->validate('type_id');
         $searchFormQuery['g.goods_sn']      = $validator->validate('goods_sn');
         $searchFormQuery['g.warehouse']     = $validator->validate('warehouse');
         $searchFormQuery['g.shelf']         = $validator->validate('shelf');
         $searchFormQuery['g.admin_user_id'] =
-            $validator->digits()->min(0)->filter('ValidatorIntValue')->validate('admin_user_id');
+            $validator->digits()->min(1)->filter('ValidatorIntValue')->validate('admin_user_id');
 
         $systemTag = $validator->validate('system_tag');
         if (!empty($systemTag)) {
@@ -112,7 +103,10 @@ class Search extends \Controller\AuthController
         // 商品列表
         $goodsArray = SearchHelper::search(
             SearchHelper::Module_GoodsGoodsPromote,
-            $this->searchFieldSelector,
+            'g.goods_id, g.system_tag_list, g.cat_id, g.admin_user_name, g.goods_name, g.goods_number'
+            . ', g.goods_spec, g.is_on_sale, g.type_id'
+            . ', g.market_price, g.shop_price, g.shipping_fee, g.shipping_free_number'
+            . ', g.suppliers_id, g.suppliers_price, g.suppliers_shipping_fee, g.warehouse, g.shelf',
             $searchParamArray,
             array(array('g.goods_id', 'desc')),
             $pageNo * $pageSize,
@@ -122,9 +116,11 @@ class Search extends \Controller\AuthController
         // 取得供货商 id 列表，商品分类 id
         $supplierIdArray = array();
         $categoryIdArray = array();
+        $typeIdArray     = array();
         foreach ($goodsArray as $goodsItem) {
             $supplierIdArray[] = $goodsItem['suppliers_id'];
             $categoryIdArray[] = $goodsItem['cat_id'];
+            $typeIdArray[]     = $goodsItem['type_id'];
         }
         $supplierIdArray = array_unique($supplierIdArray);
         $categoryIdArray = array_unique($categoryIdArray);
@@ -179,6 +175,24 @@ class Search extends \Controller\AuthController
             if (isset($categoryIdToCategoryArray[$goodsItem['cat_id']])) {
                 // 很老的商品，分类信息可能已经不存在了
                 $goodsItem['cat_name'] = $categoryIdToCategoryArray[$goodsItem['cat_id']]['meta_name'];
+            }
+        }
+        unset($goodsItem);
+
+        // 取得商品类型信息
+        $goodsTypeService = new GoodsTypeService();
+        $goodsTypeArray   = $goodsTypeService->fetchGoodsTypeArrayByTypeIdArray($typeIdArray);
+
+        // 建立 type_id ---> type 信息的反查表
+        $typeIdToTypeArray = array();
+        foreach ($goodsTypeArray as $goodsType) {
+            $typeIdToTypeArray[$goodsType['meta_id']] = $goodsType;
+        }
+
+        // 放入类型信息
+        foreach ($goodsArray as &$goodsItem) {
+            if (isset($typeIdToTypeArray[$goodsItem['type_id']])) {
+                $goodsItem['type_name'] = $typeIdToTypeArray[$goodsItem['type_id']]['meta_name'];
             }
         }
         unset($goodsItem);
