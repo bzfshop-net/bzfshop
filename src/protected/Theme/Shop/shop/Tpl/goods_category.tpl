@@ -68,42 +68,73 @@
     <!-- 右侧栏 -->
     <div class="span10" style="margin-left: 6px; width:804px;">
 
-        <div id="goods_category_filter_panel" class="row bzf_basic_content_block" style="margin-bottom: 10px;">
+        <!-- 上面的过滤面板 -->
+        <div class="row bzf_basic_content_block">
+            <form method="POST" style="margin-bottom: 0px;">
 
-            <table class="table" style="margin-bottom: 0px;">
-
-                <!-- 商品分类列表 -->
-                {{if isset($categoryLevelList)}}
-                    <tr class="bzf_hide">
-                        <td class="labelkey">商品分类</td>
-                        <td>
-                            {{foreach $categoryLevelList as $categoryLevelItem}}
-                                <div class="bzf_goods_category_panel"
-                                     category_active_id="{{$categoryLevelItem['category_active_id']|default}}">
-                                    {{foreach $categoryLevelItem['category_list'] as $category}}
-                                        <a category_id="{{$category['meta_id']}}"
-                                           href="{{bzf_make_url controller='/Goods/Category' category_id=$category['meta_id'] }}">{{$category['meta_name']}}</a>
-                                    {{/foreach}}
-                                </div>
-                            {{/foreach}}
-                        </td>
-                    </tr>
+                <!-- 属性过滤面板 -->
+                {{if isset($goodsFilterArray)}}
+                    <table class="table" id="bzf_goods_category_filter_panel" style="margin-bottom: 0px;">
+                        <tbody>
+                        <tr>
+                            <td colspan="3" style="background-color: #F7F7F7;font-size:14px;padding: 5px 5px;">
+                                <span style="color:#FF6600;">{{$category['meta_name']}}</span>&nbsp;--&nbsp;商品筛选
+                                <!-- 过滤条件 -->
+                                <input type="hidden" name="filter" value=""/>
+                                <input type="hidden" name="brand_id" value=""/>
+                            </td>
+                        </tr>
+                        {{foreach $goodsFilterArray as $filterLabel => $filterItem}}
+                            <!-- 商品属性过滤 -->
+                            <tr>
+                                <td width="8%" class="labelkey">{{$filterLabel}}</td>
+                                <td>
+                                    <div class="bzf_choose_div" data-filterKey="{{$filterItem['filterKey']}}">
+                                        {{foreach $filterItem['filterValueArray'] as $valueItem}}
+                                            <button class="btn btn-mini" type="button"
+                                                    data-filterValue="{{$valueItem['value']}}">
+                                                {{$valueItem['text']}}<i class="icon-remove"></i>
+                                            </button>
+                                        {{/foreach}}
+                                    </div>
+                                    <div class="bzf_confirm_div">
+                                        <button class="btn btn-small btn-success" type="button"
+                                                onclick="bZF.goods_category.submitForm();">确认
+                                        </button>
+                                        <button class="btn btn-small" type="button"
+                                                onclick="bZF.goods_category.filterMultiChooseClose(this.parentNode.parentNode.parentNode);">
+                                            取消
+                                        </button>
+                                    </div>
+                                </td>
+                                <td width="6%">
+                                    <button class="btn btn-mini bzf_multi_choose" type="button"
+                                            onclick="bZF.goods_category.filterMultiChooseOpen(this.parentNode.parentNode);">
+                                        多选
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- /商品属性过滤 -->
+                        {{/foreach}}
+                        </tbody>
+                    </table>
                 {{/if}}
-                <!-- /商品分类列表 -->
+                <!-- /属性过滤面板 -->
 
-                <!-- 搜索过滤条件 bar -->
-                <tr>
-                    <td class="labelkey" width="8%">&nbsp;</td>
-                    <td style="text-align: left;">
-                        <div class="row bzf_goods_search_order_filter_bar">
-                            <form method="POST" style="margin-bottom: 0px;">
+                <!-- 结果排序，价格区间搜索 -->
+                <table class="table" style="margin-bottom: 0px;">
+                    <tbody>
+                    <tr>
+                        <td class="labelkey" width="8%">&nbsp;</td>
+                        <td style="text-align: left;">
+                            <div class="row bzf_goods_search_order_filter_bar">
                                 <div class="control-group">
                                     <div class="controls">
 
                                         <!-- 隐藏的排序设置 -->
-                                        <input type="hidden" name="category_id" value="{{$category_id|default}}"/>
-                                        <input type="hidden" name="orderBy" value="{{$orderBy|default}}"/>
-                                        <input type="hidden" name="orderDir" value="{{$orderDir|default}}"/>
+                                        <input type="hidden" name="category_id" value=""/>
+                                        <input type="hidden" name="orderBy" value=""/>
+                                        <input type="hidden" name="orderDir" value=""/>
                                         <!-- /隐藏的排序设置 -->
 
                                         <div class="btn-toolbar">
@@ -130,7 +161,7 @@
                                         <div class="input-prepend">
                                             <span class="add-on">￥</span>
                                             <input type="text" name="shop_price_min"
-                                                   value="{{$shop_price_min|default}}"
+                                                   value=""
                                                    pattern="^\d+(\.\d+)?$" data-validation-pattern-message="价格非法"/>
                                         </div>
                                         <span class="bzf_text">--</span>
@@ -138,27 +169,26 @@
                                         <div class="input-prepend">
                                             <span class="add-on">￥</span>
                                             <input type="text" name="shop_price_max"
-                                                   value="{{$shop_price_max|default}}"
+                                                   value=""
                                                    pattern="^\d+(\.\d+)?$" data-validation-pattern-message="价格非法"/>
                                         </div>
 
                                         <button type="submit" class="btn btn-mini btn-success">筛选商品</button>
                                     </div>
-
                                 </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!-- /结果排序，价格区间搜索 -->
 
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                <!-- 搜索过滤条件 bar -->
-
-            </table>
-
+            </form>
         </div>
+        <!-- /上面的过滤面板 -->
 
         <!-- 搜索商品的结果 -->
-        <div class="row">
+        <div class="row" style="margin-top: 10px;">
 
             {{if !isset($goodsArray)}}
                 <div class="row" style="text-align: center;">

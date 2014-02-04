@@ -15,13 +15,14 @@ use Core\Helper\Utility\Route as RouteHelper;
 use Core\Helper\Utility\Validator;
 use Core\Plugin\ThemeHelper;
 use Core\Search\SearchHelper;
+use Core\Service\Goods\Brand as GoodsBrandService;
 use Core\Service\Goods\Category as GoodsCategoryService;
+use Core\Service\Goods\Type as GoodsTypeService;
 
 class Category extends \Controller\BaseController
 {
 
     private $searchExtraCondArray;
-    private $searchFieldSelector;
 
     public function __construct()
     {
@@ -29,14 +30,9 @@ class Category extends \Controller\BaseController
 
         // 我们只搜索有效商品
         $this->searchExtraCondArray = array(
-            array('is_delete = 0 AND is_on_sale = 1 AND is_alone_sale = 1'),
-            array(QueryBuilder::buildGoodsFilterForSystem($currentThemeInstance->getGoodsFilterSystemArray())),
+            array('g.is_delete = 0 AND g.is_on_sale = 1 AND g.is_alone_sale = 1'),
+            array(QueryBuilder::buildGoodsFilterForSystem($currentThemeInstance->getGoodsFilterSystemArray(), 'g')),
         );
-
-        // 选择我们需要的字段
-        $this->searchFieldSelector =
-            'goods_id, cat_id, goods_sn, goods_name, brand_id, goods_number, market_price, shop_price, suppliers_id,'
-            . 'virtual_buy_number, user_buy_number, user_pay_number, (virtual_buy_number + user_pay_number) as total_buy_number';
     }
 
     public function get($f3)
@@ -49,8 +45,8 @@ class Category extends \Controller\BaseController
         $pageNo = $validator->digits('pageNo 参数非法')->min(0, true, 'pageNo 参数非法')->validate('pageNo');
 
         // 搜索参数数组
-        $searchFormQuery = array();
-        $searchFormQuery['category_id'] =
+        $searchFormQuery                  = array();
+        $searchFormQuery['g.category_id'] =
             $validator->required('商品分类不能为空')->digits('分类id非法')->min(1, true, '分类id非法')->filter('ValidatorIntValue')
                 ->validate('category_id');
 
@@ -60,25 +56,25 @@ class Category extends \Controller\BaseController
         $shopPriceMax = $validator->filter('ValidatorFloatValue')->validate('shop_price_max');
         $shopPriceMax = (null == $shopPriceMax) ? null : Money::toStorage($shopPriceMax);
 
-        $searchFormQuery['shop_price'] = array($shopPriceMin, $shopPriceMax);
+        $searchFormQuery['g.shop_price'] = array($shopPriceMin, $shopPriceMax);
 
         // 排序
-        $orderBy = $validator->oneOf(array('', 'total_buy_number', 'shop_price', 'add_time'))->validate('orderBy');
-        $orderDir = $validator->oneOf(array('', 'asc', 'desc'))->validate('orderDir');
+        $orderBy      = $validator->oneOf(array('', 'total_buy_number', 'shop_price', 'add_time'))->validate('orderBy');
+        $orderDir     = $validator->oneOf(array('', 'asc', 'desc'))->validate('orderDir');
         $orderByParam = array();
         if (!empty($orderBy)) {
             $orderByParam = array(array($orderBy, $orderDir));
         }
         //增加一些我们的缺省排序
-        $orderByParam[] = array('sort_order', 'desc');
-        $orderByParam[] = array('goods_id', 'desc');
+        $orderByParam[] = array('g.sort_order', 'desc');
+        $orderByParam[] = array('g.goods_id', 'desc');
 
         // 参数验证
         if (!$this->validate($validator) || empty($searchFormQuery)) {
             goto out_fail;
         }
 
-        $pageNo = (isset($pageNo) && $pageNo > 0) ? $pageNo : 0;
+        $pageNo   = (isset($pageNo) && $pageNo > 0) ? $pageNo : 0;
         $pageSize = 45; // 每页固定显示 45 个商品
 
         // 生成 smarty 的缓存 id
@@ -95,15 +91,18 @@ class Category extends \Controller\BaseController
         }
 
         $goodsCategoryService = new GoodsCategoryService();
-        $category = $goodsCategoryService->loadCategoryById($searchFormQuery['category_id'], 1800);
+        $category             = $goodsCategoryService->loadCategoryById($searchFormQuery['g.category_id'], 1800);
         if ($category->isEmpty()) {
             $this->addFlashMessage('分类[' . $searchFormQuery['category_id'] . ']不存在');
             goto out_fail;
         }
+        $smarty->assign('category', $category);
 
-        // 我们需要在左侧显示分类层级结构
+        // 1. 我们需要在左侧显示分类层级结构
         $goodsCategoryTreeArray = $goodsCategoryService->fetchCategoryTreeArray($category['parent_meta_id'], false, 1800);
         $smarty->assign('goodsCategoryTreeArray', $goodsCategoryTreeArray);
+
+        // 2. 商品查询
 
         // 合并查询参数
         $searchParamArray =
@@ -122,7 +121,9 @@ class Category extends \Controller\BaseController
         $goodsArray =
             SearchHelper::search(
                 SearchHelper::Module_Goods,
-                $this->searchFieldSelector,
+                'g.goods_id, g.cat_id, g.goods_sn, g.goods_name, g.brand_id, g.goods_number, g.market_price'
+                . ', g.shop_price, g.suppliers_id, g.virtual_buy_number, g.user_buy_number, g.user_pay_number'
+                . ', (g.virtual_buy_number + g.user_pay_number) as total_buy_number',
                 $searchParamArray,
                 $orderByParam,
                 $pageNo * $pageSize,
@@ -132,12 +133,92 @@ class Category extends \Controller\BaseController
         if (empty($goodsArray)) {
             goto out_display;
         }
+        $smarty->assign('goodsArray', $goodsArray);
+
+        /**
+         * 构造 Filter 数组，结构如下
+         *
+         * array(
+         *      '商品品牌' => array(
+         *              filterKey => 'brand_id'
+         *              filterValueArray => array( array(value=>'13', text=>'品牌1'), ...)
+         *              ),
+         *      '颜色' => array(
+         *              filterKey => 'filter',
+         *              filterValueArray => array( array(value=>'13', text=>'品牌1'), ...)
+         *              )
+         * )
+         *
+         */
+        $goodsFilterArray = array();
+
+        // 3. 商品品牌查询
+        $goodsBrandIdArray =
+            SearchHelper::search(
+                SearchHelper::Module_Goods,
+                'distinct(g.brand_id)',
+                array_merge($searchParamArray, array(array('g.brand_id > 0'))),
+                null,
+                0,
+                0
+            );
+        $brandIdArray      = array_map(function ($elem) {
+            return $elem['brand_id'];
+        }, $goodsBrandIdArray);
+
+        if (!empty($brandIdArray)) {
+            $goodsBrandService = new GoodsBrandService();
+            $goodsBrandArray   = $goodsBrandService->fetchBrandArrayByIdArray(array_unique(array_values($brandIdArray)));
+            $filterBrandArray  = array();
+            foreach ($goodsBrandArray as $brand) {
+                $filterBrandArray[] = array('value' => $brand['brand_id'], 'text' => $brand['brand_name']);
+            }
+            if (!empty($filterBrandArray)) {
+                $goodsFilterArray['品牌'] = array('filterKey' => 'brand_id', 'filterValueArray' => $filterBrandArray);
+            }
+        }
+
+        // 4. 查询属性过滤
+        $metaData        = json_decode($category['meta_data'], true);
+        $metaFilterArray = @$metaData['filterArray'];
+        if (!empty($metaFilterArray)) {
+            $goodsTypeService = new GoodsTypeService();
+            foreach ($metaFilterArray as $filterItem) {
+                $goodsTypeAttrItem = $goodsTypeService->loadGoodsTypeAttrItemById($filterItem['attrItemId']);
+                if ($goodsTypeAttrItem->isEmpty()) {
+                    continue;
+                }
+                // 取得商品属性值列表
+                $goodsAttrItemValueArray =
+                    SearchHelper::search(
+                        SearchHelper::Module_GoodsGoodsAttr,
+                        'min(ga.goods_attr_id) as goods_attr_id, ga.attr_item_value',
+                        array_merge($searchParamArray, array(array('ga.attr_item_id', '=', $filterItem['attrItemId']))),
+                        null,
+                        0,
+                        0,
+                        'ga.attr_item_value'
+                    );
+                if (!empty($goodsAttrItemValueArray)) {
+                    $filterValueArray = array();
+                    foreach ($goodsAttrItemValueArray as $itemValue) {
+                        $filterValueArray[] = array('value' => $itemValue['goods_attr_id'], 'text' => $itemValue['attr_item_value']);
+                    }
+                    $goodsFilterArray[$goodsTypeAttrItem['meta_name']] = array(
+                        'filterKey'        => 'filter',
+                        'filterValueArray' => $filterValueArray);
+                }
+            }
+        }
 
         // 赋值给模板
+        if (!empty($goodsFilterArray)) {
+            $smarty->assign('goodsFilterArray', $goodsFilterArray);
+        }
+
         $smarty->assign('totalCount', $totalCount);
         $smarty->assign('pageNo', $pageNo);
         $smarty->assign('pageSize', $pageSize);
-        $smarty->assign('goodsArray', $goodsArray);
 
         // SEO 考虑，网页标题加上分类的名称
         $smarty->assign('seo_title', $category['meta_name'] . ',' . $smarty->getTemplateVars('seo_title'));

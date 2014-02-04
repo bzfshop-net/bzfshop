@@ -146,7 +146,24 @@ jQuery((function (window, $) {
      * @returns {*}
      */
     bZF.getCurrentUrlParam = function (param) {
-        return $.url(window.location.href).param(param);
+        var queryParamUrl = window.location.href;
+        if (queryParamUrl.indexOf('.html')) {
+            var lastSlashPos = queryParamUrl.lastIndexOf('/');
+            var urlPrefix = queryParamUrl.substr(0, lastSlashPos);
+            var urlParam = queryParamUrl.substr(lastSlashPos + 1);
+            urlParam = urlParam.replace('.html', '');
+            var urlParamArray = urlParam.match(/[~]?([^~]+)-([^~]*)/g);
+            var paramArray = [];
+            $.each(urlParamArray, function (index, param) {
+                if ('~' == param[0]) {
+                    param = param.substr(1);
+                }
+                var separatorPos = param.indexOf('-');
+                paramArray.push(param.substr(0, separatorPos) + '=' + param.substr(separatorPos + 1));
+            });
+            queryParamUrl = urlPrefix + '?' + paramArray.join('&');
+        }
+        return $.url(queryParamUrl).param(param);
     };
 
     /**
@@ -1103,16 +1120,6 @@ jQuery((function (window, $) {
         $(this).trigger('click');
     }, null);
 
-    /************************ goods_category.tpl 页面，显示分类的选中状态 ****************************/
-    $('.bzf_goods_category_panel').each(function (index, elem) {
-        var category_active_id = $(elem).attr('category_active_id');
-        if (!category_active_id) {
-            return;
-        }
-        // 设置对应的分类为 active
-        $('a[category_id=' + category_active_id + ']', elem).addClass('active');
-    });
-
     /************************ goods_category.tpl 页面，左侧商品分类树形结构 ****************************/
     if ($('#bzf_goods_category_tree_table_panel').size() > 0) {
         $('#bzf_goods_category_tree_table_panel table').detach().treetable({ expandable: true, clickableNodeNames: true, initialState: 'collapsed' }).appendTo($('#bzf_goods_category_tree_table_panel'));
@@ -1122,6 +1129,124 @@ jQuery((function (window, $) {
         $('#bzf_goods_category_tree_table_panel table tbody tr[data-tt-id="bzf_goods_category_'
             + categoryId + '"] td').trigger('click');
     }
+
+    /*********************** goods_category.tpl 页面，上面属性过滤 ************************************/
+        // 建立独立的命名空间
+    bZF.goods_category = {};
+
+    // 提交查询 Form
+    bZF.goods_category.submitForm = function () {
+        // 把隐藏值清空
+        $('#bzf_goods_category_filter_panel input[type="hidden"]').val('');
+        // 拼接值
+        $('#bzf_goods_category_filter_panel .bzf_choose_div').each(function (index, div) {
+            var $div = $(div);
+            var valueArray = [];
+            $('button.active', $div).each(function (index, elem) {
+                valueArray.push($(elem).attr('data-filterValue'));
+            });
+            var inputSelector = '#bzf_goods_category_filter_panel input[name="'
+                + $div.attr('data-filterKey') + '"]';
+            var inputValue = $(inputSelector).val();
+            if ('' == $.trim(inputValue)) {
+                $(inputSelector).val(valueArray.join('_'));
+            } else {
+                $(inputSelector).val(inputValue + '.' + valueArray.join('_'));
+            }
+        });
+        // 提交 Form
+        $('#bzf_goods_category_filter_panel').parent('form').submit();
+    };
+
+    // 设置 filter 按钮为单选
+    bZF.goods_category.setFilterButtonRadio = function ($trNode) {
+        // 每个 button 的点击变成 单选
+        $('.bzf_choose_div button', $trNode).off('click');
+        $('.bzf_choose_div button', $trNode).on('click', function (event) {
+            var $this = $(this);
+            // 删除同级别别的选择
+            $('button', this.parentNode).not($this).removeClass('active');
+            // 反选当前选择
+            if ($this.hasClass('active')) {
+                $this.removeClass('active');
+            } else {
+                $this.addClass('active');
+            }
+            // 提交表单
+            bZF.goods_category.submitForm();
+        });
+    };
+
+    // 设置 filter 按钮为多选
+    bZF.goods_category.setFilterButtonCheckbox = function ($trNode) {
+        // 每个 button 的点击变成 多选
+        $('.bzf_choose_div button', $trNode).off('click');
+        $('.bzf_choose_div button', $trNode).on('click', function (event) {
+            var $this = $(this);
+            if ($this.hasClass('active')) {
+                $this.removeClass('active');
+            } else {
+                $this.addClass('active');
+            }
+        });
+    };
+
+    // 缺省设置为单选
+    bZF.goods_category.setFilterButtonRadio($('#bzf_goods_category_filter_panel'));
+
+    // 点击打开多选面板
+    bZF.goods_category.filterMultiChooseOpen = function (trNode) {
+        var $trNode = $(trNode);
+        // 显示多选状态
+        $trNode.addClass('bzf_multi_choose').addClass('well');
+        // 保留之前的 active 状态
+        $('.bzf_choose_div button.active', $trNode).attr('data-active', true);
+        // 每个 button 的点击变成 多选
+        bZF.goods_category.setFilterButtonCheckbox($trNode);
+    };
+
+    // 点击关闭多选面板
+    bZF.goods_category.filterMultiChooseClose = function (trNode) {
+        var $trNode = $(trNode);
+        // 去除多选状态显示
+        $trNode.removeClass('bzf_multi_choose').removeClass('well');
+        // 把按钮设置为单选
+        bZF.goods_category.setFilterButtonRadio($trNode);
+        // 取消选中状态, 恢复之前的选择
+        $('.bzf_choose_div button', $trNode).removeClass('active');
+        $('.bzf_choose_div button[data-active]', $trNode).addClass('active').removeAttr('data-active');
+    };
+
+    // 同步 filter 面板的显示状态
+    (function () {
+        // filter 的数据格式为 123_45.34_5_6.78
+        var filterItemValue = bZF.getCurrentUrlParam('brand_id') + '.' + bZF.getCurrentUrlParam('filter');
+        var filterArray = [];
+        if (-1 !== filterItemValue.indexOf('.')) {
+            filterArray = filterItemValue.split('.');
+        } else {
+            filterArray.push(filterItemValue);
+        }
+        $('#bzf_goods_category_filter_panel .bzf_choose_div').each(function (index, div) {
+            if (index > filterArray.length) {
+                return;
+            }
+            var filterItemValue = $.trim(filterArray[index]);
+            if (!filterItemValue || '' == filterItemValue) {
+                return;
+            }
+            var buttonValueArray = [];
+            if (-1 !== filterItemValue.indexOf('_')) {
+                buttonValueArray = filterItemValue.split('_');
+            } else {
+                buttonValueArray.push(filterItemValue);
+            }
+            var $div = $(div);
+            $.each(buttonValueArray, function (index, value) {
+                $('button[data-filterValue="' + value + '"]', $div).addClass('active');
+            });
+        });
+    })();
 
     /******************* goods_search.tpl 页面，用户 hover 某个商品，显示标题 ***********************/
     $('.bzf_goods_search_goods_item .bzf_goods_image').hover(function () {
@@ -1139,18 +1264,28 @@ jQuery((function (window, $) {
         }
     })();
 
+    /**************** goods_category.tpl, goods_search 页面，根据 URL 设置排序按钮的显示状态 ******/
     (function () {
+        // 设置隐藏值
+        $('.bzf_goods_search_order_filter_bar input[name="category_id"]').val($.trim(bZF.getCurrentUrlParam('category_id')));
+        $('.bzf_goods_search_order_filter_bar input[name="orderBy"]').val($.trim(bZF.getCurrentUrlParam('orderBy')));
+        $('.bzf_goods_search_order_filter_bar input[name="orderDir"]').val($.trim(bZF.getCurrentUrlParam('orderDir')));
+        $('.bzf_goods_search_order_filter_bar input[name="shop_price_min"]').val($.trim(bZF.getCurrentUrlParam('shop_price_min')));
+        $('.bzf_goods_search_order_filter_bar input[name="shop_price_max"]').val($.trim(bZF.getCurrentUrlParam('shop_price_max')));
+
+        // 设置排序面板状态
         var $activeButton = null;
-        if ('' == $.trim($('.bzf_goods_search_order_filter_bar input[name="orderBy"]').val())) {
+        var orderBy = $.trim(bZF.getCurrentUrlParam('orderBy'));
+        if ('' == orderBy) {
             $activeButton = $('#bzf_goods_search_order_filter_bar_button_default');
         } else {
-            $activeButton = $('.bzf_goods_search_order_filter_bar button[data-orderBy="' + $.trim($('.bzf_goods_search_order_filter_bar input[name="orderBy"]').val()) + '"]')
+            $activeButton = $('.bzf_goods_search_order_filter_bar button[data-orderBy="' + orderBy + '"]')
         }
 
         // 设置对应的按钮状态
         if ($activeButton) {
             $activeButton.addClass('btn-danger');
-            $activeButton.attr('data-orderDir', $('.bzf_goods_search_order_filter_bar input[name="orderDir"]').val());
+            $activeButton.attr('data-orderDir', $.trim(bZF.getCurrentUrlParam('orderDir')));
             if ('asc' == $activeButton.attr('data-orderDir')) {
                 $('i', $activeButton).removeClass('icon-arrow-down');
                 $('i', $activeButton).addClass('icon-arrow-up');

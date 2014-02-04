@@ -102,7 +102,7 @@ table.table tbody tr td.labelvalue input {
     box-shadow: none;
     text-shadow: none;
     border: none;
-    background-color: #E4006E;
+    background-color: #E50012;
     font-size: 16px;
     color: white;
     padding-left: 10px;
@@ -319,7 +319,7 @@ div.inline-divider label {
     right: 45px;
     color: white;
     vertical-align: middle;
-    background-color: #E4006E;
+    background-color: #3E3A39;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -406,10 +406,10 @@ div.inline-divider label {
     display: block;
     line-height: 30px;
     vertical-align: middle;
-    border: solid 2px #E4006E;
+    border: solid 2px #E50012;
     box-shadow: none;
     padding: 0px 0px;
-    margin-left: 20px;
+    margin-left: 40px;
 }
 
 .bzf_header_search_block img {
@@ -438,7 +438,7 @@ div.inline-divider label {
 
 .bzf_header_search_block input:focus {
     border: none;
-    border-color: #E4006E;
+    border-color: #E50012;
     box-shadow: none;
 }
 
@@ -446,7 +446,7 @@ div.inline-divider label {
     display: inline-block;
     float: right;
     filter: none;
-    background-color: #E4006E;
+    background-color: #E50012;
     color: white;
     border: none;
     height: 100%;
@@ -466,7 +466,7 @@ div.inline-divider label {
     font-weight: bold;
     padding-left: 10px;
     padding-right: 10px;
-    margin-left: 20px;
+    margin-left: 40px;
 }
 
 .bzf_icon_cart_red {
@@ -500,7 +500,7 @@ div.inline-divider label {
 .bzf_header_nav_menu_dropdown {
     filter: none;
     background-image: none;
-    background-color: #221814;
+    background-color: #E50012;
     color: white;
     height: 38px;
     line-height: 38px;
@@ -532,7 +532,7 @@ div.inline-divider label {
 }
 
 .bzf_header_nav_menu_dropdown .nav li a:hover {
-    color: #E4006E;
+    color: #3E3A39;
     background-color: white;
 }
 
@@ -540,7 +540,7 @@ div.inline-divider label {
     filter: none;
     color: white;
     background-image: none;
-    background-color: #E4006E;
+    background-color: #3E3A39;
 }
 
 .bzf_header_nav_menu_dropdown .nav li.active a:hover {
@@ -567,28 +567,55 @@ div.inline-divider label {
     color: #FF6600;
 }
 
-/*******************  商品分类页面，上面分类选择面板  *********************/
-.bzf_goods_category_panel {
+/*******************  商品分类页面，上面属性过滤面板  *********************/
+#bzf_goods_category_filter_panel table tbody td {
+    padding: 1px 2px;
+}
+
+#bzf_goods_category_filter_panel .bzf_choose_div {
     padding: 2px 0px;
-    margin: 7px 0px;
+    margin: 0px 0px;
     text-align: left;
-    background-color: #f7f7f7;
     border-radius: 5px;
 }
 
-.bzf_goods_category_panel a {
+#bzf_goods_category_filter_panel .bzf_choose_div button {
     display: inline-block;
     margin: 3px 2px;
     padding: 0px 3px;
-    border-radius: 2px;
+    border-radius: 0px;
+    background-image: none;
     text-decoration: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
 }
 
-.bzf_goods_category_panel a:hover,
-.bzf_goods_category_panel a.active {
-    color: white;
-    background-color: #E4006E;
+#bzf_goods_category_filter_panel .bzf_choose_div button i {
+    display: none;
+}
+
+#bzf_goods_category_filter_panel .bzf_choose_div button.active {
+    color: #E50012;
+    font-weight: bold;
     text-decoration: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+#bzf_goods_category_filter_panel .bzf_choose_div button.active i {
+    display: inline-block;
+}
+
+#bzf_goods_category_filter_panel .bzf_confirm_div {
+    display: none;
+}
+
+#bzf_goods_category_filter_panel tr.bzf_multi_choose .bzf_confirm_div {
+    display: block;
+}
+
+#bzf_goods_category_filter_panel tr.bzf_multi_choose button.bzf_multi_choose {
+    display: none;
 }
 
 /*********** goods_view.tpl 商品标题 *************/
@@ -695,19 +722,19 @@ div.inline-divider label {
 }
 
 .bzf_goods_view_relate_goods_recommand ul.nav li.active a {
-    color: #221814;
+    color: #E50012;
 }
 
 .bzf_goods_view_relate_goods_recommand ul.nav {
-    border-bottom: solid 1px #E4006E;
+    border-bottom: solid 1px #E50012;
     background-color: #EEEEEF;
     margin-bottom: 0px;
 }
 
 .bzf_goods_view_relate_goods_recommand ul.nav li.active a {
-    border-top: solid 2px #E4006E;
-    border-left: solid 1px #E4006E;
-    border-right: solid 1px #E4006E;
+    border-top: solid 2px #E50012;
+    border-left: solid 1px #E50012;
+    border-right: solid 1px #E50012;
 }
 
 .bzf_goods_view_relate_goods_recommand div.tab-pane {
@@ -734,7 +761,7 @@ div.inline-divider label {
 /***************** goods_view.tpl 供货商信息面板 *********************/
 .bzf_supplier_pane .header {
     height: 30px;
-    background-color: #E4006E;
+    background-color: #E50012;
     color: white;
     font-size: 14px;
     font-weight: bold;
@@ -756,7 +783,7 @@ div.inline-divider label {
 }
 
 .bzf_supplier_pane .supplier_pane_content .supplier_banner {
-    background-color: #E4006E;
+    background-color: #595757;
     color: white;
     text-align: center;
     height: 30px;
@@ -797,7 +824,7 @@ div.inline-divider label {
 #bzf_goods_view_goods_detail_tabbar ul li a {
     filter: none;
     background-image: none;
-    background-color: #E4006E;
+    background-color: #3E3A39;
 }
 
 #bzf_goods_view_goods_detail_tabbar ul li a {
@@ -811,13 +838,13 @@ div.inline-divider label {
 }
 
 #bzf_goods_view_goods_detail_tabbar ul li a:hover {
-    background-color: #221814;
+    background-color: #E50012;
     border: none;
 }
 
 #bzf_goods_view_goods_detail_tabbar ul li.active a {
     border: none;
-    background-color: #221814;
+    background-color: #E50012;
 }
 
 /***************** goods_view.tpl 商品详情页面下方大块内容区域***********************/
@@ -873,7 +900,7 @@ div.inline-divider label {
 }
 
 .bzf_user_login_panel .bzf_header_panel {
-    border-bottom: solid 2px #E4006E;
+    border-bottom: solid 2px #E50012;
     margin-bottom: 20px;
 }
 
@@ -884,7 +911,7 @@ div.inline-divider label {
     line-height: 30px;
     vertical-align: middle;
     color: white;
-    background-color: #E4006E;
+    background-color: #E50012;
     padding: 0px 10px;
 }
 
@@ -917,23 +944,16 @@ div.inline-divider label {
     border-right: solid 1px #c0c0c0;
 }
 
-/**  goods_category.tpl 页面 sticky 状态下把 hide 部分隐藏 **/
-#goods_category_filter_panel.bzf_sticky .bzf_hide {
-    display: none;
-}
-
-/************* 搜索页面 **************/
-.bzf_goods_search_order_filter_bar {
-    vertical-align: middle;
-    line-height: 24px;
-}
-
+/************* 搜索页面，排序工具栏 **************/
 .bzf_goods_search_order_filter_bar .control-group {
     margin: 0px 0px;
 }
 
+.bzf_goods_search_order_filter_bar .control-group button {
+    float: left;
+}
+
 .bzf_goods_search_order_filter_bar .control-group .help-block {
-    clear: both;
     position: relative;
     float: left;
 }
@@ -943,7 +963,6 @@ div.inline-divider label {
     position: relative;
     float: left;
     margin: 0px 0px;
-    line-height: 24px;
 }
 
 .bzf_goods_search_order_filter_bar button {
@@ -958,7 +977,6 @@ div.inline-divider label {
     display: inline-block;
     position: relative;
     float: left;
-    line-height: 24px;
     margin: 0px 0px;
 }
 
@@ -968,7 +986,6 @@ div.inline-divider label {
     float: left;
     margin: 1px 5px;
     padding: 0px 0px;
-    line-height: 24px;
 }
 
 .bzf_goods_search_order_filter_bar .input-prepend span.add-on {
@@ -1003,7 +1020,7 @@ div.inline-divider label {
 }
 
 .bzf_goods_search_goods_item .bzf_hover {
-    border: 5px solid #E4006E;
+    border: 5px solid #D51938;
     color: white;
 }
 
@@ -1032,7 +1049,7 @@ div.inline-divider label {
 
 .bzf_goods_search_goods_item .bzf_hover .bzf_goods_name {
     color: #ffffff;
-    background-color: #E4006E;
+    background-color: #D51938;
 }
 
 .bzf_goods_search_goods_item .bzf_goods_price {
@@ -1042,7 +1059,7 @@ div.inline-divider label {
 
 .bzf_goods_search_goods_item .bzf_goods_price .price {
     font-size: 20px;
-    color: #E4006E;
+    color: #D51938;
     margin-left: 5px;
 }
 
