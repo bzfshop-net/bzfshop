@@ -22,6 +22,7 @@
 
 namespace Core\Service\Goods;
 
+use Core\Helper\Utility\QueryBuilder;
 use Core\Helper\Utility\Validator;
 use Core\Modal\SqlMapper as DataMapper;
 use Core\Service\Meta\Meta as MetaBasicService;
@@ -37,8 +38,8 @@ class Type extends MetaBasicService
 
     // attrItem 的类型说明
     public static $attrItemTypeDesc = array(
-        'select' => '单选',
-        'input' => '手动输入-单行',
+        'select'   => '单选',
+        'input'    => '手动输入-单行',
         'textarea' => '手动输入-多行',
     );
 
@@ -163,6 +164,20 @@ class Type extends MetaBasicService
     }
 
     /**
+     * 根据类型ID数组取得一组类型
+     *
+     * @param array $typeIdArray 类型ID数组
+     * @param int $ttl
+     * @return array
+     */
+    public function fetchGoodsTypeArrayByTypeIdArray(array $typeIdArray, $ttl = 0)
+    {
+        return $this->fetchGoodsTypeArray(
+            array(array(QueryBuilder::buildInCondition('meta_id', $typeIdArray, \PDO::PARAM_INT))),
+            0, 0, $ttl);
+    }
+
+    /**
      * 返回商品属性组的树形结构，如下：
      *
      * array(
@@ -182,7 +197,7 @@ class Type extends MetaBasicService
         // 建立映射表
         $groupIdToItemArraymap = array();
         foreach ($attrGroupArray as &$attrGroup) {
-            $attrGroup['itemArray'] = array();
+            $attrGroup['itemArray']                       = array();
             $groupIdToItemArraymap[$attrGroup['meta_id']] = & $attrGroup['itemArray'];
         }
         unset($attrGroup);
@@ -268,7 +283,7 @@ class Type extends MetaBasicService
         $attrGroup = $this->loadGoodsTypeAttrGroupById($meta_id);
 
         // 把 Group 下的 Item 都设置为 没有Group
-        $sql = 'update ' . DataMapper::tableName('meta') . ' set meta_key = "" where meta_type = ? and meta_key = ?';
+        $sql      = 'update ' . DataMapper::tableName('meta') . ' set meta_key = "" where meta_type = ? and meta_key = ?';
         $dbEngine = DataMapper::getDbEngine();
         $dbEngine->exec($sql, array(1 => self::META_TYPE_GOODS_TYPE_ATTR_ITEM, strval($meta_id)));
 
@@ -288,8 +303,8 @@ class Type extends MetaBasicService
     {
         // 首先验证参数
         $validator = new Validator(array('typeId' => $typeId, 'groupId' => $groupId));
-        $typeId = $validator->required()->digits()->min(1)->validate('typeId');
-        $groupId = $validator->digits()->validate('groupId');
+        $typeId    = $validator->required()->digits()->min(1)->validate('typeId');
+        $groupId   = $validator->digits()->validate('groupId');
         $this->validate($validator);
 
         $condArray = array(array('meta_type = ? and parent_meta_id = ?', self::META_TYPE_GOODS_TYPE_ATTR_ITEM, $typeId));
@@ -337,8 +352,8 @@ class Type extends MetaBasicService
     {
         // 首先验证参数
         $validator = new Validator(array('goods_id' => $goods_id, 'typeId' => $typeId));
-        $goods_id = $validator->required()->digits()->min(1)->validate('goods_id');
-        $typeId = $validator->required()->digits()->min(1)->validate('typeId');
+        $goods_id  = $validator->required()->digits()->min(1)->validate('goods_id');
+        $typeId    = $validator->required()->digits()->min(1)->validate('typeId');
         $this->validate($validator);
 
         $tableJoin = DataMapper::tableName('meta') . ' as m LEFT JOIN (select * from ' . DataMapper::tableName('goods_attr') . ' where goods_id = ' . $goods_id . ')' . ' as ga on m.meta_id = ga.attr_item_id';
@@ -376,15 +391,15 @@ class Type extends MetaBasicService
     {
         // 首先验证参数
         $validator = new Validator(array('goods_id' => $goods_id, 'typeId' => $typeId));
-        $goods_id = $validator->required()->digits()->min(1)->validate('goods_id');
-        $typeId = $validator->required()->digits()->min(1)->validate('typeId');
+        $goods_id  = $validator->required()->digits()->min(1)->validate('goods_id');
+        $typeId    = $validator->required()->digits()->min(1)->validate('typeId');
         $this->validate($validator);
 
         // 取得分组
-        $attrGroupArray = $this->fetchGoodsTypeAttrGroupArray($typeId, $ttl);
+        $attrGroupArray    = $this->fetchGoodsTypeAttrGroupArray($typeId, $ttl);
         $groupIdToItemList = array();
         foreach ($attrGroupArray as &$attrGroup) {
-            $attrGroup['itemArray'] = array();
+            $attrGroup['itemArray']                   = array();
             $groupIdToItemList[$attrGroup['meta_id']] = & $attrGroup['itemArray'];
         }
 
@@ -447,7 +462,7 @@ class Type extends MetaBasicService
     {
         // 首先验证参数
         $validator = new Validator(array('goods_id' => $goods_id));
-        $goods_id = $validator->required()->digits()->min(1)->validate('goods_id');
+        $goods_id  = $validator->required()->digits()->min(1)->validate('goods_id');
         $this->validate($validator);
 
         $DataMapper = new DataMapper('goods_attr');

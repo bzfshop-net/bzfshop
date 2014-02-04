@@ -10,6 +10,8 @@
 
 namespace Core\Service\Goods;
 
+use Core\Helper\Utility\QueryBuilder;
+
 class Brand extends \Core\Service\BaseService
 {
 
@@ -38,6 +40,26 @@ class Brand extends \Core\Service\BaseService
             'brand',
             'brand_id, brand_name', // 只取 id 和 名字
             array(),
+            array('order' => 'sort_order desc, brand_id desc'),
+            0,
+            0,
+            $ttl
+        );
+    }
+
+    /**
+     * 根据 id array 取得一组 brand 的名字
+     *
+     * @param array $idArray
+     * @param int $ttl
+     * @return array
+     */
+    public function fetchBrandArrayByIdArray($idArray, $ttl = 0)
+    {
+        return $this->_fetchArray(
+            'brand',
+            '*', // 只取 id 和 名字
+            array(array(QueryBuilder::buildInCondition('brand_id', $idArray, \PDO::PARAM_INT))),
             array('order' => 'sort_order desc, brand_id desc'),
             0,
             0,

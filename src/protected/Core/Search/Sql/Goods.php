@@ -50,6 +50,7 @@ class Goods extends BaseSqlSearch
                 switch ($searchParam[0]) {
                     // 取分类下面的商品，包括子分类的商品，我们需要取得所有子分类的 ID 然后重新构造查询条件
                     case 'category_id':
+                    case 'g.category_id':
                     case 'cat_id':
                     case 'g.cat_id':
                         $goodsCategoryService = new GoodsCategoryService();
