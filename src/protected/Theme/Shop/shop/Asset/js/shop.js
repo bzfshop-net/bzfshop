@@ -31,6 +31,11 @@
         bZF = window.bZF;
     }
 
+    bZF.isWindowUnload = false;
+    $(window).bind('beforeunload', function () {
+        bZF.isWindowUnload = true;
+    });
+
     bZF.themeShop = {};
 
     /** ** 判读浏览器是否为 IE6 *** */
@@ -208,14 +213,19 @@ jQuery((function (window, $) {
                 // 调用回调函数
                 successFunc(result.data);
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
 
                 if (failFunc) {
-                    failFunc(XMLHttpRequest, textStatus, errorThrown);
+                    failFunc(jqXHR, textStatus, errorThrown);
                     return;
                 }
 
-                bZF.showMessage('网络错误');
+                if (bZF.isWindowUnload) {
+                    // 不是错误
+                    return;
+                }
+
+                bZF.showMessage('网络错误[' + textStatus + ']');
             }
         });
     };
@@ -254,14 +264,19 @@ jQuery((function (window, $) {
                 // 调用回调函数
                 successFunc(result.data);
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
 
                 if (failFunc) {
-                    failFunc(XMLHttpRequest, textStatus, errorThrown);
+                    failFunc(jqXHR, textStatus, errorThrown);
                     return;
                 }
 
-                bZF.showMessage('网络错误');
+                if (bZF.isWindowUnload) {
+                    // 不是错误
+                    return;
+                }
+
+                bZF.showMessage('网络错误[' + textStatus + ']');
             }
         });
     };
@@ -1154,7 +1169,7 @@ jQuery((function (window, $) {
                 $(inputSelector).val(inputValue + '.' + valueArray.join('_'));
             }
         });
-        // 提交 Form
+        // 提交表单
         $('#bzf_goods_category_filter_panel').parent('form').submit();
     };
 
@@ -1164,12 +1179,12 @@ jQuery((function (window, $) {
         $('.bzf_choose_div button', $trNode).off('click');
         $('.bzf_choose_div button', $trNode).on('click', function (event) {
             var $this = $(this);
-            // 删除同级别别的选择
-            $('button', this.parentNode).not($this).removeClass('active');
             // 反选当前选择
             if ($this.hasClass('active')) {
                 $this.removeClass('active');
             } else {
+                // 删除同级别别的选择
+                $('button', this.parentNode).not($this).removeClass('active');
                 $this.addClass('active');
             }
             // 提交表单
@@ -1190,9 +1205,6 @@ jQuery((function (window, $) {
             }
         });
     };
-
-    // 缺省设置为单选
-    bZF.goods_category.setFilterButtonRadio($('#bzf_goods_category_filter_panel'));
 
     // 点击打开多选面板
     bZF.goods_category.filterMultiChooseOpen = function (trNode) {
@@ -1219,6 +1231,14 @@ jQuery((function (window, $) {
 
     // 同步 filter 面板的显示状态
     (function () {
+
+        if ($('#bzf_goods_category_filter_panel').size() <= 0) {
+            return;
+        }
+
+        // 缺省设置为单选
+        bZF.goods_category.setFilterButtonRadio($('#bzf_goods_category_filter_panel'));
+
         // filter 的数据格式为 123_45.34_5_6.78
         var filterItemValue = bZF.getCurrentUrlParam('brand_id') + '.' + bZF.getCurrentUrlParam('filter');
         var filterArray = [];
@@ -1266,6 +1286,11 @@ jQuery((function (window, $) {
 
     /**************** goods_category.tpl, goods_search 页面，根据 URL 设置排序按钮的显示状态 ******/
     (function () {
+
+        if ($('.bzf_goods_search_order_filter_bar').size() <= 0) {
+            return;
+        }
+
         // 设置隐藏值
         $('.bzf_goods_search_order_filter_bar input[name="category_id"]').val($.trim(bZF.getCurrentUrlParam('category_id')));
         $('.bzf_goods_search_order_filter_bar input[name="orderBy"]').val($.trim(bZF.getCurrentUrlParam('orderBy')));
@@ -1294,7 +1319,7 @@ jQuery((function (window, $) {
         }
 
         // 按钮点击，设置排序参数
-        $('.bzf_goods_search_order_filter_bar .btn-group button').click(function () {
+        $('.bzf_goods_search_order_filter_bar .btn-group button').on('click', function () {
             $('.bzf_goods_search_order_filter_bar input[name="orderBy"]').val($(this).attr('data-orderBy'));
             if ($(this).hasClass('btn-danger')) {
                 // 二次点击

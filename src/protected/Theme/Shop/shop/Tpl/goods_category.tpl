@@ -79,9 +79,10 @@
                         <tr>
                             <td colspan="3" style="background-color: #F7F7F7;font-size:14px;padding: 5px 5px;">
                                 <span style="color:#FF6600;">{{$category['meta_name']}}</span>&nbsp;--&nbsp;商品筛选
-                                <!-- 过滤条件 -->
-                                <input type="hidden" name="filter" value=""/>
-                                <input type="hidden" name="brand_id" value=""/>
+                                <!-- 隐藏的设置 -->
+                                <input type="hidden" name="filter" value="{{$filter|default}}"/>
+                                <input type="hidden" name="brand_id" value="{{$brand_id|default}}"/>
+                                <!-- /隐藏的设置 -->
                             </td>
                         </tr>
                         {{foreach $goodsFilterArray as $filterLabel => $filterItem}}
@@ -132,9 +133,9 @@
                                     <div class="controls">
 
                                         <!-- 隐藏的排序设置 -->
-                                        <input type="hidden" name="category_id" value=""/>
-                                        <input type="hidden" name="orderBy" value=""/>
-                                        <input type="hidden" name="orderDir" value=""/>
+                                        <input type="hidden" name="category_id" value="{{$category_id|default}}"/>
+                                        <input type="hidden" name="orderBy" value="{{$orderBy|default}}"/>
+                                        <input type="hidden" name="orderDir" value="{{$orderDir|default}}"/>
                                         <!-- /隐藏的排序设置 -->
 
                                         <div class="btn-toolbar">

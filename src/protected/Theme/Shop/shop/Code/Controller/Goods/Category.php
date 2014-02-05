@@ -50,6 +50,9 @@ class Category extends \Controller\BaseController
             $validator->required('商品分类不能为空')->digits('分类id非法')->min(1, true, '分类id非法')->filter('ValidatorIntValue')
                 ->validate('category_id');
 
+        // 这里支持多品牌查询
+        $searchFormQuery['g.brand_id'] = array('=', $validator->validate('brand_id'));
+
         // 价格区间查询
         $shopPriceMin = $validator->filter('ValidatorFloatValue')->validate('shop_price_min');
         $shopPriceMin = (null == $shopPriceMin) ? null : Money::toStorage($shopPriceMin);
@@ -151,13 +154,15 @@ class Category extends \Controller\BaseController
          *
          */
         $goodsFilterArray = array();
+        // filter 查询在这个条件下进行
+        $goodsFilterQueryCond = array_merge($this->searchExtraCondArray, array(array('g.category_id', '=', $searchFormQuery['g.category_id'])));
 
         // 3. 商品品牌查询
         $goodsBrandIdArray =
             SearchHelper::search(
                 SearchHelper::Module_Goods,
                 'distinct(g.brand_id)',
-                array_merge($searchParamArray, array(array('g.brand_id > 0'))),
+                array_merge($goodsFilterQueryCond, array(array('g.brand_id > 0'))),
                 null,
                 0,
                 0
@@ -191,9 +196,9 @@ class Category extends \Controller\BaseController
                 // 取得商品属性值列表
                 $goodsAttrItemValueArray =
                     SearchHelper::search(
-                        SearchHelper::Module_GoodsGoodsAttr,
+                        SearchHelper::Module_GoodsAttrGoods,
                         'min(ga.goods_attr_id) as goods_attr_id, ga.attr_item_value',
-                        array_merge($searchParamArray, array(array('ga.attr_item_id', '=', $filterItem['attrItemId']))),
+                        array_merge($goodsFilterQueryCond, array(array('ga.attr_item_id', '=', $filterItem['attrItemId']))),
                         null,
                         0,
                         0,
