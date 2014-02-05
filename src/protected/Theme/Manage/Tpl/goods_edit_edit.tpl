@@ -137,8 +137,8 @@
                     data-option-value-key="brand_id" data-option-text-key="brand_name">
                 <option value=""></option>
             </select>
-                    <span class="input-label" rel="tooltip" data-placement="top"
-                          data-title="如果是自己发货的产品，请先给你自己建一个供货商账号">供货商</span>
+            <span class="input-label" rel="tooltip" data-placement="top"
+                  data-title="如果是自己发货的产品，请先给你自己建一个供货商账号">供货商</span>
             <select class="span2 select2-simple" name="goods[suppliers_id]"
                     data-validation-required-message="供货商不能为空"
                     data-placeholder="选择供货商" data-initValue="{{$goods['suppliers_id']|default}}"

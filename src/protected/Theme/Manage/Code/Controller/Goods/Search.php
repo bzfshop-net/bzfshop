@@ -52,6 +52,8 @@ class Search extends \Controller\AuthController
             $validator->digits()->min(1)->filter('ValidatorIntValue')->validate('cat_id');
         $searchFormQuery['g.type_id']       =
             $validator->digits()->min(1)->filter('ValidatorIntValue')->validate('type_id');
+        $searchFormQuery['g.brand_id']      =
+            $validator->digits()->min(1)->filter('ValidatorIntValue')->validate('brand_id');
         $searchFormQuery['g.goods_sn']      = $validator->validate('goods_sn');
         $searchFormQuery['g.warehouse']     = $validator->validate('warehouse');
         $searchFormQuery['g.shelf']         = $validator->validate('shelf');
