@@ -24,9 +24,10 @@ final class QueryBuilder
      *                         array('supplier_price > ? or supplier_price < ?', $priceMin, $priceMax)
      *                         )
      *
+     * @param string $glue 连接条件， AND  或者 OR
      *
      */
-    public static function buildFilter(array $condArray)
+    public static function buildFilter(array $condArray, $glue = 'AND')
     {
 
         if (empty($condArray)) {
@@ -41,7 +42,7 @@ final class QueryBuilder
             $paramArray    = array_merge($paramArray, $cond);
         }
 
-        $filterStr = '(' . implode(' ) and ( ', $filterArray) . ')';
+        $filterStr = '(' . implode(' ) ' . $glue . ' ( ', $filterArray) . ')';
 
         // 把 filterStr 推到第一个位置，组成最后的 $filter 查询数组
         array_unshift($paramArray, $filterStr);
@@ -49,13 +50,35 @@ final class QueryBuilder
     }
 
     /**
+     * 建立 AND 查询条件
+     *
+     * @param array $condArray
+     * @return array
+     */
+    public static function buildAndFilter(array $condArray)
+    {
+        return self::buildFilter($condArray, 'AND');
+    }
+
+    /**
+     * 建立 OR 查询条件
+     *
+     * @param array $condArray
+     * @return array
+     */
+    public static function buildOrFilter(array $condArray)
+    {
+        return self::buildFilter($condArray, 'OR');
+    }
+
+    /**
      * 建立SQL的 IN 查询条件，例如： user_id in (123,45,67)  或者 user_name in ('xxxxx', 'wwwwww', 'lalalal')
      *
      * @return string 建立好的查询条件语句
      *
-     * @param string $field      字段名，比如 user_id
-     * @param array  $valueArray 字段的不同取值
-     * @param int    $valueType  取值的类型，比如  \PDO::PARAM_INT , \PDO::PARAM_STR
+     * @param string $field 字段名，比如 user_id
+     * @param array $valueArray 字段的不同取值
+     * @param int $valueType 取值的类型，比如  \PDO::PARAM_INT , \PDO::PARAM_STR
      */
     public static function buildInCondition($field, array $valueArray, $valueType = \PDO::PARAM_STR)
     {
@@ -78,9 +101,9 @@ final class QueryBuilder
      *
      * @return string 建立好的查询条件语句
      *
-     * @param string $field      字段名，比如 user_id
-     * @param array  $valueArray 字段的不同取值
-     * @param int    $valueType  取值的类型，比如  \PDO::PARAM_INT , \PDO::PARAM_STR
+     * @param string $field 字段名，比如 user_id
+     * @param array $valueArray 字段的不同取值
+     * @param int $valueType 取值的类型，比如  \PDO::PARAM_INT , \PDO::PARAM_STR
      */
     public static function buildNotInCondition($field, array $valueArray, $valueType = \PDO::PARAM_STR)
     {
@@ -241,7 +264,7 @@ final class QueryBuilder
      * 商品搜索的时候用于过滤某些系统的商品
      *
      * @param   array $systemArray
-     * @param string  $goodsTableAlias
+     * @param string $goodsTableAlias
      *
      * @return string
      */

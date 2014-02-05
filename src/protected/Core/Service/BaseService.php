@@ -172,7 +172,7 @@ class BaseService
         // 构造查询条件
         $filter = null;
         if (!empty($condArray)) {
-            $filter = QueryBuilder::buildFilter($condArray);
+            $filter = QueryBuilder::buildAndFilter($condArray);
         }
 
         if (null == $optionArray) {
@@ -248,7 +248,7 @@ class BaseService
         // 构造查询条件
         $filter = null;
         if (!empty($condArray)) {
-            $filter = QueryBuilder::buildFilter($condArray);
+            $filter = QueryBuilder::buildAndFilter($condArray);
         }
 
         // 创建 DataMapper

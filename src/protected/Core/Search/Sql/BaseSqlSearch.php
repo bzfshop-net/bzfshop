@@ -8,7 +8,6 @@
 namespace Core\Search\Sql;
 
 
-use Core\Helper\Utility\Route as RouteHelper;
 use Core\Search\AbstractSearch;
 use Core\Service\BaseService;
 
@@ -37,7 +36,8 @@ abstract class BaseSqlSearch extends AbstractSearch
         $offset,
         $limit,
         $groupByStr = null
-    ) {
+    )
+    {
         // 构造查询条件
         $searchParam = $this->prepareSearchParam($searchParam);
         $condArray   = SqlSearch::buildSqlCondArray($searchParam);

@@ -17,7 +17,6 @@ namespace Core\Search\Sql;
 
 
 use Core\Helper\Utility\QueryBuilder;
-use Core\Helper\Utility\Route as RouteHelper;
 use Core\Service\Goods\Category as GoodsCategoryService;
 
 class Goods extends BaseSqlSearch
@@ -48,6 +47,7 @@ class Goods extends BaseSqlSearch
 
             if (is_array($searchParam) && count($searchParam) == 3) {
                 switch ($searchParam[0]) {
+
                     // 取分类下面的商品，包括子分类的商品，我们需要取得所有子分类的 ID 然后重新构造查询条件
                     case 'category_id':
                     case 'g.category_id':
@@ -62,6 +62,25 @@ class Goods extends BaseSqlSearch
                         $searchParam =
                             array(QueryBuilder::buildInCondition('g.cat_id', $childrenIdArray, \PDO::PARAM_INT));
                         break;
+
+                    // 允许多品牌查询，需要生成 OR 查询条件，多品牌查询的情况 brand_id = 123_45_65_35 ，采用 _ 作为分隔
+                    case 'brand_id':
+                    case 'g.brand_id':
+                        // 只处理 = 的情况
+                        if ('=' != $searchParam[1] || false === strpos($searchParam[2], '_')) {
+                            break;
+                        }
+                        $brandValueArray     = explode('_', $searchParam[2]);
+                        $brandQueryCondArray = array();
+                        foreach ($brandValueArray as $brandValue) {
+                            if (!empty($brandValue)) {
+                                $brandQueryCondArray[] = array('g.brand_id = ?', intval($brandValue));
+                            }
+                        }
+                        // 生成一串的 OR 查询
+                        $searchParam = QueryBuilder::buildOrFilter($brandQueryCondArray);
+                        break;
+
                     default:
                         break;
                 }

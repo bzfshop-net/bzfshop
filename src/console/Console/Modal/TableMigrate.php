@@ -95,7 +95,7 @@ class TableMigrate
         // 构造查询条件
         $filter = null;
         if (!empty($condArray)) {
-            $filter = QueryBuilder::buildFilter($condArray);
+            $filter = QueryBuilder::buildAndFilter($condArray);
         }
 
         // 获得总数

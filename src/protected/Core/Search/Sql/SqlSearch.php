@@ -27,7 +27,9 @@ class SqlSearch extends AbstractSearch
             if (is_array($paramItem)) {
 
                 // 3 个参数的，比如 array('name','like','xxxxx')
-                if (count($paramItem) == 3) {
+                if (count($paramItem) == 3
+                    && in_array($paramItem[1], array('like', '=', '>', '>=', '<', '<=', '<>'))
+                ) {
                     $condArray[] = array(
                         $paramItem[0] . ' ' . $paramItem[1] . ' ? ',
                         ('like' == $paramItem[1] ? '%' . $paramItem[2] . '%' : $paramItem[2])
@@ -35,11 +37,10 @@ class SqlSearch extends AbstractSearch
                     continue;
                 }
 
+                // 我们允许直接的 Filter 查询方式，比如 array('age > ?', 10)
                 // 我们允许用户直接输入查询条件，比如  array('age > 10')
-                if (count($paramItem) == 1) {
-                    $condArray[] = $paramItem;
-                    continue;
-                }
+                $condArray[] = $paramItem;
+                continue;
             }
 
             // 非法的查询条件
@@ -103,7 +104,8 @@ class SqlSearch extends AbstractSearch
         $offset,
         $limit,
         $groupByStr = null
-    ) {
+    )
+    {
         $searchModule = $this->loadModule($searchType);
         if (!$searchModule) {
             return false;

@@ -312,7 +312,7 @@ class Category extends MetaBasicService
             . ' promote_start_date, promote_end_date, '
             . ' is_real, is_shipping, sort_order, goods_type, suppliers_id ',
             // fields
-            QueryBuilder::buildFilter($queryCondArray), // filter
+            QueryBuilder::buildAndFilter($queryCondArray), // filter
             array(
                 'order'  => 'sort_order desc, goods_id desc',
                 'offset' => $offset,
@@ -360,7 +360,7 @@ class Category extends MetaBasicService
 
         $dataMapper = new DataMapper('goods');
         return $dataMapper->count(
-            QueryBuilder::buildFilter($queryCondArray), // filter
+            QueryBuilder::buildAndFilter($queryCondArray), // filter
             null,
             $ttl
         );
