@@ -20,7 +20,16 @@
 
     /******* 建立自己的命名空间 ******** */
     var bZF = {};
-    window.bZF = bZF;
+    if (!window.bZF) {
+        window.bZF = bZF;
+    } else {
+        bZF = window.bZF;
+    }
+
+    bZF.isWindowUnload = false;
+    $(window).bind('beforeunload', function () {
+        bZF.isWindowUnload = true;
+    });
 
     /** ** 判读浏览器是否为 IE6 *** */
     (function (targetObj) {
@@ -262,14 +271,19 @@ jQuery((function (window, $) {
                 // 调用回调函数
                 successFunc(result.data);
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
 
                 if (failFunc) {
-                    failFunc(XMLHttpRequest, textStatus, errorThrown);
+                    failFunc(jqXHR, textStatus, errorThrown);
                     return;
                 }
 
-                bZF.showMessage('网络错误');
+                if (bZF.isWindowUnload) {
+                    // 不是错误
+                    return;
+                }
+
+                bZF.showMessage('网络错误[' + textStatus + ']');
             }
         });
     };
@@ -307,14 +321,19 @@ jQuery((function (window, $) {
                 // 调用回调函数
                 successFunc(result.data);
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
 
                 if (failFunc) {
-                    failFunc(XMLHttpRequest, textStatus, errorThrown);
+                    failFunc(jqXHR, textStatus, errorThrown);
                     return;
                 }
 
-                bZF.showMessage('网络错误');
+                if (bZF.isWindowUnload) {
+                    // 不是错误
+                    return;
+                }
+
+                bZF.showMessage('网络错误[' + textStatus + ']');
             }
         });
     };

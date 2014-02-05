@@ -20,7 +20,16 @@
 
     /******* 建立自己的命名空间 ******** */
     var bZF = {};
-    window.bZF = bZF;
+    if (!window.bZF) {
+        window.bZF = bZF;
+    } else {
+        bZF = window.bZF;
+    }
+
+    bZF.isWindowUnload = false;
+    $(window).bind('beforeunload', function () {
+        bZF.isWindowUnload = true;
+    });
 
     /** ** 判读浏览器是否为 IE6 *** */
     (function (targetObj) {
@@ -99,7 +108,14 @@ jQuery((function (window, $) {
         return WEB_ROOT_HOST + WEB_ROOT_BASE + url;
     };
 
-    bZF.ajaxCallGet = function (callUrl, callbackFunc) {
+    /**
+     * 做 ajax 调用
+     *
+     * @param callUrl
+     * @param successFunc  成功回调
+     * @param failFunc  失败回调
+     */
+    bZF.ajaxCallGet = function (callUrl, successFunc, failFunc) {
         // ajax  调用
         $.ajax({
             type: "get",
@@ -116,17 +132,77 @@ jQuery((function (window, $) {
                     return;
                 }
 
-                if (result.data) {
-                    // 调用回调函数
-                    callbackFunc(result.data);
-                } else {
+                if (null == result.data) {
                     console.log('没有返回数据[' + callUrl + ']');
-                    callbackFunc(null);
                 }
 
+                // 调用回调函数
+                successFunc(result.data);
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                bZF.showMessage('网络错误');
+            error: function (jqXHR, textStatus, errorThrown) {
+
+                if (failFunc) {
+                    failFunc(jqXHR, textStatus, errorThrown);
+                    return;
+                }
+
+                if (bZF.isWindowUnload) {
+                    // 不是错误
+                    return;
+                }
+
+                bZF.showMessage('网络错误[' + textStatus + ']');
+            }
+        });
+    };
+
+
+    /**
+     * ajax Post 调用
+     *
+     * @param callUrl
+     * @param paramObject
+     * @param successFunc
+     * @param failFunc
+     */
+    bZF.ajaxCallPost = function (callUrl, data, successFunc, failFunc) {
+        // ajax  调用
+        $.ajax({
+            type: "post",
+            url: callUrl,
+            data: data,
+            dataType: "json",
+            success: function (result) {
+                if (result.error) {
+
+                    if (result.error.message) {
+                        bZF.showMessage(result.error.message);
+                    } else {
+                        bZF.showMessage('调用失败');
+                    }
+                    return;
+                }
+
+                if (null == result.data) {
+                    console.log('没有返回数据[' + callUrl + ']');
+                }
+
+                // 调用回调函数
+                successFunc(result.data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+
+                if (failFunc) {
+                    failFunc(jqXHR, textStatus, errorThrown);
+                    return;
+                }
+
+                if (bZF.isWindowUnload) {
+                    // 不是错误
+                    return;
+                }
+
+                bZF.showMessage('网络错误[' + textStatus + ']');
             }
         });
     };
@@ -379,23 +455,11 @@ jQuery((function (window, $) {
         var shipping_id = $('#order_detail_shipping_select').find('option:selected').val();
         var shipping_no = $('#order_detail_shipping_no').val();
 
-        $.ajax({
-            type: "post",
-            url: ajaxCallUrl,
-            data: {rec_id: rec_id, shipping_id: shipping_id, shipping_no: shipping_no},
-            dataType: "json",
-            success: function (result) {
-                if (result.error) {
-                    // 有错误或者没有数据，返回
-                    bZF.showMessage(result.error.message);
-                    return;
-                }
+        bZF.ajaxCallPost(ajaxCallUrl,
+            {rec_id: rec_id, shipping_id: shipping_id, shipping_no: shipping_no},
+            function (data) {
                 bZF.showMessage('快递信息设置成功');
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                bZF.showMessage('网络错误');
-            }
-        });
+            });
     };
 
 })(window, jQuery));
