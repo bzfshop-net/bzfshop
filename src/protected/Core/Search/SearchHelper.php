@@ -24,6 +24,7 @@ final class SearchHelper
 
         // 商品搜索
         Module_Goods                         = 'Goods',
+        Module_GoodsGoodsAttr                = 'GoodsGoodsAttr',
         Module_GoodsGoodsPromote             = 'GoodsGoodsPromote',
 
         // 商品属性搜索

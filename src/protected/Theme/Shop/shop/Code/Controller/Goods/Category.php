@@ -101,42 +101,12 @@ class Category extends \Controller\BaseController
         }
         $smarty->assign('category', $category);
 
+        $metaData        = json_decode($category['meta_data'], true);
+        $metaFilterArray = @$metaData['filterArray'];
+
         // 1. 我们需要在左侧显示分类层级结构
         $goodsCategoryTreeArray = $goodsCategoryService->fetchCategoryTreeArray($category['parent_meta_id'], false, 1800);
         $smarty->assign('goodsCategoryTreeArray', $goodsCategoryTreeArray);
-
-        // 2. 商品查询
-
-        // 合并查询参数
-        $searchParamArray =
-            array_merge(QueryBuilder::buildSearchParamArray($searchFormQuery), $this->searchExtraCondArray);
-
-        $totalCount = SearchHelper::count(SearchHelper::Module_Goods, $searchParamArray);
-        if ($totalCount <= 0) {
-            goto out_display; // 没有商品，直接显示
-        }
-
-        // 页号可能是用户乱输入的，我们需要检查
-        if ($pageNo * $pageSize >= $totalCount) {
-            goto out_fail; // 返回首页
-        }
-
-        $goodsArray =
-            SearchHelper::search(
-                SearchHelper::Module_Goods,
-                'g.goods_id, g.cat_id, g.goods_sn, g.goods_name, g.brand_id, g.goods_number, g.market_price'
-                . ', g.shop_price, g.suppliers_id, g.virtual_buy_number, g.user_buy_number, g.user_pay_number'
-                . ', (g.virtual_buy_number + g.user_pay_number) as total_buy_number',
-                $searchParamArray,
-                $orderByParam,
-                $pageNo * $pageSize,
-                $pageSize
-            );
-
-        if (empty($goodsArray)) {
-            goto out_display;
-        }
-        $smarty->assign('goodsArray', $goodsArray);
 
         /**
          * 构造 Filter 数组，结构如下
@@ -157,7 +127,7 @@ class Category extends \Controller\BaseController
         // filter 查询在这个条件下进行
         $goodsFilterQueryCond = array_merge($this->searchExtraCondArray, array(array('g.category_id', '=', $searchFormQuery['g.category_id'])));
 
-        // 3. 商品品牌查询
+        // 2. 商品品牌查询
         $goodsBrandIdArray =
             SearchHelper::search(
                 SearchHelper::Module_Goods,
@@ -183,9 +153,7 @@ class Category extends \Controller\BaseController
             }
         }
 
-        // 4. 查询属性过滤
-        $metaData        = json_decode($category['meta_data'], true);
-        $metaFilterArray = @$metaData['filterArray'];
+        // 3. 查询属性过滤
         if (!empty($metaFilterArray)) {
             $goodsTypeService = new GoodsTypeService();
             foreach ($metaFilterArray as $filterItem) {
@@ -220,6 +188,50 @@ class Category extends \Controller\BaseController
         if (!empty($goodsFilterArray)) {
             $smarty->assign('goodsFilterArray', $goodsFilterArray);
         }
+
+
+        // 4. 商品查询
+
+        // 构造 attrItemId
+        $metaFilterTypeIdArray = array();
+        foreach ($metaFilterArray as $metaFilterItem) {
+            $metaFilterTypeIdArray[] = $metaFilterItem['attrItemId'];
+        }
+
+        // 构造 filter 参数，注意 filter 参数在 GoodsGoodsAttr 中具体解析
+        // 合并查询参数
+        $searchParamArray =
+            array_merge(QueryBuilder::buildSearchParamArray($searchFormQuery),
+                $this->searchExtraCondArray,
+                array(array('ga.filter', implode('.', $metaFilterTypeIdArray), $validator->validate('filter')))
+            );
+
+        $totalCount = SearchHelper::count(SearchHelper::Module_GoodsGoodsAttr, $searchParamArray);
+        if ($totalCount <= 0) {
+            goto out_display; // 没有商品，直接显示
+        }
+
+        // 页号可能是用户乱输入的，我们需要检查
+        if ($pageNo * $pageSize >= $totalCount) {
+            goto out_fail; // 返回首页
+        }
+
+        $goodsArray =
+            SearchHelper::search(
+                SearchHelper::Module_GoodsGoodsAttr,
+                'g.goods_id, g.cat_id, g.goods_sn, g.goods_name, g.brand_id, g.goods_number, g.market_price'
+                . ', g.shop_price, g.suppliers_id, g.virtual_buy_number, g.user_buy_number, g.user_pay_number'
+                . ', (g.virtual_buy_number + g.user_pay_number) as total_buy_number',
+                $searchParamArray,
+                $orderByParam,
+                $pageNo * $pageSize,
+                $pageSize
+            );
+
+        if (empty($goodsArray)) {
+            goto out_display;
+        }
+        $smarty->assign('goodsArray', $goodsArray);
 
         $smarty->assign('totalCount', $totalCount);
         $smarty->assign('pageNo', $pageNo);
