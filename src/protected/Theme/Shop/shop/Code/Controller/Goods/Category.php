@@ -61,6 +61,9 @@ class Category extends \Controller\BaseController
 
         $searchFormQuery['g.shop_price'] = array($shopPriceMin, $shopPriceMax);
 
+        // 属性过滤
+        $filter = $validator->validate('filter');
+
         // 排序
         $orderBy      = $validator->oneOf(array('', 'total_buy_number', 'shop_price', 'add_time'))->validate('orderBy');
         $orderDir     = $validator->oneOf(array('', 'asc', 'desc'))->validate('orderDir');
@@ -83,7 +86,8 @@ class Category extends \Controller\BaseController
         // 生成 smarty 的缓存 id
         $smartyCacheId =
             'Goods|Category|' . md5(
-                json_encode($searchFormQuery) . json_encode($orderByParam) . '_' . $pageNo . '_' . $pageSize
+                json_encode($searchFormQuery) . json_encode($orderByParam)
+                . '_' . $filter . '_' . $pageNo . '_' . $pageSize
             );
 
         // 开启并设置 smarty 缓存时间
@@ -203,7 +207,7 @@ class Category extends \Controller\BaseController
         $searchParamArray =
             array_merge(QueryBuilder::buildSearchParamArray($searchFormQuery),
                 $this->searchExtraCondArray,
-                array(array('ga.filter', implode('.', $metaFilterTypeIdArray), $validator->validate('filter')))
+                array(array('ga.filter', implode('.', $metaFilterTypeIdArray), $filter))
             );
 
         $totalCount = SearchHelper::count(SearchHelper::Module_GoodsGoodsAttr, $searchParamArray);
