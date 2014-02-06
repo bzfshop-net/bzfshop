@@ -216,11 +216,4 @@
     </div>
     <!-- /页面主体内容 -->
 
-
-    <!-- 商品统计详情对话框 -->
-    <div id="goods_statistics_dialog" class="modal hide fade">
-
-    </div>
-    <!-- 商品统计详情对话框 -->
-
 {{/block}}
