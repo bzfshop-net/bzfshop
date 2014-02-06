@@ -71,7 +71,8 @@ class GoodsGoodsAttr extends Goods
 
                             $goodsAttrItemCond = array();
                             foreach ($goodsAttrIdArray as $goodsAttrId) {
-                                $goodsAttr = $goodsTypeService->loadGoodsAttrById($goodsAttrId);
+                                $goodsAttrId = abs(intval($goodsAttrId));
+                                $goodsAttr   = $goodsTypeService->loadGoodsAttrById($goodsAttrId);
                                 // 无效的属性，返回
                                 if ($goodsAttr->isEmpty()) {
                                     continue;
