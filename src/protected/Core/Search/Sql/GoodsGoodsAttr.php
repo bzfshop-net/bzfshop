@@ -51,6 +51,9 @@ class GoodsGoodsAttr extends Goods
 
                         $goodsTypeService = new GoodsTypeService();
 
+                        // 构造子查询
+                        $queryJoinTable = '';
+                        $firstJoinTable = '';
                         $queryCondArray = array();
 
                         // 构造子查询
@@ -74,30 +77,52 @@ class GoodsGoodsAttr extends Goods
                                     continue;
                                 }
                                 $goodsAttrItemCond[]
-                                    = array("ga.attr_item_value = '" . $goodsAttr['attr_item_value'] . "'");
+                                    = array("attr_item_value = ?", $goodsAttr['attr_item_value']);
                             }
 
                             if (!empty($goodsAttrItemCond)) {
-                                $queryCondArray[] = QueryBuilder::buildAndFilter(array(
-                                    array('ga.attr_item_id = ' . $attrItemId),
+                                $condArray = QueryBuilder::buildAndFilter(array(
+                                    array('attr_item_id = ?', $attrItemId),
                                     QueryBuilder::buildOrFilter($goodsAttrItemCond)
                                 ));
-                            }
-                        }
 
-                        // 合并查询参数
-                        if (count($queryCondArray) > 1) {
-                            $queryCondArray = QueryBuilder::buildAndFilter($queryCondArray);
-                        } else {
-                            // 取得第一个记录
-                            $queryCondArray = $queryCondArray[0];
+                                $tmpTableName   = 'ga' . $index;
+                                $tmpTable       = '(select distinct(goods_id) from '
+                                    . DataMapper::tableName('goods_attr')
+                                    . ' where ' . array_shift($condArray) . ') as ' . $tmpTableName;
+                                $queryCondArray = array_merge($queryCondArray, $condArray);
+
+                                if (empty($queryJoinTable)) {
+                                    $queryJoinTable = $tmpTable;
+                                    $firstJoinTable = $tmpTableName;
+                                } else {
+                                    $queryJoinTable .= ' INNER JOIN '
+                                        . $tmpTable . ' on '
+                                        . $firstJoinTable . '.goods_id = '
+                                        . $tmpTableName . '.goods_id ';
+                                }
+                            }
                         }
 
                         // 构造子查询
                         $this->searchTable =
                             DataMapper::tableName('goods') . ' as g INNER JOIN '
-                            . '(select distinct(goods_id) from ' . DataMapper::tableName('goods_attr')
-                            . ' as ga where ' . array_shift($queryCondArray) . ' ) as ga on g.goods_id = ga.goods_id';
+                            . '(select distinct(' . $firstJoinTable . '.goods_id) from ('
+                            . $queryJoinTable . ')) as ga on g.goods_id = ga.goods_id';
+
+                        /**
+                         * 这里是一个很 tricky 的构造查询的方法
+                         *
+                         * 我们不想拼接 SQL 语句，比如 attr_item_value = $attr_item_value，
+                         * 而是采用 array('attr_item_value = ?', $attr_item_value)，这样可以 SQL Bind 避免 SQL 注入
+                         *
+                         * 由于前面的 子查询带了很多 ? 查询，所以我们需要把参数值 unshift 到第一个的位置
+                         *
+                         */
+                        // 头部压入一个空条件
+                        array_unshift($queryCondArray, '1=1');
+                        // 把这个参数压入到头部
+                        array_unshift($resultParamArray, $queryCondArray);
 
                         break;
 

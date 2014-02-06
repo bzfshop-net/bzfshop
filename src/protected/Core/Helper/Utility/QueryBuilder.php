@@ -42,7 +42,7 @@ final class QueryBuilder
             $paramArray    = array_merge($paramArray, $cond);
         }
 
-        $filterStr = '(' . implode(' ) ' . $glue . ' ( ', $filterArray) . ')';
+        $filterStr = '(' . implode(') ' . $glue . ' (', $filterArray) . ')';
 
         // 把 filterStr 推到第一个位置，组成最后的 $filter 查询数组
         array_unshift($paramArray, $filterStr);
