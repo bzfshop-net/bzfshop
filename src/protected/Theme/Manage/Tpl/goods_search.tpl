@@ -26,7 +26,7 @@
 
                     <span class="input-label">选择供货商</span>
                     <select class="span2 select2-simple" name="suppliers_id" data-placeholder="供货商列表"
-                            data-ajaxCallUrl="{{bzf_make_url controller="/Ajax/Supplier/ListSupplierIdName"}}"
+                            data-ajaxCallUrl="{{bzf_make_url controller='/Ajax/Supplier/ListSupplierIdName'}}"
                             data-option-value-key="suppliers_id" data-option-text-key="suppliers_name"
                             data-initValue="{{$suppliers_id|default}}">
                         <option value=""></option>
@@ -48,7 +48,7 @@
                     <input class="span1" type="text" name="goods_sn" value="{{$goods_sn|default}}"/>
                     <span class="input-label">管理员</span>
                     <select class="span2 select2-simple" name="admin_user_id" data-placeholder="管理员列表"
-                            data-ajaxCallUrl="{{bzf_make_url controller="/Ajax/AdminUser/ListUserIdName"}}"
+                            data-ajaxCallUrl="{{bzf_make_url controller='/Ajax/AdminUser/ListUserIdName'}}"
                             data-option-value-key="user_id" data-option-text-key="user_name"
                             data-initValue="{{$admin_user_id|default}}">
                         <option value=""></option>
@@ -58,7 +58,7 @@
                     <!-- 商品发布到那些系统 -->
                     <select class="span2 select2-simple" name="system_tag"
                             data-placeholder="选择商品发布系统" data-initValue="{{$system_tag|default}}"
-                            data-ajaxCallUrl="{{bzf_make_url controller="/Ajax/System/ListSystem"}}"
+                            data-ajaxCallUrl="{{bzf_make_url controller='/Ajax/System/ListSystem'}}"
                             data-option-value-key="system_tag" data-option-text-key="system_name">
                         <option value=""></option>
                     </select>
@@ -79,14 +79,14 @@
                     <!-- 商品分类有可能层级很长 -->
                     <select class="span4 select2-simple" name="cat_id"
                             data-placeholder="选择商品分类" data-initValue="{{$cat_id|default}}"
-                            data-ajaxCallUrl="{{bzf_make_url controller="/Ajax/Goods/ListCategoryTree"}}"
+                            data-ajaxCallUrl="{{bzf_make_url controller='/Ajax/Goods/ListCategoryTree'}}"
                             data-option-value-key="meta_id" data-option-text-key="meta_name">
                         <option value=""></option>
                     </select>
                     <span class="input-label">商品品牌</span>
                     <select class="span2 select2-simple" name="brand_id" data-placeholder="选择商品品牌"
                             data-initValue="{{$brand_id|default}}"
-                            data-ajaxCallUrl="{{bzf_make_url controller="/Ajax/Brand/ListBrand"}}"
+                            data-ajaxCallUrl="{{bzf_make_url controller='/Ajax/Brand/ListBrand'}}"
                             data-option-value-key="brand_id" data-option-text-key="brand_name">
                         <option value=""></option>
                     </select>
