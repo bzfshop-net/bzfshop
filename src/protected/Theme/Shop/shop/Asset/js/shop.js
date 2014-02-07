@@ -152,7 +152,7 @@ jQuery((function (window, $) {
      */
     bZF.getCurrentUrlParam = function (param) {
         var queryParamUrl = window.location.href;
-        if (queryParamUrl.indexOf('.html')) {
+        if (-1 !== queryParamUrl.indexOf('.html')) {
             var lastSlashPos = queryParamUrl.lastIndexOf('/');
             var urlPrefix = queryParamUrl.substr(0, lastSlashPos);
             var urlParam = queryParamUrl.substr(lastSlashPos + 1);
@@ -1145,22 +1145,22 @@ jQuery((function (window, $) {
             + categoryId + '"] td').trigger('click');
     }
 
-    /*********************** goods_category.tpl 页面，上面属性过滤 ************************************/
+    /*********************** goods_search.tpl, goods_category.tpl 页面，上面属性过滤 ************************************/
         // 建立独立的命名空间
-    bZF.goods_category = {};
+    bZF.goods_filter = {};
 
     // 提交查询 Form
-    bZF.goods_category.submitForm = function () {
+    bZF.goods_filter.submitForm = function () {
         // 把隐藏值清空
-        $('#bzf_goods_category_filter_panel input[type="hidden"]').val('');
+        $('#bzf_goods_search_filter_panel input[type="hidden"]').val('');
         // 拼接值
-        $('#bzf_goods_category_filter_panel .bzf_choose_div').each(function (index, div) {
+        $('#bzf_goods_search_filter_panel .bzf_choose_div').each(function (index, div) {
             var $div = $(div);
             var valueArray = [];
             $('button.active', $div).each(function (index, elem) {
                 valueArray.push($(elem).attr('data-filterValue'));
             });
-            var inputSelector = '#bzf_goods_category_filter_panel input[name="'
+            var inputSelector = '#bzf_goods_search_filter_panel input[name="'
                 + $div.attr('data-filterKey') + '"]';
             var inputValue = $(inputSelector).val();
             if ('' == $.trim(inputValue)) {
@@ -1170,11 +1170,11 @@ jQuery((function (window, $) {
             }
         });
         // 提交表单
-        $('#bzf_goods_category_filter_panel').parent('form').submit();
+        $('#bzf_goods_search_filter_panel').parent('form').submit();
     };
 
     // 设置 filter 按钮为单选
-    bZF.goods_category.setFilterButtonRadio = function ($trNode) {
+    bZF.goods_filter.setFilterButtonRadio = function ($trNode) {
         // 每个 button 的点击变成 单选
         $('.bzf_choose_div button', $trNode).off('click');
         $('.bzf_choose_div button', $trNode).on('click', function (event) {
@@ -1188,12 +1188,12 @@ jQuery((function (window, $) {
                 $this.addClass('active');
             }
             // 提交表单
-            bZF.goods_category.submitForm();
+            bZF.goods_filter.submitForm();
         });
     };
 
     // 设置 filter 按钮为多选
-    bZF.goods_category.setFilterButtonCheckbox = function ($trNode) {
+    bZF.goods_filter.setFilterButtonCheckbox = function ($trNode) {
         // 每个 button 的点击变成 多选
         $('.bzf_choose_div button', $trNode).off('click');
         $('.bzf_choose_div button', $trNode).on('click', function (event) {
@@ -1207,23 +1207,23 @@ jQuery((function (window, $) {
     };
 
     // 点击打开多选面板
-    bZF.goods_category.filterMultiChooseOpen = function (trNode) {
+    bZF.goods_filter.filterMultiChooseOpen = function (trNode) {
         var $trNode = $(trNode);
         // 显示多选状态
         $trNode.addClass('bzf_multi_choose').addClass('well');
         // 保留之前的 active 状态
         $('.bzf_choose_div button.active', $trNode).attr('data-active', true);
         // 每个 button 的点击变成 多选
-        bZF.goods_category.setFilterButtonCheckbox($trNode);
+        bZF.goods_filter.setFilterButtonCheckbox($trNode);
     };
 
     // 点击关闭多选面板
-    bZF.goods_category.filterMultiChooseClose = function (trNode) {
+    bZF.goods_filter.filterMultiChooseClose = function (trNode) {
         var $trNode = $(trNode);
         // 去除多选状态显示
         $trNode.removeClass('bzf_multi_choose').removeClass('well');
         // 把按钮设置为单选
-        bZF.goods_category.setFilterButtonRadio($trNode);
+        bZF.goods_filter.setFilterButtonRadio($trNode);
         // 取消选中状态, 恢复之前的选择
         $('.bzf_choose_div button', $trNode).removeClass('active');
         $('.bzf_choose_div button[data-active]', $trNode).addClass('active').removeAttr('data-active');
@@ -1232,12 +1232,12 @@ jQuery((function (window, $) {
     // 同步 filter 面板的显示状态
     (function () {
 
-        if ($('#bzf_goods_category_filter_panel').size() <= 0) {
+        if ($('#bzf_goods_search_filter_panel').size() <= 0) {
             return;
         }
 
         // 缺省设置为单选
-        bZF.goods_category.setFilterButtonRadio($('#bzf_goods_category_filter_panel'));
+        bZF.goods_filter.setFilterButtonRadio($('#bzf_goods_search_filter_panel'));
 
         // filter 的数据格式为 123_45.34_5_6.78
         var filterItemValue = bZF.getCurrentUrlParam('brand_id') + '.' + bZF.getCurrentUrlParam('filter');
@@ -1247,7 +1247,7 @@ jQuery((function (window, $) {
         } else {
             filterArray.push(filterItemValue);
         }
-        $('#bzf_goods_category_filter_panel .bzf_choose_div').each(function (index, div) {
+        $('#bzf_goods_search_filter_panel .bzf_choose_div').each(function (index, div) {
             if (index > filterArray.length) {
                 return;
             }
@@ -1280,7 +1280,7 @@ jQuery((function (window, $) {
         var currentUrl = window.location.href;
         if (currentUrl.indexOf('/Goods/Search') > 0) {
             // 搜索页面如果搜索了商品名，我们需要设置搜索框的内容显示
-            $('.bzf_header_search_block input[name="goods_name"]').val(bZF.getCurrentUrlParam('goods_name'));
+            $('.bzf_header_search_block input[name="keywords"]').val(bZF.getCurrentUrlParam('keywords'));
         }
     })();
 

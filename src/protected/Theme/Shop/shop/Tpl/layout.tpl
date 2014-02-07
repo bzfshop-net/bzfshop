@@ -121,7 +121,7 @@
 
                     <span class="bzf_header_search_block">
                         <img src="{{bzf_get_asset_url asset='img/header_search_icon.png'}}"/>
-                        <input type="text" name="goods_name"/>
+                        <input type="text" name="keywords"/>
                         <button type="submit">搜&nbsp;索</button>
                     </span>
 

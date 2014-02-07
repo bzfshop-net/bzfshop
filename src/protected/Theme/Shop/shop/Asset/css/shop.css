@@ -568,18 +568,18 @@ div.inline-divider label {
 }
 
 /*******************  商品分类页面，上面属性过滤面板  *********************/
-#bzf_goods_category_filter_panel table tbody td {
+#bzf_goods_search_filter_panel table tbody td {
     padding: 1px 2px;
 }
 
-#bzf_goods_category_filter_panel .bzf_choose_div {
+#bzf_goods_search_filter_panel .bzf_choose_div {
     padding: 2px 0px;
     margin: 0px 0px;
     text-align: left;
     border-radius: 5px;
 }
 
-#bzf_goods_category_filter_panel .bzf_choose_div button {
+#bzf_goods_search_filter_panel .bzf_choose_div button {
     display: inline-block;
     margin: 3px 2px;
     padding: 0px 3px;
@@ -590,11 +590,11 @@ div.inline-divider label {
     -webkit-box-shadow: none;
 }
 
-#bzf_goods_category_filter_panel .bzf_choose_div button i {
+#bzf_goods_search_filter_panel .bzf_choose_div button i {
     display: none;
 }
 
-#bzf_goods_category_filter_panel .bzf_choose_div button.active {
+#bzf_goods_search_filter_panel .bzf_choose_div button.active {
     color: #E50012;
     font-weight: bold;
     text-decoration: none;
@@ -602,19 +602,19 @@ div.inline-divider label {
     -webkit-box-shadow: none;
 }
 
-#bzf_goods_category_filter_panel .bzf_choose_div button.active i {
+#bzf_goods_search_filter_panel .bzf_choose_div button.active i {
     display: inline-block;
 }
 
-#bzf_goods_category_filter_panel .bzf_confirm_div {
+#bzf_goods_search_filter_panel .bzf_confirm_div {
     display: none;
 }
 
-#bzf_goods_category_filter_panel tr.bzf_multi_choose .bzf_confirm_div {
+#bzf_goods_search_filter_panel tr.bzf_multi_choose .bzf_confirm_div {
     display: block;
 }
 
-#bzf_goods_category_filter_panel tr.bzf_multi_choose button.bzf_multi_choose {
+#bzf_goods_search_filter_panel tr.bzf_multi_choose button.bzf_multi_choose {
     display: none;
 }
 

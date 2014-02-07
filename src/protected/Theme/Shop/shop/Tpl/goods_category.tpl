@@ -74,7 +74,7 @@
 
                 <!-- 属性过滤面板 -->
                 {{if isset($goodsFilterArray)}}
-                    <table class="table" id="bzf_goods_category_filter_panel" style="margin-bottom: 0px;">
+                    <table class="table" id="bzf_goods_search_filter_panel" style="margin-bottom: 0px;">
                         <tbody>
                         <tr>
                             <td colspan="3" style="background-color: #F7F7F7;font-size:14px;padding: 5px 5px;">
@@ -100,17 +100,17 @@
                                     </div>
                                     <div class="bzf_confirm_div">
                                         <button class="btn btn-small btn-success" type="button"
-                                                onclick="bZF.goods_category.submitForm();">确认
+                                                onclick="bZF.goods_filter.submitForm();">确认
                                         </button>
                                         <button class="btn btn-small" type="button"
-                                                onclick="bZF.goods_category.filterMultiChooseClose(this.parentNode.parentNode.parentNode);">
+                                                onclick="bZF.goods_filter.filterMultiChooseClose(this.parentNode.parentNode.parentNode);">
                                             取消
                                         </button>
                                     </div>
                                 </td>
                                 <td width="6%">
                                     <button class="btn btn-mini bzf_multi_choose" type="button"
-                                            onclick="bZF.goods_category.filterMultiChooseOpen(this.parentNode.parentNode);">
+                                            onclick="bZF.goods_filter.filterMultiChooseOpen(this.parentNode.parentNode);">
                                         多选
                                     </button>
                                 </td>
