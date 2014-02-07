@@ -196,19 +196,28 @@ class Category extends \Controller\BaseController
 
         // 4. 商品查询
 
-        // 构造 attrItemId
-        $metaFilterTypeIdArray = array();
-        foreach ($metaFilterArray as $metaFilterItem) {
-            $metaFilterTypeIdArray[] = $metaFilterItem['attrItemId'];
+        if (!empty($metaFilterArray)) {
+            // 构造 attrItemId
+            $metaFilterTypeIdArray = array();
+            foreach ($metaFilterArray as $metaFilterItem) {
+                $metaFilterTypeIdArray[] = $metaFilterItem['attrItemId'];
+            }
+
+            // 构造 filter 参数，注意 filter 参数在 GoodsGoodsAttr 中具体解析
+            // 合并查询参数
+            $searchParamArray =
+                array_merge(QueryBuilder::buildSearchParamArray($searchFormQuery),
+                    $this->searchExtraCondArray,
+                    array(array('ga.filter', implode('.', $metaFilterTypeIdArray), $filter))
+                );
+        } else {
+            // 合并查询参数
+            $searchParamArray =
+                array_merge(QueryBuilder::buildSearchParamArray($searchFormQuery),
+                    $this->searchExtraCondArray
+                );
         }
 
-        // 构造 filter 参数，注意 filter 参数在 GoodsGoodsAttr 中具体解析
-        // 合并查询参数
-        $searchParamArray =
-            array_merge(QueryBuilder::buildSearchParamArray($searchFormQuery),
-                $this->searchExtraCondArray,
-                array(array('ga.filter', implode('.', $metaFilterTypeIdArray), $filter))
-            );
 
         $totalCount = SearchHelper::count(SearchHelper::Module_GoodsGoodsAttr, $searchParamArray);
         if ($totalCount <= 0) {
