@@ -832,6 +832,44 @@ div.inline-divider label {
     font-weight: bold;
 }
 
+/***************** goods_view.tpl 商品浏览历史 *********************/
+.bzf_goods_view_history .header {
+    height: 30px;
+    background-color: #E50012;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 30px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.bzf_goods_view_history .goods_view_item {
+    padding: 1px 1px;
+    background-color: #ffffff;
+    border: 1px solid #595757;
+    margin-top: 10px;
+}
+
+.bzf_goods_view_history .goods_view_item .price {
+    text-align: center;
+    margin: 0px 0px;
+    font-weight: bold;
+    color: red;
+}
+
+/** goods_view.tpl 页面图片尺寸 **/
+#bzf_goods_view_history .goods_view_item a img {
+    width: 212px;
+    height: 212px;
+}
+
+/** goods_search.tpl, goods_category.tpl 页面图片尺寸 **/
+#bzf_goods_search_history .goods_view_item a img {
+    width: 188px;
+    height: 188px;
+}
+
 /***************** goods_view.tpl 商品详情信息 Tab Bar *********************/
 #bzf_goods_view_goods_detail_tabbar ul {
     height: 38px;

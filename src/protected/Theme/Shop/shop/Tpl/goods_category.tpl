@@ -61,6 +61,14 @@
             <!-- /商品分类 -->
         {{/if}}
 
+        <!-- 商品浏览历史，由 JavaScript 生成 -->
+        <div id="bzf_goods_search_history" class="bzf_goods_view_history">
+            <div class="header">
+                商品浏览历史
+            </div>
+        </div>
+        <!-- /商品浏览历史，由 JavaScript 生成 -->
+
     </div>
     <!-- /左侧栏 -->
 

@@ -1157,6 +1157,87 @@ jQuery((function (window, $) {
         $(this).removeClass('active');
     });
 
+
+    /**
+     * goods_view.tpl, goods_category.tpl, goods_search.tpl 页面  记录商品浏览的历史
+     */
+    bZF.goodsViewHistory = {};
+    bZF.goodsViewHistory.storageKey = 'goodsViewHistoryKey';
+    bZF.goodsViewHistory.maxSize = 5; // 缺省最多记录 5 个
+    // 清除历史记录
+    bZF.goodsViewHistory.clearGoodsViewHistoryArray = function () {
+        $.jStorage.set(bZF.goodsViewHistory.storageKey, []);
+    };
+    // 取得商品浏览历史
+    bZF.goodsViewHistory.getGoodsViewHistoryArray = function () {
+        var goodsViewHistoryArray = $.jStorage.get(bZF.goodsViewHistory.storageKey);
+        if (!goodsViewHistoryArray) {
+            return [];
+        }
+        return goodsViewHistoryArray;
+    };
+    // 保存商品浏览历史
+    bZF.goodsViewHistory.saveGoodsViewHistoryArray = function (goodsViewHistoryArray) {
+        $.jStorage.set(bZF.goodsViewHistory.storageKey, goodsViewHistoryArray);
+    };
+    // 记录一个商品浏览记录
+    bZF.goodsViewHistory.pushGoods = function (goodsId, goodsViewUrl, goodsImage, goodsName, goodsPrice) {
+        var goodsViewHistoryArray = bZF.goodsViewHistory.getGoodsViewHistoryArray();
+        if (goodsViewHistoryArray.length > 0) {
+            // 相同商品不要重复放入
+            var goodsViewHistoryArrayTmp = [];
+            for (var index = 0; index < goodsViewHistoryArray.length; index++) {
+                var elem = goodsViewHistoryArray[index];
+                if (parseInt(elem.goodsId) != parseInt(goodsId)) {
+                    goodsViewHistoryArrayTmp.push(elem);
+                }
+            }
+            goodsViewHistoryArray = goodsViewHistoryArrayTmp;
+        }
+        var goodsItem = {
+            'goodsId': goodsId,
+            'goodsViewUrl': goodsViewUrl,
+            'goodsImage': goodsImage,
+            'goodsName': goodsName,
+            'goodsPrice': goodsPrice
+        };
+        goodsViewHistoryArray.unshift(goodsItem);
+        // 删除多余的数据
+        if (goodsViewHistoryArray.length > bZF.goodsViewHistory.maxSize) {
+            goodsViewHistoryArray.splice(bZF.goodsViewHistory.maxSize, 1);
+        }
+        // 保存浏览记录
+        bZF.goodsViewHistory.saveGoodsViewHistoryArray(goodsViewHistoryArray);
+    };
+
+    // 记录用户的浏览记录
+    (function () {
+        // 只有在 goods_view.tpl 页面才做记录
+        if ($('#bzf_goods_view_thumb_image_slider').size() <= 0) {
+            return;
+        }
+        var goodsId = $('#bzf_goods_view_goods_id_input').val();
+        var goodsViewUrl = window.location.href;
+        var goodsImage = $($('#bzf_goods_view_thumb_image_slider ul li a img').get(0)).attr('data-original');
+        var goodsName = $('#bzf_goods_title_caption').text().replace('"', '').replace("'", ''); // 去除引号
+        var goodsPrice = $('#bzf_goods_view_shop_price_input').val();
+
+        bZF.goodsViewHistory.pushGoods(goodsId, goodsViewUrl, goodsImage, goodsName, goodsPrice);
+    })();
+
+    // goods_view.tpl, goods_category.tpl 页面生成浏览记录
+    $('#bzf_goods_view_history, #bzf_goods_search_history').each(function () {
+        var $historyDiv = $(this);
+        var goodsViewHistoryArray = bZF.goodsViewHistory.getGoodsViewHistoryArray();
+        $.each(goodsViewHistoryArray, function (index, elem) {
+            var renderHtml = '<div class="goods_view_item">'
+                + '<a target="_blank" href="' + elem.goodsViewUrl + '" title="' + elem.goodsName + '">'
+                + '<image src="' + elem.goodsImage + '"/></a>'
+                + '<p class="price">￥' + elem.goodsPrice + '</p>';
+            $historyDiv.append(renderHtml);
+        });
+    });
+
     /************** goods_index.tpl 页面，广告图片墙鼠标 hover 自动切换 **************************/
     $('.bzf_shop_index_adv_block ul a').hover(function () {
         $(this).trigger('click');

@@ -465,6 +465,22 @@
             </div>
             <!-- /供货商信息 -->
 
+            <!-- 商品浏览历史，由 JavaScript 生成 -->
+            <div id="bzf_goods_view_history" class="bzf_goods_view_history">
+                <div class="header">
+                    商品浏览历史
+                </div>
+                <!-- 一个商品 -->
+                <!-- div class="goods_view_item">
+                    <a href="#">
+                        <img src="#"/></a>
+
+                    <p class="price">￥100.34</p>
+                </div -->
+                <!-- /一个商品 -->
+            </div>
+            <!-- /商品浏览历史，由 JavaScript 生成 -->
+
         </div>
         <!-- 左侧边栏 -->
 
