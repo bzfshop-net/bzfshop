@@ -759,7 +759,7 @@ div.inline-divider label {
 }
 
 /***************** goods_view.tpl 供货商信息面板 *********************/
-.bzf_supplier_pane .header {
+#bzf_goods_view_supplier_pane .header {
     height: 30px;
     background-color: #E50012;
     color: white;
@@ -769,7 +769,7 @@ div.inline-divider label {
     text-align: center;
 }
 
-.bzf_supplier_pane .supplier_pane_content {
+#bzf_goods_view_supplier_pane .supplier_pane_content {
     background-color: white;
     border-left: solid 1px silver;
     border-right: solid 1px silver;
@@ -777,12 +777,30 @@ div.inline-divider label {
     padding: 10px 10px;
 }
 
-/** sticky 状态下把 hide 部分隐藏 **/
-.bzf_supplier_pane.bzf_sticky .bzf_hide {
+/** 悬浮状态下显示的头部，缺省隐藏 **/
+#bzf_goods_view_supplier_pane .bzf_sticky_header {
+    height: 39px;
+    background-color: #595757;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 39px;
+    text-align: center;
+    display: none;
+    margin-bottom: 10px;
+}
+
+/** 悬浮的时候显示 **/
+#bzf_goods_view_supplier_pane.bzf_sticky .bzf_sticky_header {
+    display: block;
+}
+
+/** sticky 状态下把 主面板隐藏 **/
+#bzf_goods_view_supplier_pane.bzf_sticky .bzf_hide {
     display: none;
 }
 
-.bzf_supplier_pane .supplier_pane_content .supplier_banner {
+#bzf_goods_view_supplier_pane .supplier_pane_content .supplier_banner {
     background-color: #595757;
     color: white;
     text-align: center;
@@ -790,13 +808,13 @@ div.inline-divider label {
     line-height: 30px;
 }
 
-.bzf_supplier_pane .supplier_pane_content .supplier_promise {
+#bzf_goods_view_supplier_pane .supplier_pane_content .supplier_promise {
     width: 196px;
     height: 90px;
     background: url('../img/supplier_panel_promise.png') no-repeat;
 }
 
-.bzf_supplier_pane .supplier_pane_content .divider {
+#bzf_goods_view_supplier_pane .supplier_pane_content .divider {
     width: 196px;
     height: 2px;
     font-size: 0px;
@@ -804,11 +822,11 @@ div.inline-divider label {
     margin: 5px 0px;
 }
 
-.bzf_supplier_pane .supplier_pane_content .supplier_info p {
+#bzf_goods_view_supplier_pane .supplier_pane_content .supplier_info p {
     margin: 0px 0px;
 }
 
-.bzf_supplier_pane .supplier_pane_content .supplier_info p span {
+#bzf_goods_view_supplier_pane .supplier_pane_content .supplier_info p span {
     padding: 0px 2px;
     color: red;
     font-weight: bold;

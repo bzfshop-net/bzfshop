@@ -395,15 +395,29 @@
         <div class="span3" style="width:216px;">
 
             <!-- 供货商信息 -->
-            <div id="bzf_supplier_pane" class="bzf_supplier_pane">
-                <div class="header">
-                    商家信息
+            <div id="bzf_goods_view_supplier_pane">
+
+                <!-- 悬浮的时候显示的头部 -->
+                <div class="bzf_sticky_header">
+                    QQ客服：<a target="_blank"
+                            href="http://wpa.qq.com/msgrd?v=3&uin={{bzf_get_option_value optionKey="kefu_qq"}}&site=qq&menu=yes">
+                        <img border="0"
+                             src="http://wpa.qq.com/pa?p=2:{{bzf_get_option_value optionKey="kefu_qq"}}:41"
+                             alt="QQ在线客服"
+                             title="QQ在线客服"/>
+                    </a>
                 </div>
+                <!-- /悬浮的时候显示的头部 -->
 
-                <div class="supplier_pane_content">
+                <!-- 商家信息的主面板 -->
+                <div class="bzf_hide bzf_supplier_main_pane">
 
-                    <!-- 某些时候可以隐藏的内容 -->
-                    <div class="bzf_hide">
+                    <div class="header">
+                        商家信息
+                    </div>
+
+                    <div class="supplier_pane_content">
+
                         <div class="supplier_banner">
                             <span style="font-size: 14px;font-weight: bold;">SHOP</span> bangzhufu.com
                         </div>
@@ -418,11 +432,6 @@
                         </div>
 
                         <div class="divider"></div>
-                    </div>
-                    <!-- /某些时候可以隐藏的内容 -->
-
-                    <!-- 必须要一直保持显示的内容 -->
-                    <div class="bzf_show">
                         <div class="supplier_info">
                             <p>商 户 名 ：{{bzf_get_option_value optionKey="merchant_name"}}</p>
 
@@ -449,9 +458,9 @@
                             </a>
                         </div>
                     </div>
-                    <!-- /必须要一直保持显示的内容 -->
 
                 </div>
+                <!-- /商家信息的主面板 -->
 
             </div>
             <!-- /供货商信息 -->

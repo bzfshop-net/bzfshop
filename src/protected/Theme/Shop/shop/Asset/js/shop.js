@@ -1068,8 +1068,35 @@ jQuery((function (window, $) {
                 }
             };
         }
-        $('#bzf_supplier_pane, #bzf_goods_view_goods_detail_tabbar').stickyPanel(stickyPanelOptions);
+        $('#bzf_goods_view_supplier_pane, #bzf_goods_view_goods_detail_tabbar').stickyPanel(stickyPanelOptions);
     })(jQuery);
+
+    /**
+     * goods_view.tpl 页面，当鼠标进入商品信息的时候，自动展开
+     */
+    $('#bzf_goods_view_supplier_pane').on('mouseenter',function () {
+        var $this = $(this);
+        // 不是悬浮状态不操作
+        if (!$this.hasClass('bzf_sticky')) {
+            return;
+        }
+        // 鼠标进入的时候显示面板
+        var $supplierMainPane = $('#bzf_goods_view_supplier_pane .bzf_supplier_main_pane');
+        if ($supplierMainPane.hasClass('bzf_hide')) {
+            $supplierMainPane.removeClass('bzf_hide');
+        }
+    }).on('mouseleave', function () {
+        var $this = $(this);
+        // 不是悬浮状态不操作
+        if (!$this.hasClass('bzf_sticky')) {
+            return;
+        }
+        // 鼠标移开的时候恢复隐藏
+        var $supplierMainPane = $('#bzf_goods_view_supplier_pane .bzf_supplier_main_pane');
+        if (!$supplierMainPane.hasClass('bzf_hide')) {
+            $supplierMainPane.addClass('bzf_hide');
+        }
+    });
 
     /**
      * goods_view.tpl 页面，ajax 加载一页一页的用户评论数据
