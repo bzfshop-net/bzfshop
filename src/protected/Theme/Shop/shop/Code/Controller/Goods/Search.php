@@ -115,7 +115,9 @@ class Search extends \Controller\BaseController
          */
         $goodsFilterArray = array();
         // filter 查询在这个条件下进行
-        $goodsFilterQueryCond = $this->searchExtraCondArray;
+        $goodsFilterQueryCond =
+            array_merge(QueryBuilder::buildSearchParamArray(array('g.goods_name' => $searchKeywords)),
+                $this->searchExtraCondArray);
 
         // 2. 商品品牌查询
         $goodsBrandIdArray =
