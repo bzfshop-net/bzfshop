@@ -395,12 +395,12 @@
         <div class="span3" style="width:216px;">
 
             <!-- 供货商信息 -->
-            <div id="bzf_goods_view_supplier_pane">
+            <div id="bzf_goods_view_supplier_pane" class="bzf_supplier_pane">
 
                 <!-- 悬浮的时候显示的头部 -->
                 <div class="bzf_sticky_header">
-                    QQ客服：<a target="_blank"
-                            href="http://wpa.qq.com/msgrd?v=3&uin={{bzf_get_option_value optionKey="kefu_qq"}}&site=qq&menu=yes">
+                    在线客服&nbsp;<a target="_blank"
+                                 href="http://wpa.qq.com/msgrd?v=3&uin={{bzf_get_option_value optionKey="kefu_qq"}}&site=qq&menu=yes">
                         <img border="0"
                              src="http://wpa.qq.com/pa?p=2:{{bzf_get_option_value optionKey="kefu_qq"}}:41"
                              alt="QQ在线客服"
@@ -468,7 +468,7 @@
             <!-- 商品浏览历史，由 JavaScript 生成 -->
             <div id="bzf_goods_view_history" class="bzf_goods_view_history">
                 <div class="header">
-                    商品浏览历史
+                    最近浏览
                 </div>
                 <!-- 一个商品 -->
                 <!-- div class="goods_view_item">

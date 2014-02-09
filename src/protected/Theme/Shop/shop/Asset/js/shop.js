@@ -1218,8 +1218,8 @@ jQuery((function (window, $) {
         }
         var goodsId = $('#bzf_goods_view_goods_id_input').val();
         var goodsViewUrl = window.location.href;
-        var goodsImage = $($('#bzf_goods_view_thumb_image_slider ul li a img').get(0)).attr('data-original');
-        var goodsName = $('#bzf_goods_title_caption').text().replace('"', '').replace("'", ''); // 去除引号
+        var goodsImage = $.trim($($('#bzf_goods_view_thumb_image_slider ul li a img').get(0)).attr('data-original'));
+        var goodsName = $.trim($('#bzf_goods_title_caption').text().replace('"', '').replace("'", '')); // 去除引号
         var goodsPrice = $('#bzf_goods_view_shop_price_input').val();
 
         bZF.goodsViewHistory.pushGoods(goodsId, goodsViewUrl, goodsImage, goodsName, goodsPrice);
@@ -1231,8 +1231,8 @@ jQuery((function (window, $) {
         var goodsViewHistoryArray = bZF.goodsViewHistory.getGoodsViewHistoryArray();
         $.each(goodsViewHistoryArray, function (index, elem) {
             var renderHtml = '<div class="goods_view_item">'
-                + '<a target="_blank" href="' + elem.goodsViewUrl + '" title="' + elem.goodsName + '">'
-                + '<image src="' + elem.goodsImage + '"/></a>'
+                + '<a target="_blank" href="' + $.trim(elem.goodsViewUrl) + '" title="' + $.trim(elem.goodsName) + '">'
+                + '<image src="' + $.trim(elem.goodsImage) + '"/></a>'
                 + '<p class="price">￥' + elem.goodsPrice + '</p>';
             $historyDiv.append(renderHtml);
         });
