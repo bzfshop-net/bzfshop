@@ -780,7 +780,7 @@ div.inline-divider label {
 /** 悬浮状态下显示的头部，缺省隐藏 **/
 .bzf_supplier_pane .bzf_sticky_header {
     height: 39px;
-    background-color: #595757;
+    background-color: #3E3A39;
     color: #ffffff;
     font-size: 14px;
     font-weight: bold;
@@ -1061,7 +1061,7 @@ div.inline-divider label {
 /*********** goods_search 搜索结果展示 *************/
 .bzf_goods_search_goods_item {
     width: 260px;
-    margin-left: 5px;
+    margin-left: 4px;
     margin-right: 0px;
     margin-bottom: 10px;
 }
