@@ -109,7 +109,8 @@ class Category extends \Controller\BaseController
         $metaFilterArray = @$metaData['filterArray'];
 
         // 1. 我们需要在左侧显示分类层级结构
-        $goodsCategoryTreeArray = $goodsCategoryService->fetchCategoryTreeArray($category['parent_meta_id'], false, 1800);
+        $goodsCategoryTreeArray =
+            $goodsCategoryService->fetchCategoryTreeArray($category['parent_meta_id'], false, 1800);
         $smarty->assign('goodsCategoryTreeArray', $goodsCategoryTreeArray);
 
         /**
@@ -129,7 +130,10 @@ class Category extends \Controller\BaseController
          */
         $goodsFilterArray = array();
         // filter 查询在这个条件下进行
-        $goodsFilterQueryCond = array_merge($this->searchExtraCondArray, array(array('g.category_id', '=', $searchFormQuery['g.category_id'])));
+        $goodsFilterQueryCond = array_merge(
+            $this->searchExtraCondArray,
+            array(array('g.category_id', '=', $searchFormQuery['g.category_id']))
+        );
 
         // 2. 商品品牌查询
         $goodsBrandIdArray =
@@ -141,13 +145,17 @@ class Category extends \Controller\BaseController
                 0,
                 0
             );
-        $brandIdArray      = array_map(function ($elem) {
-            return $elem['brand_id'];
-        }, $goodsBrandIdArray);
+        $brandIdArray      = array_map(
+            function ($elem) {
+                return $elem['brand_id'];
+            },
+            $goodsBrandIdArray
+        );
 
         if (!empty($brandIdArray)) {
             $goodsBrandService = new GoodsBrandService();
-            $goodsBrandArray   = $goodsBrandService->fetchBrandArrayByIdArray(array_unique(array_values($brandIdArray)));
+            $goodsBrandArray   =
+                $goodsBrandService->fetchBrandArrayByIdArray(array_unique(array_values($brandIdArray)));
             $filterBrandArray  = array();
             foreach ($goodsBrandArray as $brand) {
                 $filterBrandArray[] = array('value' => $brand['brand_id'], 'text' => $brand['brand_name']);
@@ -170,7 +178,10 @@ class Category extends \Controller\BaseController
                     SearchHelper::search(
                         SearchHelper::Module_GoodsAttrGoods,
                         'min(ga.goods_attr_id) as goods_attr_id, ga.attr_item_value',
-                        array_merge($goodsFilterQueryCond, array(array('ga.attr_item_id', '=', $filterItem['attrItemId']))),
+                        array_merge(
+                            $goodsFilterQueryCond,
+                            array(array('ga.attr_item_id', '=', $filterItem['attrItemId']))
+                        ),
                         null,
                         0,
                         0,
@@ -179,11 +190,19 @@ class Category extends \Controller\BaseController
                 if (!empty($goodsAttrItemValueArray)) {
                     $filterValueArray = array();
                     foreach ($goodsAttrItemValueArray as $itemValue) {
-                        $filterValueArray[] = array('value' => $itemValue['goods_attr_id'], 'text' => $itemValue['attr_item_value']);
+                        $filterValueArray[] =
+                            array('value' => $itemValue['goods_attr_id'], 'text' => $itemValue['attr_item_value']);
                     }
                     $goodsFilterArray[$goodsTypeAttrItem['meta_name']] = array(
                         'filterKey'        => 'filter',
-                        'filterValueArray' => $filterValueArray);
+                        'filterValueArray' => $filterValueArray
+                    );
+                } else {
+                    // 如果这个属性完全没有值（没有一个商品设过任何值），我们弄一个空的
+                    $goodsFilterArray[$goodsTypeAttrItem['meta_name']] = array(
+                        'filterKey'        => 'filter',
+                        'filterValueArray' => array()
+                    );
                 }
             }
         }
@@ -206,14 +225,16 @@ class Category extends \Controller\BaseController
             // 构造 filter 参数，注意 filter 参数在 GoodsGoodsAttr 中具体解析
             // 合并查询参数
             $searchParamArray =
-                array_merge(QueryBuilder::buildSearchParamArray($searchFormQuery),
+                array_merge(
+                    QueryBuilder::buildSearchParamArray($searchFormQuery),
                     $this->searchExtraCondArray,
                     array(array('ga.filter', implode('.', $metaFilterTypeIdArray), $filter))
                 );
         } else {
             // 合并查询参数
             $searchParamArray =
-                array_merge(QueryBuilder::buildSearchParamArray($searchFormQuery),
+                array_merge(
+                    QueryBuilder::buildSearchParamArray($searchFormQuery),
                     $this->searchExtraCondArray
                 );
         }

@@ -596,6 +596,7 @@ div.inline-divider label {
 
 #bzf_goods_search_filter_panel .bzf_choose_div button.active {
     color: #E50012;
+    background-color: #e6e6e6;
     font-weight: bold;
     text-decoration: none;
     box-shadow: none;
@@ -1100,7 +1101,7 @@ div.inline-divider label {
     overflow: hidden;
     color: #333333;
     font-size: 14px;
-    width: 300px;
+    width: 250px;
 }
 
 .bzf_goods_search_goods_item .bzf_hover .bzf_goods_name {

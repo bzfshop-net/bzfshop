@@ -96,7 +96,7 @@
                         {{foreach $goodsFilterArray as $filterLabel => $filterItem}}
                             <!-- 商品属性过滤 -->
                             <tr>
-                                <td width="8%" class="labelkey">{{$filterLabel}}</td>
+                                <td width="9%" class="labelkey">{{$filterLabel}}</td>
                                 <td>
                                     <div class="bzf_choose_div" data-filterKey="{{$filterItem['filterKey']}}">
                                         {{foreach $filterItem['filterValueArray'] as $valueItem}}

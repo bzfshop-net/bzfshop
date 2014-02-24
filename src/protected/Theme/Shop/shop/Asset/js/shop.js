@@ -160,7 +160,7 @@ jQuery((function (window, $) {
             var urlParamArray = urlParam.match(/[~]?([^~]+)-([^~]*)/g);
             var paramArray = [];
             $.each(urlParamArray, function (index, param) {
-                if ('~' == param[0]) {
+                if ('~' == param.charAt(0)) {
                     param = param.substr(1);
                 }
                 var separatorPos = param.indexOf('-');
@@ -178,7 +178,8 @@ jQuery((function (window, $) {
     bZF.loadCaptchaImage = function (itemId) {
         var time = new Date().getTime();
         //取得验证码图片
-        $(itemId).html('<a href="#" onclick="return bZF.loadCaptchaImage(\'' + itemId + '\')"><img style="width:150px;height:50px;" width="150" height="50" src="' + bZF.makeUrl('/Image/Captcha') + '?rand=' + time + '" /></a>');
+        $(itemId).html('<a href="#" onclick="return bZF.loadCaptchaImage(\'' + itemId + '\')"><img style="width:150px;height:50px;" '
+            + 'width="150" height="50" src="' + bZF.makeUrl('/Image/Captcha') + '?rand=' + time + '" /></a>');
         return false;
     };
 
@@ -1344,6 +1345,12 @@ jQuery((function (window, $) {
             return;
         }
 
+        // 如果没有筛选面板，直接返回
+        var chooseDivSize = $('#bzf_goods_search_filter_panel .bzf_choose_div').size();
+        if (chooseDivSize <= 0) {
+            return;
+        }
+
         // 缺省设置为单选
         bZF.goods_filter.setFilterButtonRadio($('#bzf_goods_search_filter_panel'));
 
@@ -1355,6 +1362,13 @@ jQuery((function (window, $) {
         } else {
             filterArray.push(filterItemValue);
         }
+
+        // 筛选面板 和 属性值 不匹配 （某些面板没有值，比如所有商品都没有设置这个属性）
+        // 我们这里只处理了商品没有设置品牌的情况，其它情况没有处理
+        if (chooseDivSize < filterArray.length) {
+            filterArray.shift();
+        }
+
         $('#bzf_goods_search_filter_panel .bzf_choose_div').each(function (index, div) {
             if (index > filterArray.length) {
                 return;
