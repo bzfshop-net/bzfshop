@@ -408,8 +408,8 @@ jQuery((function (window, $) {
     bZF.loadCaptchaImage = function (itemId) {
         var time = new Date().getTime();
         //取得验证码图片
-        $(itemId).html('<a href="#" onclick="bZF.loadCaptchaImage(\'' + itemId + '\')"><img width="150" height="50" src="'
-            + bZF.makeUrl('/Image/Captcha') + '?rand=' + time + '" /></a>');
+        $(itemId).html('<a href="#" onclick="bZF.loadCaptchaImage(\'' + itemId + '\')"><img style="width:150px;height:50px;" '
+            + 'width="150" height="50" src="' + bZF.makeUrl('/Image/Captcha') + '?rand=' + time + '" /></a>');
         // IE6 不会自动缩放图片
         if (bZF.isIE6 || bZF.isIE7) {
             $('img', $(itemId)).width(150);
