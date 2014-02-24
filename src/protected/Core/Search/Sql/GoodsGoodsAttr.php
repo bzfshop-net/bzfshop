@@ -45,7 +45,8 @@ class GoodsGoodsAttr extends Goods
                         $addParam = false;
 
                         // 没有值，不需要过滤
-                        if (empty($searchParam[1]) || empty($searchParam[2])) {
+                        $trimSearchParam2 = trim(str_replace('.', '', $searchParam[2])); // 有可能没有值，全部为点 "..."
+                        if (empty($searchParam[1]) || empty($searchParam[2]) || empty($trimSearchParam2)) {
                             break;
                         }
 
@@ -82,10 +83,12 @@ class GoodsGoodsAttr extends Goods
                             }
 
                             if (!empty($goodsAttrItemCond)) {
-                                $condArray = QueryBuilder::buildAndFilter(array(
-                                    array('attr_item_id = ?', $attrItemId),
-                                    QueryBuilder::buildOrFilter($goodsAttrItemCond)
-                                ));
+                                $condArray = QueryBuilder::buildAndFilter(
+                                    array(
+                                        array('attr_item_id = ?', $attrItemId),
+                                        QueryBuilder::buildOrFilter($goodsAttrItemCond)
+                                    )
+                                );
 
                                 $tmpTableName   = 'ga' . $index;
                                 $tmpTable       = '(select distinct(goods_id) from '

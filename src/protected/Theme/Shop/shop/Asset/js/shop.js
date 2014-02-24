@@ -1271,11 +1271,20 @@ jQuery((function (window, $) {
             });
             var inputSelector = '#bzf_goods_search_filter_panel input[name="'
                 + $div.attr('data-filterKey') + '"]';
+            // 在开始加入一个 .，后面在 submit 的时候我们去掉它
+            var valueStr = '.' + valueArray.join('_');
             var inputValue = $(inputSelector).val();
             if ('' == $.trim(inputValue)) {
-                $(inputSelector).val(valueArray.join('_'));
+                $(inputSelector).val(valueStr);
             } else {
-                $(inputSelector).val(inputValue + '.' + valueArray.join('_'));
+                $(inputSelector).val(inputValue + valueStr);
+            }
+        });
+        // 去除掉 value 开头的 .
+        $('#bzf_goods_search_filter_panel input[type="hidden"]').each(function (index, input) {
+            var inputValue = $.trim($(input).val());
+            if ('.' == inputValue.charAt(0)) {
+                $(input).val(inputValue.substr(1));
             }
         });
         // 提交表单
@@ -1355,7 +1364,11 @@ jQuery((function (window, $) {
         bZF.goods_filter.setFilterButtonRadio($('#bzf_goods_search_filter_panel'));
 
         // filter 的数据格式为 123_45.34_5_6.78
-        var filterItemValue = bZF.getCurrentUrlParam('brand_id') + '.' + bZF.getCurrentUrlParam('filter');
+        var filterItemValue = '' + bZF.getCurrentUrlParam('brand_id');
+        var filterStr = bZF.getCurrentUrlParam('filter');
+        if (filterStr && '' != filterStr) {
+            filterItemValue += '.' + filterStr;
+        }
         var filterArray = [];
         if (-1 !== filterItemValue.indexOf('.')) {
             filterArray = filterItemValue.split('.');

@@ -141,7 +141,8 @@
                                     <div class="controls">
 
                                         <!-- 隐藏的排序设置 -->
-                                        <input type="hidden" name="keywords" value="{{$keywords|default}}"/>
+                                        <input type="hidden" name="keywords"
+                                               value="{{$keywords|default|escape:'url'}}"/>
                                         <input type="hidden" name="orderBy" value="{{$orderBy|default}}"/>
                                         <input type="hidden" name="orderDir" value="{{$orderDir|default}}"/>
                                         <!-- /隐藏的排序设置 -->
