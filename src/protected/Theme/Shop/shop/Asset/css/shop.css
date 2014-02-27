@@ -102,7 +102,7 @@ table.table tbody tr td.labelvalue input {
     box-shadow: none;
     text-shadow: none;
     border: none;
-    background-color: #E50012;
+    background-color: #E4006E;
     font-size: 16px;
     color: white;
     padding-left: 10px;
@@ -406,10 +406,10 @@ div.inline-divider label {
     display: block;
     line-height: 30px;
     vertical-align: middle;
-    border: solid 2px #E50012;
+    border: solid 2px #E4006E;
     box-shadow: none;
     padding: 0px 0px;
-    margin-left: 40px;
+    margin-left: 20px;
 }
 
 .bzf_header_search_block img {
@@ -438,7 +438,7 @@ div.inline-divider label {
 
 .bzf_header_search_block input:focus {
     border: none;
-    border-color: #E50012;
+    border-color: #E4006E;
     box-shadow: none;
 }
 
@@ -446,7 +446,7 @@ div.inline-divider label {
     display: inline-block;
     float: right;
     filter: none;
-    background-color: #E50012;
+    background-color: #E4006E;
     color: white;
     border: none;
     height: 100%;
@@ -466,7 +466,7 @@ div.inline-divider label {
     font-weight: bold;
     padding-left: 10px;
     padding-right: 10px;
-    margin-left: 40px;
+    margin-left: 20px;
 }
 
 .bzf_icon_cart_red {
@@ -500,7 +500,7 @@ div.inline-divider label {
 .bzf_header_nav_menu_dropdown {
     filter: none;
     background-image: none;
-    background-color: #E50012;
+    background-color: #221814;
     color: white;
     height: 38px;
     line-height: 38px;
@@ -532,7 +532,7 @@ div.inline-divider label {
 }
 
 .bzf_header_nav_menu_dropdown .nav li a:hover {
-    color: #3E3A39;
+    color: #E4006E;
     background-color: white;
 }
 
@@ -540,7 +540,7 @@ div.inline-divider label {
     filter: none;
     color: white;
     background-image: none;
-    background-color: #3E3A39;
+    background-color: #E4006E;
 }
 
 .bzf_header_nav_menu_dropdown .nav li.active a:hover {
@@ -595,7 +595,7 @@ div.inline-divider label {
 }
 
 #bzf_goods_search_filter_panel .bzf_choose_div button.active {
-    color: #E50012;
+    color: #E4006E;
     background-color: #e6e6e6;
     font-weight: bold;
     text-decoration: none;
@@ -723,19 +723,19 @@ div.inline-divider label {
 }
 
 .bzf_goods_view_relate_goods_recommand ul.nav li.active a {
-    color: #E50012;
+    color: #E4006E;
 }
 
 .bzf_goods_view_relate_goods_recommand ul.nav {
-    border-bottom: solid 1px #E50012;
+    border-bottom: solid 1px #E4006E;
     background-color: #EEEEEF;
     margin-bottom: 0px;
 }
 
 .bzf_goods_view_relate_goods_recommand ul.nav li.active a {
-    border-top: solid 2px #E50012;
-    border-left: solid 1px #E50012;
-    border-right: solid 1px #E50012;
+    border-top: solid 2px #E4006E;
+    border-left: solid 1px #E4006E;
+    border-right: solid 1px #E4006E;
 }
 
 .bzf_goods_view_relate_goods_recommand div.tab-pane {
@@ -762,7 +762,7 @@ div.inline-divider label {
 /***************** goods_view.tpl 供货商信息面板 *********************/
 .bzf_supplier_pane .header {
     height: 30px;
-    background-color: #E50012;
+    background-color: #E4006E;
     color: white;
     font-size: 14px;
     font-weight: bold;
@@ -836,7 +836,7 @@ div.inline-divider label {
 /***************** goods_view.tpl 商品浏览历史 *********************/
 .bzf_goods_view_history .header {
     height: 30px;
-    background-color: #E50012;
+    background-color: #E4006E;
     color: white;
     font-size: 14px;
     font-weight: bold;
@@ -895,13 +895,13 @@ div.inline-divider label {
 }
 
 #bzf_goods_view_goods_detail_tabbar ul li a:hover {
-    background-color: #E50012;
+    background-color: #E4006E;
     border: none;
 }
 
 #bzf_goods_view_goods_detail_tabbar ul li.active a {
     border: none;
-    background-color: #E50012;
+    background-color: #E4006E;
 }
 
 /***************** goods_view.tpl 商品详情页面下方大块内容区域***********************/
@@ -957,7 +957,7 @@ div.inline-divider label {
 }
 
 .bzf_user_login_panel .bzf_header_panel {
-    border-bottom: solid 2px #E50012;
+    border-bottom: solid 2px #E4006E;
     margin-bottom: 20px;
 }
 
@@ -968,7 +968,7 @@ div.inline-divider label {
     line-height: 30px;
     vertical-align: middle;
     color: white;
-    background-color: #E50012;
+    background-color: #E4006E;
     padding: 0px 10px;
 }
 

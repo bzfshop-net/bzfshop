@@ -61,17 +61,17 @@
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu"
                                     style="display: block; position: static; margin-bottom: 5px; *width: 180px;">
                                     <li><a tabindex="-1" target="_blank"
-                                           href="http://www.bzfshop.net/article/241.html?utm_source=bzfshop">使用手册</a>
+                                           href="http://doc.bzfshop.net?utm_source=bzfshop">使用手册</a>
                                     </li>
                                     <li class="divider"></li>
                                     <li><a tabindex="-1" target="_blank"
-                                           href="http://www.bzfshop.net/article/241.html?utm_source=bzfshop">开发手册</a>
+                                           href="http://doc.bzfshop.net?utm_source=bzfshop">开发手册</a>
                                     </li>
                                     <li><a tabindex="-1" target="_blank"
-                                           href="http://www.bzfshop.net/article/241.html?utm_source=bzfshop">设计手册</a>
+                                           href="http://doc.bzfshop.net?utm_source=bzfshop">设计手册</a>
                                     </li>
                                     <li><a tabindex="-1" target="_blank"
-                                           href="http://www.bzfshop.net/article/241.html?utm_source=bzfshop">部署手册</a>
+                                           href="http://doc.bzfshop.net?utm_source=bzfshop">部署手册</a>
                                     </li>
                                 </ul>
                             </div>

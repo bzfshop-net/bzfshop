@@ -758,11 +758,4 @@ jQuery((function (window, $) {
         });
     };
 
-    /****************** community_article.tpl 页面显示 rss 文章 ********************/
-    $('#bzf_community_article_rss_panel').rssfeed('http://www.bzfshop.net/feed', {
-        limit: 20,
-        linkcontent: true,
-        linktarget: '_blank'
-    });
-
 })(window, jQuery));

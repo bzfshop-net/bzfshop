@@ -13,3 +13,19 @@
     <!-- /页面主体内容 -->
 
 {{/block}}
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+            /****************** community_article.tpl 页面显示 rss 文章 ********************/
+            $('#bzf_community_article_rss_panel').rssfeed('http://www.bzfshop.net/feed', {
+                limit: 20,
+                linkcontent: true,
+                linktarget: '_blank'
+            });
+        })(window, jQuery));
+    </script>
+{{/block}}
