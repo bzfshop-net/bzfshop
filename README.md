@@ -1,41 +1,27 @@
 
-
 ## 棒主妇开源商城
-
-bzfshop is an opensource B2C project. We are trying to provide a well-designed , efficient and totally free B2C website (like magento but light weight than it)
-
-Here is a online demo for your interest;
-
-Shop: http://demo.bzfshop.net  
-
-Mobile: http://demo.bzfshop.net/mobile  
-
-Manage: http://demo.bzfshop.net/manage   
-username: admin   password:123456
-
-Supplier: http://demo.bzfshop.net/supplier  
-
 
 棒主妇开源(http://www.bzfshop.net) 是 棒主妇商城(http://www.bangzhufu.com) 的开源项目。我们希望提供一个设计严谨、性能优异、完全免费开源的
 B2C商城给大家使用，方便每一个人可以很容易的搭建属于自己的B2C商城。
 
 bzfshop 设计为一个跨平台的程序，可以支持多种平台的安装，目前包括：
 
-* 普通服务器安装（虚拟主机、VPS、阿里云、独立服务器、服务器集群 ...）
+* 服务器大规模集群安装 （F5/LVS 设备 + 一堆 WebServer + Memcache 缓存服务器 + MySql Cluster）
+* 普通服务器安装（虚拟主机、VPS、阿里云、独立服务器、...）
 * 新浪 SAE 平台（把 src 目录下内容上传到 SAE 即可）
 * 百度 BAE3 平台（把 src 目录下内容上传到 BAE3 即可）
 
 ***
 
-### 商城说明
+### 商城链接说明
 
 棒主妇开源：http://www.bzfshop.net
+
+棒主妇文档：http://doc.bzfshop.net
 
 商城演示：http://www.bzfshop.net/article/253.html
 
 代码下载：http://www.bzfshop.net/article/239.html
-
-官方文档：http://www.bzfshop.net/article/241.html
 
 ### 商城安装方法
 
@@ -74,13 +60,13 @@ bzfshop 设计为一个跨平台的程序，可以支持多种平台的安装，
 	经过 submodule update 之后你就取得了 bootstrap-custom 工程的代码，这样整个工程代码就完整了
 	
 	
-### 技术支持
+### 商城技术支持
 
  1. 棒主妇开源官方网站 http://www.bzfshop.net
  
  2. Google Group 讨论组 https://groups.google.com/d/forum/bzfshop-group
  
  3. QQ群 134820563 
- 
 
-	
+我们是 Linux 工作环境上 QQ 很不方便。QQ群 只回答普通小白用户的初级问题，技术 Geek 请尽量使用 Google Group。
+Google Group 可能需要翻墙才能访问（不会翻墙的技术不是一个好技术）。
