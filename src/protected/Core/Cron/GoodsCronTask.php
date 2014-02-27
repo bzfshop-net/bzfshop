@@ -15,10 +15,10 @@ use Core\Service\Goods\Goods as GoodsBasicService;
 class GoodsCronTask implements ICronTask
 {
 
-    public static $task_name = '商品定时操作';
+    public static $task_name = 'goods';
     public static $actionDesc = array(
-        'Online' => '商品上架',
-        'Offline' => '商品下架',
+        'Online'   => '商品上架',
+        'Offline'  => '商品下架',
         'setPrice' => '定时改价',
     );
 
@@ -26,6 +26,7 @@ class GoodsCronTask implements ICronTask
      * 商品上架
      *
      * @param array $paramArray
+     *
      * @return array
      */
     public function Online(array $paramArray)
@@ -35,7 +36,7 @@ class GoodsCronTask implements ICronTask
         $goods_id = abs(intval(@$paramArray['goods_id']));
 
         $goodsBasicService = new GoodsBasicService();
-        $goods = $goodsBasicService->loadGoodsById($goods_id);
+        $goods             = $goodsBasicService->loadGoodsById($goods_id);
 
         if ($goods->isEmpty()) {
             goto out;
@@ -57,6 +58,7 @@ class GoodsCronTask implements ICronTask
      * 商品下架
      *
      * @param array $paramArray
+     *
      * @return array
      */
     public function Offline(array $paramArray)
@@ -66,7 +68,7 @@ class GoodsCronTask implements ICronTask
         $goods_id = abs(intval(@$paramArray['goods_id']));
 
         $goodsBasicService = new GoodsBasicService();
-        $goods = $goodsBasicService->loadGoodsById($goods_id);
+        $goods             = $goodsBasicService->loadGoodsById($goods_id);
 
         if ($goods->isEmpty()) {
             goto out;
@@ -88,6 +90,7 @@ class GoodsCronTask implements ICronTask
      * 商品修改价格
      *
      * @param array $paramArray
+     *
      * @return array
      */
     public function setPrice(array $paramArray)
@@ -97,7 +100,7 @@ class GoodsCronTask implements ICronTask
         $goods_id = abs(intval(@$paramArray['goods_id']));
 
         $goodsBasicService = new GoodsBasicService();
-        $goods = $goodsBasicService->loadGoodsById($goods_id);
+        $goods             = $goodsBasicService->loadGoodsById($goods_id);
 
         if ($goods->isEmpty()) {
             goto out;
