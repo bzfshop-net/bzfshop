@@ -96,7 +96,7 @@ SQL;
 
             // 解析 sql 文件，导入数据
             $sqlFileContent = SqlHelper::removeComment($sqlFileContent);
-            $sqlArray = SqlHelper::splitToSqlArray($sqlFileContent, ';');
+            $sqlArray       = SqlHelper::splitToSqlArray($sqlFileContent, ';');
             unset($sqlFileContent);
             foreach ($sqlArray as $sqlQuery) {
                 $queryObject = $dbEngine->prepare($sqlQuery);
@@ -106,8 +106,15 @@ SQL;
             }
             unset($sqlArray);
 
-            // 添加执行权限
+            // 权限管理
             $metaPrivilegeService = new MetaPrivilegeService();
+
+            // 删除不用的权限
+            $metaPrivilegeService->removePrivilegeItem('manage_goods_attrgroup_listattrgroup');
+            $metaPrivilegeService->removePrivilegeItem('manage_goods_attrgroup_create');
+            $metaPrivilegeService->removePrivilegeItem('manage_goods_attrgroup_edit');
+
+            // 添加执行权限
             $privilegeGroup = $metaPrivilegeService->loadPrivilegeGroup('manage_misc');
             $metaPrivilegeService->savePrivilegeItem(
                 $privilegeGroup['meta_id'],
