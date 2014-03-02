@@ -248,7 +248,7 @@
                     // 清除已经存在的选择
                     $('select.select2-simple', $filterDiv).select2('destroy');
                     $filterDiv.html('');
-                    if (jsonData.meta_data && jsonData.meta_data.filterArray) {
+                    if (jsonData.meta_data && jsonData.meta_data.filterArray && jsonData.meta_data.filterArray.length > 0) {
                         var isFirst = true;
                         $.each(jsonData.meta_data.filterArray, function (index, data) {
                             $filterDiv.append(bZF.goods_category_edit_modal.getFilterTemplate(isFirst, data.typeId, data.attrItemId));
