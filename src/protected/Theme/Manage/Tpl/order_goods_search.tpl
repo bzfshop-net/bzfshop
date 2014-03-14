@@ -32,11 +32,11 @@
             <div class="control-group">
                 <div class="controls">
                     <span class="input-label">订单状态</span>
-                    <select class="span2 select2-simple" name="order_goods_status"
+                    <select class="span2 select2-simple" name="order_goods_status" data-placeholder="全部"
                             data-ajaxCallUrl="{{bzf_make_url controller="/Ajax/Order/ListOrderGoodsStatus"}}"
                             data-option-value-key="id" data-option-text-key="desc"
                             data-initValue="{{$order_goods_status|default}}">
-                        <option value="-1">全部</option>
+                        <option value=""></option>
                     </select>
 
                     <span class="input-label">发货状态</span>
