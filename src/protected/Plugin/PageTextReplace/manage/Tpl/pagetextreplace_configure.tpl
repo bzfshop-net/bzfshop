@@ -2,7 +2,7 @@
 {{block name=plugin_main_body}}
     <!-- 页面主体内容 -->
     <div class="row">
-        <h4>财付通-即时到账插件配置</h4>
+        <h4>页面文本替换配置</h4>
         <br/>
         <!-- 更新管理员信息的表单  -->
         <form class="form-horizontal form-horizontal-inline form-dirty-check" method="POST"
