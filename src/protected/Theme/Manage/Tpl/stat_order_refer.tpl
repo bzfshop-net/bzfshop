@@ -215,3 +215,45 @@
     <!-- /左侧每个标签的具体内容 -->
 
 {{/block}}
+
+
+{{block name=page_js_block append}}
+    <script type="text/javascript">
+        /**
+         * 这里的代码等 document.ready 才执行
+         */
+        jQuery((function (window, $) {
+
+            /************************** 订单下载 *****************************/
+            $('#stat_order_refer_download_button').on('click', function () {
+
+                var add_time_start = $('#stat_order_refer_add_time_start').val();
+                var add_time_end = $('#stat_order_refer_add_time_end').val();
+                var pay_time_start = $('#stat_order_refer_pay_time_start').val();
+                var pay_time_end = $('#stat_order_refer_pay_time_end').val();
+                var utm_source = $('#stat_order_refer_utm_source').find('option:selected').val();
+                var utm_medium = $('#stat_order_refer_utm_medium').find('option:selected').val();
+                var login_type = $('#stat_order_refer_login_type').find('option:selected').val();
+
+                // 参数检查
+                if (!add_time_start && !add_time_end && !pay_time_start && !pay_time_end) {
+                    bZF.showMessage('必须提供最少一个查询时间');
+                    return;
+                }
+
+                // 构造调用链接
+                var callUrl = bZF.makeUrl('/Stat/Order/Refer/Download'
+                        + '?add_time_start=' + add_time_start
+                        + '&add_time_end=' + add_time_end
+                        + '&pay_time_start=' + pay_time_start
+                        + '&pay_time_end=' + pay_time_end
+                        + '&utm_source=' + utm_source
+                        + '&utm_medium=' + utm_medium
+                        + '&login_type=' + login_type);
+
+                window.open(encodeURI(callUrl));
+            });
+
+        })(window, jQuery));
+    </script>
+{{/block}}
