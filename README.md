@@ -6,7 +6,7 @@ B2C商城给大家使用，方便每一个人可以很容易的搭建属于自�
 
 bzfshop 设计为一个跨平台的程序，可以支持多种平台的安装，目前包括：
 
-* 服务器大规模集群安装 （F5/LVS 设备 + 一堆 WebServer + Memcache 缓存服务器 + MySql Cluster）
+* 服务器集群安装 （F5/LVS 负载均衡设备 + 一堆 WebServer + Memcache 缓存服务器 + MySql Cluster）
 * 普通服务器安装（虚拟主机、VPS、阿里云、独立服务器、...）
 * 新浪 SAE 平台（把 src 目录下内容上传到 SAE 即可）
 * 百度 BAE3 平台（把 src 目录下内容上传到 BAE3 即可）
@@ -29,11 +29,14 @@ bzfshop 设计为一个跨平台的程序，可以支持多种平台的安装，
 
  2. 系统配置
 
-    Apache 用户
+    Apache 2.2.x 用户（2.4.x 由于 urlRewrite 的规则变化了，需要你自行修改 .htaccess 文件）
     程序已经配置好了 .htaccess 文件，只要你的 Apache 支持 .htaccess，那就无需任何额外的配置了
 
     Nginx 用户
     我们提供了一个 nginx.conf 配置文件作为你的参考，你需要先配置好你的服务器，然后才能启动安装程序
+	
+	IIS 用户
+	你需要给 IIS 服务器安装 urlRewrite 插件，让 IIS 能够使用 apache 的 .htaccess 文件，然后才能启动安装
 
  3. 程序安装
 
