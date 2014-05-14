@@ -62,9 +62,10 @@
 
                 <div class="control-group">
                     <div class="controls">
-                        <span class="input-label">统计代码</span>
-                        <textarea class="span9" type="text" name="statistics_code"
-                                  data-validation-required="data-validation-required">{{$statistics_code|default nofilter}}</textarea>
+                        <span class="input-label">GA UA</span>
+                        <input class="span2" type="text" name="google_analytics_ua"
+                               value="{{$google_analytics_ua|default}}"/>
+                        <span class="comments">Google Analytics 的 UA 值，在这里开启 GA 的手机统计</span>
                     </div>
                 </div>
 

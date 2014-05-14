@@ -41,6 +41,8 @@ function smarty_helper_register(&$smarty)
     $smarty->registerPlugin('modifier', 'bzf_html_image_lazyload', 'smarty_helper_modifier_html_image_lazyload');
     $smarty->registerPlugin('modifier', 'bzf_money_display', 'smarty_helper_modifier_money_display');
 
+    $smarty->registerPlugin('block', 'bzf_is_option_valid', 'smarty_helper_block_is_option_valid');
+
     $smarty->registerFilter('output', 'smarty_helper_output_filter_replace_session_id');
 }
 
@@ -417,6 +419,32 @@ function smarty_helper_modifier_html_image_lazyload($htmlContent)
 
     return $htmlContent;
 
+}
+
+/**
+ * 判断选项是否有效，从而决定是否输出模板中的值
+ *
+ * @param                          $params
+ * @param                          $content
+ * @param Smarty_Internal_Template $template
+ * @param                          $repeat
+ *
+ * @return string
+ */
+function smarty_helper_block_is_option_valid($params, $content, Smarty_Internal_Template $template, &$repeat)
+{
+    if ($repeat || !isset($params['optionKey'])) {
+        return '';
+    }
+
+    // 取得选项值
+    $optionValue = smarty_helper_function_get_option_value($params, null);
+
+    if (empty($optionValue)) {
+        return '';
+    }
+
+    return $content; // 成功从这里返回
 }
 
 /**

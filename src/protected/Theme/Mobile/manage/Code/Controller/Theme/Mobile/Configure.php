@@ -28,7 +28,7 @@ class Configure extends \Controller\AuthController
         'kefu_qq',
         'icp',
         'goods_after_service',
-        'statistics_code',
+        'google_analytics_ua',
         'smarty_cache_time_cache_page',
         'smarty_cache_time_goods_index',
         'smarty_cache_time_goods_search',
@@ -37,7 +37,6 @@ class Configure extends \Controller\AuthController
     );
 
     private $optionKeyNoFilterArray = array(
-        'statistics_code',
         'goods_after_service'
     );
 
