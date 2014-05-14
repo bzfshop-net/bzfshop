@@ -63,7 +63,6 @@
                         var dataUrl = $.mobile.activePage.attr("data-url");
                         // 把我们加的 session_id 去掉
                         dataUrl = dataUrl.replace(new RegExp(SESSION_NAME + '=[0-9a-zA-Z]+&?', "g"), '');
-                        console.log(dataUrl);
                         _gaq.push(['_trackPageview', dataUrl]);
                     } else {
                         _gaq.push(['_trackPageview', event.target.id]);
