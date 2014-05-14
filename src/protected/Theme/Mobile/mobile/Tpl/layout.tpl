@@ -56,13 +56,14 @@
         </script>
         <script type="text/javascript">
             // 监听页面加载事件，对每个页面加载提交 GA 的统计数据
-            $('[data-role=page]').on('pageshow', function (event, ui) {
+            jQuery(document).on('pageshow', function (event, ui) {
                 try {
                     _gaq.push(['_setAccount', '{{bzf_get_option_value optionKey="google_analytics_ua"}}']);
                     if ($.mobile.activePage.attr("data-url")) {
                         var dataUrl = $.mobile.activePage.attr("data-url");
                         // 把我们加的 session_id 去掉
-                        dataUrl = dataUrl.replace('/' + SESSION_NAME + '=[0-9a-zA-Z]+&?/i', '');
+                        dataUrl = dataUrl.replace(new RegExp(SESSION_NAME + '=[0-9a-zA-Z]+&?', "g"), '');
+                        console.log(dataUrl);
                         _gaq.push(['_trackPageview', dataUrl]);
                     } else {
                         _gaq.push(['_trackPageview', event.target.id]);
