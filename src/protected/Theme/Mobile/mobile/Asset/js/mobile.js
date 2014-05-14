@@ -49,6 +49,9 @@
 
     var bZF = {};
 
+    // bZF 放入到全局命名空间
+    window.bZF = bZF;
+
     /**
      * 构建完整的 URL，有一些跨域请求需要完整的 URL 才能执行
      *
@@ -396,6 +399,17 @@
         }
 
         return true;
+    };
+
+    /**
+     *  把所有懒加载的图片一次性加载完成
+     *
+     * @param node
+     */
+    bZF.load_all_lazy_image = function () {
+        $('img[data-original]', $.mobile.activePage).each(function (index, elem) {
+            $(elem).attr('src', $(elem).attr('data-original'));
+        });
     };
 
 })(window, jQuery);

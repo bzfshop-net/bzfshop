@@ -121,6 +121,9 @@
         </div>
         <div data-role="collapsible">
             <h3>商品详情</h3>
+            <button data-theme="e" data-mini="true" onclick="bZF.load_all_lazy_image();">
+                点击加载全部图片
+            </button>
             {{$goodsInfo['goods_desc']|bzf_html_image_lazyload nofilter}}
         </div>
         <div data-role="collapsible">
