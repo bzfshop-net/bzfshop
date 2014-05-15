@@ -102,7 +102,7 @@
         <div class="ui-block-b">
             <a data-role="button" data-theme="f"
                data-transition="slide" data-icon="arrow-r" data-iconpos="right"
-               href="{{bzf_make_url controller='/Cart/Show'}}">去结算</a>
+               href="{{bzf_make_url controller='/Cart/Show'}}">查看购物车</a>
         </div>
     </div>
     <!-- /加入购物车 -->
