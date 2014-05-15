@@ -85,7 +85,7 @@
 
     {{else}}
         <a data-role="button" data-theme="e"
-           data-transition="slide" data-icon="arrow-l" data-iconpos="left"
+           data-transition="slide" data-rel="back" data-icon="arrow-l" data-iconpos="left"
            href="{{bzf_make_url controller='/'}}">去挑选商品</a>
     {{/if}}
 
