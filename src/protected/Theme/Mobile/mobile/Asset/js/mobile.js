@@ -410,6 +410,7 @@
         $('img[data-original]', $.mobile.activePage).each(function (index, elem) {
             $(elem).attr('src', $(elem).attr('data-original'));
         });
+        bZF.showMessage('图片已全部显示');
     };
 
 })(window, jQuery);
