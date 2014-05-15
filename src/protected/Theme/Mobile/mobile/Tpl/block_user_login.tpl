@@ -13,6 +13,9 @@
         <label for="captcha" class="ui-hidden-accessible">验证码:</label>
         <input type="text" name="captcha" value="" placeholder="填入验证码" data-theme="a" required="required"/>
         <button type="submit" data-theme="e" data-icon="check">点击登录</button>
+        <a data-role="button" data-theme="f"
+           data-transition="slide" data-icon="arrow-r" data-iconpos="right"
+           href="{{bzf_make_url controller='/User/Register'}}">现在去注册</a>
     </div>
 </form>
 
