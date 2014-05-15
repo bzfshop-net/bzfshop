@@ -98,10 +98,8 @@
         <div class="ui-block-a">
             <input id="bzf_goods_view_add_goods_to_cart" type="button" data-theme="e" value="加入购物车"/>
         </div>
-
         <div class="ui-block-b">
-            <a data-role="button" data-theme="f"
-               data-transition="slide" data-icon="arrow-r" data-iconpos="right"
+            <a data-role="button" data-theme="f" data-transition="slide"
                href="{{bzf_make_url controller='/Cart/Show'}}">查看购物车</a>
         </div>
     </div>
