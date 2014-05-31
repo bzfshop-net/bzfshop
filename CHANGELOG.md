@@ -1,3 +1,11 @@
+2014-06-01  1.1.2
+
+* Mobile 增加对 Google Analytics 的支持
+* Mobile 商品详情提供用户可以一次性加载所有图片（Wifi 环境下用户没必要一张一张的点击加载）
+* Mobile 修正购物车为空提交出错的 Bug
+* Mobile 登陆、注册 链接打通，方便用户随时切换
+* Mobile 一些显示兼容的调整
+
 2014-04-01  1.1.1
 
 * Shop bug fix
